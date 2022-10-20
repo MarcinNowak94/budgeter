@@ -1,7 +1,15 @@
-\documentclass[a4paper,12pt]{book}
+% Docummentation: 
+% - https://www.latex-project.org/help/documentation/
+% - https://docs.w3cub.com/latex/
+
+\documentclass[a4paper,12pt]{report}
 
 \usepackage{polski}         % Polish diacretic signs
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}       % urls and hyperlinks
+\usepackage{xurl}           % break urls
+\usepackage{microtype}      % improve justification
+\usepackage{enumitem}       % compact lists
 \usepackage{graphicx}       % Include graphics
 \usepackage{wrapfig}        % wrap text aroung graphics
 \usepackage{fancyhdr}       % Customize page layout
@@ -12,19 +20,19 @@
 
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
-\newcommand{\customstyletitle}[1]{\Large{\textbf{#1}}}
-\newcommand{\customstylechapter}[1]{\Large{\textit{#1}}}
+\newcommand{\customstyletitle}[1]{\Huge{\textbf{#1}}}
+\newcommand{\customstylechapter}[1]{\large{\textit{#1}}}
 \newcommand{\customstylesection}[1]{\textbf{\textit{#1}}}
+\newcommand{\customstylesidenote}[1]{\Small{\textbf{#1}}}
 
 % --------------------------- documment starts here ---------------------------
 
 % environment
-
 \begin{document}
 % [REQUIREMENT] 1. Strona tytułowa
-\title{\customstyletitle{Aplikacja do budżetu}}
+\title{\customstyletitle{Aplikacja do prowadzenia budżetu}}
 \author{Marcin Nowak}
-\date{}
+\date{2022-10-22}
 
 \maketitle                          % Prints title, author and date
 \let\cleardoublepage\clearpage
@@ -35,53 +43,173 @@
 
 % Define pagestyle
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
-\pagestyle{fancy}
-\fancyhf{}          %clears default headers and footers
-\renewcommand{\headrulewidth}{2pt}
-\renewcommand{\footrulewidth}{1pt}
-\fancyhead[L]{\leftmark}
-\fancyhead[RO]{\rightmark}
-\fancyfoot[L,RO]{\thepage}
+%\pagestyle{fancy}
+%\fancyhf{}          %clears default headers and footers
+%\renewcommand{\headrulewidth}{2pt}
+%\renewcommand{\footrulewidth}{1pt}
+%\fancyhead[L]{\leftmark}
+%\fancyhead[RO]{\rightmark}
+%\fancyfoot[L,RO]{\thepage}
 
 % ---------------------------------- Content ----------------------------------
 
 % [REQUIREMENT] 3. Wprowadzenie do tematyki projektu
 \chapter{\customstylechapter{Wprowadzenie do tematyki projektu}}
-
+Finanse są dziedziną nauki ekonomicznej zajmującą się rozporzadzaniem pieniędzmi
+ \cite{wiki_ekonomia}. Nauka ta w podobnym zakresie a różnej skali 
+wykorzystywana jest tak przez rządy, przedsiębiorstwa jak i zwykłych obywateli - 
+w efekcie jest to dziedzina o stosunkowo prostych podstawach jednak niesamowicie
+skomplikowana w każdym zakresie w którym chętna osoba zadecyduje się ją zagłębić. 
+Wiedza z zakresu finansów staje się szczególnie przydatna podczas gdy na rynku 
+panuje trudna sytuacja ekonomiczna, w takich warunkach nierzadko decyduje ona o 
+jakości oraz stanie życia poszczególnych osób fizycznych jak i całych 
+przedsiębiorstw a nawet krajów. 
+%
 % [REQUIREMENT] 4. Zamierzony cel projektu
 \chapter{\customstylechapter{Zamierzony cel projektu}}
-
-
+Celem projektu jest ułatwienie zarządzania finansami i budżetem poprzez 
+uproszczenie analizy wpływów i wydatków dzięki wizualizacji trendów, 
+automatycznej kategoryzacji wydatków i wpływów oraz predefiniowanym 
+zestawieniom. Użytkownik po wprowadzeniu danych będzie w stanie w łatwy sposób 
+zobrazować sytuację finansową osobistą lub przedsiębiorstwa co pozwoli 
+bardziej świadomie podejmować dalsze decyzje finansowe, planować budżet, łatwo 
+identyfikować obszary które wymagają usprawnień czy ogólną obserwację trendów.
+%
 % [REQUIREMENT] 5. Wstępne założenia i uwarunkowania, w których 
 % projekt będzie powstawał  -----------------------
 \chapter{\customstylechapter{Wstępne założenia i uwarunkowania}}
-
 \section{\customstylesection{Założenia}}
-
+Początkowo użytkownik będzie samodzielnie wprowadzał dane dane do aplikacji 
+poprzez dedykowany interfejs. Aplikacja będzie dbać o jakość danych przyjmując 
+jednak oznaczając i pomijając dane błędne, niepełne lub niepewne - będą one 
+prezentowane w dedykowanej zakładce aplikacji gdzie użytkownik będzie mieć 
+możliwość ich poprawy. Użytkownik będzie w stanie wybrać zestaw 
+predefiniowanych typów i kategorii obiektów lub utworzyć i edytować własne. 
+Aplikacja będzie udostępniać predefiniowane wizualizacje, wliczając możliwość 
+wizualizacji określonego przez użytkownika obiektu.
+%
 \section{\customstylesection{Uwarunkowania}}
-
-
+Celem projektu jest dostarczenie minimalnego spełniającego wymagania produktu, 
+pozostałe funkcjonalności obecnie zostaną pominięte z powodu różnych czynników 
+jak ograniczony czas wdrożenia, zakres umiejętności technicznych autora czy 
+fakt że jest to projekt w głównej mierze edukacyjny.
+Termin wdrożenia wyklucza bardziej zaawansowane funcjonalności, jako że jest to 
+projekt edukacyjny znajomość technologii będzie budowana w trakcie co wpłynie 
+między innymi na ograniczenia systemowe: wstępnie jest to aplikacja wyłacznie 
+stacjonarna przeznaczona na systemy Windows 11. Kolejnym na ten moment 
+pominiętym aspektem jest zabudowanie reguł przeprowadzających dogłębną analizę 
+statystyczną danych które otwierają dalsze możliwości rozwoju oprogramowania. 
+Aplikacja będzie także z zasady obsługiwać wyłącznie pojedynczego użytkownika, 
+a zawarte w niej dane będa przechowywane wyłącznie lokalnie. Pominięte zostanie 
+także automatyczne pobieranie danych z interfejsów innych aplikacji lub w 
+formie ekstrakcji danych ze skanowanych dokumentów czy kodów EAN lub QR towarów.
+ Aplikacja nie będzie takze udostępniać żadnego rodzaju interfejsu 
+programistycznego (API). W momencie zakończenia projektu wszystkie dane 
+użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może jednak 
+zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji użytkownika. 
+Interfejs będzie zaprojektowany by wyglądać w z góry określony sposób, 
+użytkownik nie będzie miał możliwości jego edycji.
+%
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
 \chapter{\customstylechapter{Założone ograniczenia i możliwosci ewaluacji projektu}}
-
+W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
+dane statystyczne prezentujące ilość, zakres i jakość danych a także sugerujące 
+kolejny krok ich usprawnienia. Standard danych w aplikacji dopasowany zostanie 
+do wiodącego globalnego standardu danych w obrembie tej samej tematyki. Typy 
+obiektów będzie można grupować na kilku poziomach aby ułatwić użytkownikowi 
+zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych użytkowników 
+może okazać się przydatna możliwość definiowania i zapisywania własnych 
+wizualizacji i raportów statystycznych - wymagać to będzie jednak implementacji 
+dedykowanego modułu.
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
 \chapter{\customstylechapter{Plan pracy}}
+Prace nad projektem prowadzone będą w formie listy zadań do zrealizowania 
+którym przypisane zostaną priorytety metodą M.O.S.C.O.W. lub Matrycy 
+Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco:
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\begin{enumerate}
+    \item Spis założeń w dokumentacji wstępnej
+    \begin{itemize}
+        \item Założenia wstępne
+        \item Spis wymagań każdego typu
+        \item Przegląd rynku pod kątem dostępnych rozwiązań
+        \item Określenie metodologii pracy
+        \item Dokumentacja modelowania
+        \item Dokumentacja uruchomieniowa projektu
+        \item Przeprowadzone testy
+        \item Instrukcja obsługi dla użytkownika
+        \item Retrospekcja
+    \end{itemize}
+    \item Modelowanie 
+    \begin{itemize}
+        \item Utworzenie słownika modelowanej domeny
+        \item Określenie wymaganych kontenerów
+        \item Określenie wymaganych encji i atrybutów
+        \item Określenie wymaganych ograniczeń danych
+        \item Modelowanie powiazań encji
+    \end{itemize}
+    \item Wybór technologii
+    \begin{itemize}
+        \item Wspierane systemy i wersje
+        \item Wybór języka
+        \item Biblioteki interfejsu użytkownika
+        \item Sposób przechowywania danych
+        \item Instalator, aktualizacja i utrzymanie 
+    \end{itemize}
+    \item Wstępne wdrożenie
+    \begin{itemize}
+        \item Utworzenie struktur bazy danych
+        \item Wypełnienie danymi testowymi
+        \item Podstawowe triggery i widoki
+        \item Projekt interfejsu użytkownika
+        \item Szkielet interfejsu użytkownika
+        \item Połączenie interfejsu z bazą danych
+        \item Podstawowa wizualizacja
+        \item Iteracyjne uzupełnienie interfejsu i bazy o dodatkowe funkcje
+        \item Usprawnienia
+    \end{itemize}
+    \item Testy rozwiązania
+    \begin{itemize}
+        \item Utworzenie danych testowych
+        \item Określenie spodziewanych wyników
+        \item Porównanie wyników oczekiwanych z otrzymanymi 
+    \end{itemize}
+    \item Iteracyjne usprawnienia projektu i uzupełnianie dokumentacji
+    \item Retrospekcja
+    \begin{itemize}
+        \item Przydatność gotowej aplikacji
+        \item Wady i zalety podejścia
+        \item Sprawność rozwiązań
+        \item Sprawność technologii
+        \item Spis wniosków
+    \end{itemize}
+\end{enumerate}
+% [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
+\begin{thebibliography} {books}
+\bibitem{wiki_ekonomia} Wikipedia \raggedright\url{https://pl.wikipedia.org/wiki/Nauki_ekonomiczne}
+\bibitem{gus_sytuacja_budzetowa} Główny Urząd Statystyczny \raggedright\url{https://stat.gov.pl/obszary-tematyczne/warunki-zycia/dochody-wydatki-i-warunki-zycia-ludnosci/sytuacja-gospodarstw-domowych-w-2021-r-w-swietle-badania-budzetow-gospodarstw-domowych,3,21.html}
+\bibitem{o24_budzetowanie} Opcje24, Budzetowanie \raggedright\url{https://www.opcje24h.pl/budzetowanie-przewodnik-planowanie-budzetu/}
+\end{thebibliography}
 
 \end{document}
 
-% ------ Project deadline 2023-01-29 -----------------------------------------
-% ------ Due 2022-0 
 
-% [REQUIREMENT] 8. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY PRZED REALIZACJĄ PROJEKTU
+
+% ------------------------------ Docummentation -------------------------------
+
+% ------ Project deadline 2023-01-29 ------------------------------------------
+% ------ Part 1: Due 2022-10-21 
 
 % [REQUIREMENT] 9. Wymagania funkcjonalne (szczegółowey wykaz wszystkich funkcji 
 % oprogramowania)
+% jakie funkcjonalności oprogramowania chcemy dostarczyć, można nie zdążyć z 
+% dostarczeniem części, lub dopisać dodatkowe dodane w trakcie
 
 % [REQUIREMENT] 10. Wymagania niefunkcjonalne 
 % [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
-% koniecznych lub alternatywnych nośnikó danych i peryferiów)
+% koniecznych lub alternatywnych nośników danych i peryferiów)
 % [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
 % platformy, pakiety, biblioteki, sterowniki)
 % [REQUIREMENT] 11.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
@@ -93,7 +221,10 @@
 % [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
 % zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
 % obcego autorstwa, w tym open source)
+
+% ------ Part 2: Due 2022-? 
 % [REQUIREMENT] 14. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY W TRAKCIE TWORZENIA
+
 % [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
 % platformach, konfiguracjach...)
 % [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
@@ -114,9 +245,6 @@
 % [REQUIREMENT] 20.6. Spostrzeżenia i zalecenia do użytkowania projektu
 % [REQUIREMENT] 20.7. Wykryte błędy w działaniu
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
-% [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
-
-
 
 
 % DONE
@@ -130,5 +258,16 @@
 % i możliwość ewaluacji projektu
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
-
+% [REQUIREMENT] 8. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY PRZED REALIZACJĄ PROJEKTU
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
+
+
+% --------------------------------- Purgatory ----------------------------------
+% Orphaned snippets of texts placed here untill you decide what to do with them
+% -----
+% domowym i udostępnienie podstawowych informacji finansowych Niestety jedak 
+% zakres wiedzy w zakresie finansów którą posiada przeciętny obywatel jest dość 
+% niski, w połączeniu z obecnie panującą trudną sytuacją gospodarczą w wielu 
+% miejscach na świecie część ludzi nie radzi sobie z dopinaniem budżetu 
+% domowego. Jest to jednak dziedzina dość skomplikowana, a tym samym trudna dla 
+% przeciętnego obywatela.
