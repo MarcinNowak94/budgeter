@@ -5,7 +5,7 @@
 \documentclass[a4paper,12pt]{report}
 
 \usepackage{polski}         % Polish diacretic signs
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc} % required for international characters
 \usepackage{hyperref}       % urls and hyperlinks
 \usepackage{xurl}           % break urls
 \usepackage{microtype}      % improve justification
@@ -16,8 +16,6 @@
 \usepackage{index}          % Create an index
 \makeindex
 
-
-
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
 \newcommand{\customstyletitle}[1]{\Huge{\textbf{#1}}}
@@ -25,17 +23,50 @@
 \newcommand{\customstylesection}[1]{\textbf{\textit{#1}}}
 \newcommand{\customstylesidenote}[1]{\Small{\textbf{#1}}}
 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
+
 % --------------------------- documment starts here ---------------------------
 
 % environment
 \begin{document}
 % [REQUIREMENT] 1. Strona tytułowa
-\title{\customstyletitle{Aplikacja do prowadzenia budżetu}}
-\author{Marcin Nowak}
-\date{2022-10-22}
-
-\maketitle                          % Prints title, author and date
-\let\cleardoublepage\clearpage
+\begin{titlepage}
+	%---Headings------------------------------------------	
+	\begin{center}
+    \textsc{\LARGE{WYŻSZA SZKOŁA TECHNOLOGII INFORMATYCZNYCH W KATOWICACH}}\\
+    \textsc{\large{WYDZIAŁ INFORMATYKI}}\\
+	\textsc{\large{KIERUNEK: INFORMATYKA}}\\
+    \end{center}
+    
+    %---Author--------------------------------------------
+	\begin{flushleft}
+    \textsc{Nowak Marcin}\\[0cm]
+    \textsc{Nr Albumu 08255}\\[0cm]
+    \textsc{Studia niestacjonarne}\\[0cm]
+    \end{flushleft}
+	
+    %---Title---------------------------------------------
+	\begin{center}
+    \HRule\\[0.4cm]
+	{\customstyletitle{Projekt aplikacji wspomagającej zarządzanie budżetem}}\\[0.4cm] 
+    \HRule\\[1.5cm]
+    \end{center}
+	
+    %---Author--------------------------------------------
+	\begin{flushright}
+        \textsc{Przedmiot: Projekt Systemu Informatycznego}\\[0cm]
+        \textsc{pod kierunkiem}\\[0cm]
+        \textsc{mgr. Jacek Żywczok}\\[0cm]
+        \textsc{W roku akademickim 2022/23}\\[0cm]
+    \end{flushright}
+ 
+	%---Date & logo---------------------------------------
+	\vfill                  % Position the date lower
+	\begin{center}
+    {Katowice 2022}\\	    % \today
+	\includegraphics[width=0.2\textwidth]{WSTI-logo.jpg}\\[1cm]
+	\end{center}
+\end{titlepage}
 
 % [REQUIREMENT] 2. Spis treści
 \renewcommand*\contentsname{Spis treści}
