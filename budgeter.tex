@@ -14,6 +14,7 @@
 \usepackage{wrapfig}        % wrap text aroung graphics
 \usepackage{fancyhdr}       % Customize page layout
 \usepackage{index}          % Create an index
+\usepackage{setspace}       % Spacing
 \makeindex
 
 % ------------------------------ Custom Commands ------------------------------
@@ -29,11 +30,25 @@
 
 % environment
 \begin{document}
+
+% Define pagestyle
+% [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
+\pagestyle{fancy}
+\fancyhf{}          %clears default headers and footers
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+%\fancyhead[LE]{\leftmark}
+%\fancyhead[RO]{\rightmark}
+\fancyfoot[RO,LE]{\thepage}
+
+
 % [REQUIREMENT] 1. Strona tytułowa
 \begin{titlepage}
 	%---Headings------------------------------------------	
 	\begin{center}
+    \begin{onehalfspace}
     \textsc{\LARGE{WYŻSZA SZKOŁA TECHNOLOGII INFORMATYCZNYCH W KATOWICACH}}\\
+    \end{onehalfspace}
     \textsc{\large{WYDZIAŁ INFORMATYKI}}\\
 	\textsc{\large{KIERUNEK: INFORMATYKA}}\\
     \end{center}
@@ -72,21 +87,11 @@
 \renewcommand*\contentsname{Spis treści}
 \tableofcontents                    % prints automatical table of contents
 
-% Define pagestyle
-% [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
-%\pagestyle{fancy}
-%\fancyhf{}          %clears default headers and footers
-%\renewcommand{\headrulewidth}{2pt}
-%\renewcommand{\footrulewidth}{1pt}
-%\fancyhead[L]{\leftmark}
-%\fancyhead[RO]{\rightmark}
-%\fancyfoot[L,RO]{\thepage}
-
 % ---------------------------------- Content ----------------------------------
 
 % [REQUIREMENT] 3. Wprowadzenie do tematyki projektu
 \chapter{\customstylechapter{Wprowadzenie do tematyki projektu}}
-Finanse są dziedziną nauki ekonomicznej zajmującą się rozporzadzaniem pieniędzmi
+{Finanse są dziedziną nauki ekonomicznej zajmującą się rozporzadzaniem pieniędzmi
  \cite{wiki_ekonomia}. Nauka ta w podobnym zakresie a różnej skali 
 wykorzystywana jest tak przez rządy, przedsiębiorstwa jak i zwykłych obywateli - 
 w efekcie jest to dziedzina o stosunkowo prostych podstawach jednak niesamowicie
@@ -94,33 +99,33 @@ skomplikowana w każdym zakresie w którym chętna osoba zadecyduje się ją zag
 Wiedza z zakresu finansów staje się szczególnie przydatna podczas gdy na rynku 
 panuje trudna sytuacja ekonomiczna, w takich warunkach nierzadko decyduje ona o 
 jakości oraz stanie życia poszczególnych osób fizycznych jak i całych 
-przedsiębiorstw a nawet krajów. 
+przedsiębiorstw a nawet krajów.}
 %
 % [REQUIREMENT] 4. Zamierzony cel projektu
 \chapter{\customstylechapter{Zamierzony cel projektu}}
-Celem projektu jest ułatwienie zarządzania finansami i budżetem poprzez 
+{Celem projektu jest ułatwienie zarządzania finansami i budżetem poprzez 
 uproszczenie analizy wpływów i wydatków dzięki wizualizacji trendów, 
 automatycznej kategoryzacji wydatków i wpływów oraz predefiniowanym 
 zestawieniom. Użytkownik po wprowadzeniu danych będzie w stanie w łatwy sposób 
 zobrazować sytuację finansową osobistą lub przedsiębiorstwa co pozwoli 
 bardziej świadomie podejmować dalsze decyzje finansowe, planować budżet, łatwo 
-identyfikować obszary które wymagają usprawnień czy ogólną obserwację trendów.
+identyfikować obszary które wymagają usprawnień czy ogólną obserwację trendów.}
 %
 % [REQUIREMENT] 5. Wstępne założenia i uwarunkowania, w których 
 % projekt będzie powstawał  -----------------------
 \chapter{\customstylechapter{Wstępne założenia i uwarunkowania}}
 \section{\customstylesection{Założenia}}
-Początkowo użytkownik będzie samodzielnie wprowadzał dane dane do aplikacji 
+{Początkowo użytkownik będzie samodzielnie wprowadzał dane dane do aplikacji 
 poprzez dedykowany interfejs. Aplikacja będzie dbać o jakość danych przyjmując 
 jednak oznaczając i pomijając dane błędne, niepełne lub niepewne - będą one 
 prezentowane w dedykowanej zakładce aplikacji gdzie użytkownik będzie mieć 
 możliwość ich poprawy. Użytkownik będzie w stanie wybrać zestaw 
 predefiniowanych typów i kategorii obiektów lub utworzyć i edytować własne. 
 Aplikacja będzie udostępniać predefiniowane wizualizacje, wliczając możliwość 
-wizualizacji określonego przez użytkownika obiektu.
+wizualizacji określonego przez użytkownika obiektu.}
 %
 \section{\customstylesection{Uwarunkowania}}
-Celem projektu jest dostarczenie minimalnego spełniającego wymagania produktu, 
+{Celem projektu jest dostarczenie minimalnego spełniającego wymagania produktu, 
 pozostałe funkcjonalności obecnie zostaną pominięte z powodu różnych czynników 
 jak ograniczony czas wdrożenia, zakres umiejętności technicznych autora czy 
 fakt że jest to projekt w głównej mierze edukacyjny.
@@ -139,12 +144,12 @@ programistycznego (API). W momencie zakończenia projektu wszystkie dane
 użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może jednak 
 zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji użytkownika. 
 Interfejs będzie zaprojektowany by wyglądać w z góry określony sposób, 
-użytkownik nie będzie miał możliwości jego edycji.
+użytkownik nie będzie miał możliwości jego edycji.}
 %
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
 \chapter{\customstylechapter{Założone ograniczenia i możliwosci ewaluacji projektu}}
-W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
+{W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
 dane statystyczne prezentujące ilość, zakres i jakość danych a także sugerujące 
 kolejny krok ich usprawnienia. Standard danych w aplikacji dopasowany zostanie 
 do wiodącego globalnego standardu danych w obrembie tej samej tematyki. Typy 
@@ -152,11 +157,11 @@ obiektów będzie można grupować na kilku poziomach aby ułatwić użytkowniko
 zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych użytkowników 
 może okazać się przydatna możliwość definiowania i zapisywania własnych 
 wizualizacji i raportów statystycznych - wymagać to będzie jednak implementacji 
-dedykowanego modułu.
+dedykowanego modułu.}
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
 \chapter{\customstylechapter{Plan pracy}}
-Prace nad projektem prowadzone będą w formie listy zadań do zrealizowania 
+{Prace nad projektem prowadzone będą w formie listy zadań do zrealizowania 
 którym przypisane zostaną priorytety metodą M.O.S.C.O.W. lub Matrycy 
 Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco:
 \setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
@@ -217,6 +222,7 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
         \item Spis wniosków
     \end{itemize}
 \end{enumerate}
+}
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 \begin{thebibliography} {books}
 \bibitem{wiki_ekonomia} Wikipedia \raggedright\url{https://pl.wikipedia.org/wiki/Nauki_ekonomiczne}
