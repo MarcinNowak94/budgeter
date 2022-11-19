@@ -2,7 +2,7 @@
 % - https://www.latex-project.org/help/documentation/
 % - https://docs.w3cub.com/latex/
 
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,10pt]{report}
 
 \usepackage{polski}         % Polish diacretic signs
 \usepackage[utf8]{inputenc} % required for international characters
@@ -15,7 +15,10 @@
 \usepackage{fancyhdr}       % Customize page layout
 \usepackage{index}          % Create an index
 \usepackage{setspace}       % Spacing
+\usepackage{float}          % Forcing figure placement
+\usepackage{tabularray}     % Tables with wrapping
 \makeindex
+\graphicspath{ {./figures/} }
 
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
@@ -23,6 +26,8 @@
 \newcommand{\customstylechapter}[1]{\large{\textit{#1}}}
 \newcommand{\customstylesection}[1]{\textbf{\textit{#1}}}
 \newcommand{\customstylesidenote}[1]{\Small{\textbf{#1}}}
+\newcommand{\customstyletable}[1]{\footnotesize{\textbf{#1}}}
+
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
 
@@ -37,9 +42,34 @@
 \fancyhf{}          %clears default headers and footers
 \renewcommand{\headrulewidth}{2pt}
 \renewcommand{\footrulewidth}{1pt}
-%\fancyhead[LE]{\leftmark}
-%\fancyhead[RO]{\rightmark}
-\fancyfoot[RO,LE]{\thepage}
+
+\fancypagestyle{mychapterpage}{%
+    %\fancyhead[LE]{\leftmark}
+    %\fancyhead[RO]{\rightmark}
+    \fancyfoot[RO,LE]{\thepage}
+    \renewcommand{\headrulewidth}{2pt}
+    \renewcommand{\footrulewidth}{1pt}
+}
+
+
+% https://texblog.org/2013/09/16/multiple-page-styles-with-fancyhdr/
+%Redefine chapter by adding fancy as the chapter title page page-style
+\makeatletter
+    \let\stdchapter\chapter
+    \renewcommand*\chapter{%
+    \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
+    \newcommand*\starchapter[1]{%
+        \stdchapter*{#1}
+        \thispagestyle{mychapterpage}
+        \fancyfoot[RO,LE]{\thepage}
+        \markboth{\MakeUppercase{#1}}{}
+    }
+    \def\nostarchapter[#1]#2{%
+        \stdchapter[{#1}]{#2}
+        \thispagestyle{mychapterpage}
+        \fancyfoot[RO,LE]{\thepage}
+    }
+\makeatother
 
 
 % [REQUIREMENT] 1. Strona tytułowa
@@ -67,7 +97,7 @@
     \HRule\\[1.5cm]
     \end{center}
 	
-    %---Author--------------------------------------------
+    %---Description----------------------------------------
 	\begin{flushright}
         \textsc{Przedmiot: Projekt Systemu Informatycznego}\\[0cm]
         \textsc{pod kierunkiem}\\[0cm]
@@ -152,17 +182,22 @@ użytkownik nie będzie miał możliwości jego edycji.}
 {W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
 dane statystyczne prezentujące ilość, zakres i jakość danych a także sugerujące 
 kolejny krok ich usprawnienia. Standard danych w aplikacji dopasowany zostanie 
-do wiodącego globalnego standardu danych w obrembie tej samej tematyki. Typy 
+do wiodącego globalnego standardu danych w obrębie tej samej tematyki. Typy 
 obiektów będzie można grupować na kilku poziomach aby ułatwić użytkownikowi 
 zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych użytkowników 
 może okazać się przydatna możliwość definiowania i zapisywania własnych 
 wizualizacji i raportów statystycznych - wymagać to będzie jednak implementacji 
 dedykowanego modułu.}
+
+{Funkcjonalności importu i eksportu danych ze standardowych formatów będzie 
+przydatna dla użytkownika podczas korzystania z projektu, wymaga określenia 
+odpowiedniego formatu i standardu plików co może zająć sporo czasu dlatego 
+zostały uznane za dodatkowe i nie zostaną wdrożone w początkowej fazie projektu.}
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
 \chapter{\customstylechapter{Plan pracy}}
 {Prace nad projektem prowadzone będą w formie listy zadań do zrealizowania 
-którym przypisane zostaną priorytety metodą M.O.S.C.O.W. lub Matrycy 
+którym przypisane zostaną priorytety metodą MoSCoW \cite{MOSCOW} lub Matrycy 
 Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco:
 \setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 \begin{enumerate}
@@ -223,12 +258,164 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
     \end{itemize}
 \end{enumerate}
 }
+
+% [REQUIREMENT] 9. Wymagania funkcjonalne (szczegółowey wykaz wszystkich funkcji 
+% oprogramowania) jakie funkcjonalności oprogramowania chcemy dostarczyć, można 
+% nie zdążyć z dostarczeniem części, lub dopisać dodatkowe dodane w trakcie
+\chapter{\customstylechapter{Wymagania funkcjonalne}}
+{Zestawienie funkcji które powinien spełniać program, wraz z informacją któe 
+z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, legenda:}
+
+{PRIO - Priorytet w jednej z kategorii MOSCOW \cite{MOSCOW}}
+
+{IMPL - Oznaczenie czy wdrożono funkcjonalność}
+
+% Wrapping as per: https://stackoverflow.com/questions/790932/how-to-wrap-text-in-latex-tables
+\begin{table}[h]
+    \footnotesize
+    \begin{tabular}{|p{0.2\linewidth}|p{1cm}|l|p{0.6\linewidth}|}  % | draws verical line
+    % \usepackage{booktabs} provides different line thicknesses
+    % \toprule, \midrule, \bottomrule
+    \hline                  % Draw horizontal line
+        
+    % & Defines the breaks in the table 
+    \customstyletable{Funkcjonalność} & \customstyletable{PRIO} & \customstyletable{IMPL}& \customstyletable{Opis} \\
+    \hline
+    {Plik konfiguracji} & {M} & {-} & {Osobny plik konfiguracyjny}\\
+    \hline
+    {Panel konfiguracyjny} & {S} & {-} & {Osobny panel konfiguracyjny}\\
+    \hline
+    {Dostęp zdalny} & {C} & {-} & {Dostęp do zdalnych baz danych}\\
+    \hline
+    {Definiowanie produktów} & {M} & {-} & {Definiowanie produktów}\\
+    \hline
+    {Definiowanie przychodów} & {M} & {-} & {Definiowanie przychodów}\\
+    \hline
+    {Definiowanie typów produktów} & {M} & {-} & {Definiowanie typów produktów}\\
+    \hline
+    {Definiowanie typów przychodów} & {M} & {-} & {Definiowanie typów przychodów}\\
+    \hline
+    {Podsumowanie wydatków} & {M} & {-} & {Okresowe podsumowanie wydatków}\\
+    \hline
+    {Podsumowanie przychodów} & {M} & {-} & {Okresowe podsumowanie przychodów}\\
+    \hline
+    {Statystyki typów} & {C} & {-} & {Statystyki wydatków na dany typ produktu}\\
+    \hline
+    {Statystyki produktów} & {C} & {-} & {Statystyki wydatków na dany produkt}\\
+    \hline
+    {Bilans okresowy} & {M} & {-} & {Okresowy bilnas zysków i strat}\\
+    \hline
+    {Trendy} & {W} & {-} & {Predykcja trendów wydatkó i wpływów}\\
+    \hline
+    {Porady} & {W} & {-} & {Porady dla użytkownika dotyczące usprawnień budżetu}\\
+    \hline
+    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
+    \hline
+    {Aktualizacje} & {W} & {-} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
+    \hline
+    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
+    \hline
+    {Import danych} & {C} & {-} & {Import danych w standardowym formacie}\\
+    \hline
+    {Eksport danych} & {C} & {-} & {Import danych do standardowego formatu}\\
+    \hline
+    {Wiele użytkowników} & {W} & {-} & {Wsparcie dla wielu użytkowników jednocześnie}\\
+    \hline
+    \end{tabular}
+    \caption{Wymagania funkcjonalne}
+\end{table}
+
+% [REQUIREMENT] 10. Wymagania niefunkcjonalne 
+\chapter{\customstylechapter{Wymagania niefunkcjonalne}}
+% [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
+% koniecznych lub alternatywnych nośników danych i peryferiów)
+\section{\customstylesection{Sprzętowe wymagania niefunkcjonalne}}
+{Pamięć 50MB dowolnego typu, pamięć RAM 2GB, 
+klawiatura, mysz komputerowa, dowolny monitor, opcjonalne połączenie z siecią 
+internet.},
+% [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
+% platformy, pakiety, biblioteki, sterowniki)
+\section{\customstylesection{Systemowe wymagania niefunkcjonalne}}
+% Wzory: https://www.microsoft.com/pl-pl/windows/Windows-10-specifications
+% https://examsoft.com/resources/examplify-minimum-system-requirements/
+% https://softwareengineering.stackexchange.com/questions/86863/how-are-minimum-system-requirements-determined
+{System Operacyjny Windows 10, Python3.0, MySQL.}
+
+% [REQUIREMENT] 11.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
+% poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
+% konieczność zapewnienia realnego czasu dostępu itd.itp.)
+\section{\customstylesection{Organizacyjne wymagania niefunkcjonalne}}
+{Aplikacja wspierać bedzie diałanie z wyłącznie jednym użytkownikiem 
+jednocześnie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
+danych w aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
+przez użytkownika lokalizacji lokalnej - jeśli wdrożona zostanie funkcjonalność 
+dostępu zdalnego także w lokalizacji sieciowej. Aplikacja wstępnie nie będzie 
+wymagała stałego dostępu do sieci, jednak w przyszłości rozwój jej 
+funkcjonalności może zmienić to wymaganie, wymagać wtedy będzie krótkich 
+okresów dostępu do sieci. Dostęp do danych będzie wymagany w krótkich okresach 
+zapisu danych z pamięci podręcznej aplikacji do bazy oraz odpytania bazy o dane.
+Aplikacja powinna być wykorzystywana na systemach zabezpieczonych przed 
+dostępem osób niepowołanych.}
+
+% [REQUIREMENT] 11. Wymagania dotyczące danych (wykaz tabel, relacji, 
+% typy i rozmiary pól z uzasadnieniem, inne rodzaje danych w tym logi, hasła)
+\chapter{\customstylechapter{Wymagania danych}}
+{Sekcja będzie uzupełniana wraz z rozwojem projektu, w trakcie modelowania i 
+wdrażania tak, aby odzwierciedlała faktyczny stan aplikacji.}
+
+% [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
+\chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
+\section{\customstylesection{Metody pracy}}
+{Aby dostarczyć minimalny opłacalny produkt \cite{MVP} aplikacja będzie 
+rozwijana poprzez wdrażanie wymaganych funkcjonalności w kolejności wynikającej 
+z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW 
+\cite{MOSCOW} która polega na określeniu priorytetu za pomocą jednej z kategorii:
+\begin{figure}[H]           %requires float package
+    \caption{MoSCoW}
+    \label{fig:MoSCoW}
+    \centering  
+    \includegraphics[width=12cm]{MoSCoW-01.png}
+\end{figure}
+W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
+wszelkie pozostałe kategorie zostaną wdrożone w ramach możliwości. Ponowna 
+priorytetyzacja będzie przeprowadzana cyklicznie aby lepiej dopasować aplikację 
+do potrzeb użytkowników.}
+
+\section{\customstylesection{Narzędzia}}
+{lorem ipsum}
+
+\section{\customstylesection{Techniki}}
+{lorem ipsum}
+
+% [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
+% zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
+% obcego autorstwa, w tym open source)
+\chapter{\customstylechapter{Opisy metod}}
+\section{\customstylesection{Główne klasy projektu}}
+{lorem ipsum}
+
+\section{\customstylesection{Metody projektu}}
+{lorem ipsum}
+
+\section{\customstylesection{Obiekty projektu}}
+{lorem ipsum}
+
+\section{\customstylesection{Struktury projektu}}
+{lorem ipsum}
+
+\section{\customstylesection{Algorytmy projektu}}
+{lorem ipsum}
+
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 \begin{thebibliography} {books}
 \bibitem{wiki_ekonomia} Wikipedia \raggedright\url{https://pl.wikipedia.org/wiki/Nauki_ekonomiczne}
 \bibitem{gus_sytuacja_budzetowa} Główny Urząd Statystyczny \raggedright\url{https://stat.gov.pl/obszary-tematyczne/warunki-zycia/dochody-wydatki-i-warunki-zycia-ludnosci/sytuacja-gospodarstw-domowych-w-2021-r-w-swietle-badania-budzetow-gospodarstw-domowych,3,21.html}
 \bibitem{o24_budzetowanie} Opcje24, Budzetowanie \raggedright\url{https://www.opcje24h.pl/budzetowanie-przewodnik-planowanie-budzetu/}
+\bibitem{MOSCOW} Product Plan, MOSCOW Prioritetization \raggedright\url{https://www.productplan.com/glossary/moscow-prioritization/}
+\bibitem{MVP} Wikipedia, Minimal Viable Product \raggedright\url{https://en.wikipedia.org/wiki/Minimum_viable_product}
 \end{thebibliography}
+
+\listoffigures
 
 \end{document}
 
@@ -239,27 +426,7 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
 % ------ Project deadline 2023-01-29 ------------------------------------------
 % ------ Part 1: Due 2022-10-21 
 
-% [REQUIREMENT] 9. Wymagania funkcjonalne (szczegółowey wykaz wszystkich funkcji 
-% oprogramowania)
-% jakie funkcjonalności oprogramowania chcemy dostarczyć, można nie zdążyć z 
-% dostarczeniem części, lub dopisać dodatkowe dodane w trakcie
-
-% [REQUIREMENT] 10. Wymagania niefunkcjonalne 
-% [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
-% koniecznych lub alternatywnych nośników danych i peryferiów)
-% [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
-% platformy, pakiety, biblioteki, sterowniki)
-% [REQUIREMENT] 11.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
-% poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
-% konieczność zapewnienia realnego czasu dostępu itd.itp.)
-% [REQUIREMENT] 11. Wymagania dotyczące danych (wykaz tabel, relacji, 
-% typy i rozmiary pól z uzasadnieniem, inne rodzaje danych w tym logi, hasła)
-% [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
-% [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
-% zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
-% obcego autorstwa, w tym open source)
-
-% ------ Part 2: Due 2022-? 
+% ------ Part 2: Due 2022-11-18 
 % [REQUIREMENT] 14. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY W TRAKCIE TWORZENIA
 
 % [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
@@ -271,7 +438,7 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
 % niejednoznaczne itp.)
 % [REQUIREMENT] 18. Konserwacja systemu
 % [REQUIREMENT] 19. Podsumowanie i alternatywne sposoby stworzenia projektu
-% (po zdobytym doświadczeniu, przy dostępie do innych narżedzi, przy innej wizji...)
+% (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
 % [REQUIREMENT] 20. Dokumentacja dla użytkownika (Podręczni kużytkownika)
 % [REQUIREMENT] 20.1. Przeznaczenie i główne możliwości systemu
 % [REQUIREMENT] 20.2. Podstawowe wymagania
