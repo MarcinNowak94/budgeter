@@ -136,45 +136,43 @@ przedsiębiorstw a nawet krajów.}
 {Celem projektu jest ułatwienie zarządzania finansami i budżetem poprzez 
 uproszczenie analizy wpływów i wydatków dzięki wizualizacji trendów, 
 automatycznej kategoryzacji wydatków i wpływów oraz predefiniowanym 
-zestawieniom. Użytkownik po wprowadzeniu danych będzie w stanie w łatwy sposób 
-zobrazować sytuację finansową osobistą lub przedsiębiorstwa co pozwoli 
-bardziej świadomie podejmować dalsze decyzje finansowe, planować budżet, łatwo 
-identyfikować obszary które wymagają usprawnień czy ogólną obserwację trendów.}
+zestawieniom. Docelowymi odbiorcami aplikacji są użytkownicy domowi oraz 
+średnie lub małe przedsiębiorstwa. Użytkownik po wprowadzeniu danych będzie 
+w stanie w łatwy sposób zobrazować sytuację finansową osobistą lub 
+przedsiębiorstwa co pozwoli bardziej świadomie podejmować dalsze decyzje 
+finansowe, planować budżet, łatwo identyfikować obszary które wymagają 
+usprawnień czy ogólną obserwację trendów.}
 %
 % [REQUIREMENT] 5. Wstępne założenia i uwarunkowania, w których 
 % projekt będzie powstawał  -----------------------
 \chapter{\customstylechapter{Wstępne założenia i uwarunkowania}}
 \section{\customstylesection{Założenia}}
-{Początkowo użytkownik będzie samodzielnie wprowadzał dane dane do aplikacji 
-poprzez dedykowany interfejs. Aplikacja będzie dbać o jakość danych przyjmując 
-jednak oznaczając i pomijając dane błędne, niepełne lub niepewne - będą one 
-prezentowane w dedykowanej zakładce aplikacji gdzie użytkownik będzie mieć 
-możliwość ich poprawy. Użytkownik będzie w stanie wybrać zestaw 
-predefiniowanych typów i kategorii obiektów lub utworzyć i edytować własne. 
-Aplikacja będzie udostępniać predefiniowane wizualizacje, wliczając możliwość 
-wizualizacji określonego przez użytkownika obiektu.}
+{Początkowo użytkownik będzie wprowadzał dane do aplikacji samodzielnie poprzez 
+dedykowany interfejs. Aplikacja zadba o jakość danych przyjmując jednak 
+oznaczając i pomijając dane błędne, niepełne lub niepewne które zaprezentuje w 
+dedykowanej zakładce gdzie użytkownik będzie mieć możliwość ich poprawy. 
+Użytkownik będzie w stanie wybrać zestaw predefiniowanych typów i kategorii 
+obiektów lub utworzyć i edytować własne. Aplikacja będzie udostępniać 
+predefiniowane wizualizacje, wliczając możliwość wizualizacji określonego 
+przez użytkownika obiektu.}
 %
 \section{\customstylesection{Uwarunkowania}}
-{Celem projektu jest dostarczenie minimalnego spełniającego wymagania produktu, 
-pozostałe funkcjonalności obecnie zostaną pominięte z powodu różnych czynników 
-jak ograniczony czas wdrożenia, zakres umiejętności technicznych autora czy 
-fakt że jest to projekt w głównej mierze edukacyjny.
-Termin wdrożenia wyklucza bardziej zaawansowane funcjonalności, jako że jest to 
-projekt edukacyjny znajomość technologii będzie budowana w trakcie co wpłynie 
-między innymi na ograniczenia systemowe: wstępnie jest to aplikacja wyłacznie 
-stacjonarna przeznaczona na systemy Windows 11. Kolejnym na ten moment 
-pominiętym aspektem jest zabudowanie reguł przeprowadzających dogłębną analizę 
-statystyczną danych które otwierają dalsze możliwości rozwoju oprogramowania. 
-Aplikacja będzie także z zasady obsługiwać wyłącznie pojedynczego użytkownika, 
-a zawarte w niej dane będa przechowywane wyłącznie lokalnie. Pominięte zostanie 
-także automatyczne pobieranie danych z interfejsów innych aplikacji lub w 
-formie ekstrakcji danych ze skanowanych dokumentów czy kodów EAN lub QR towarów.
- Aplikacja nie będzie takze udostępniać żadnego rodzaju interfejsu 
-programistycznego (API). W momencie zakończenia projektu wszystkie dane 
-użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może jednak 
-zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji użytkownika. 
-Interfejs będzie zaprojektowany by wyglądać w z góry określony sposób, 
-użytkownik nie będzie miał możliwości jego edycji.}
+{Celem projektu jest dostarczenie minimalnego opłacalnego produktu \cite{MVP}, 
+obecnie pozostałe funkcjonalności zostaną pominięte z różnych przyczyn jak 
+ograniczony czas wdrożenia, zakres umiejętności technicznych autora czy fakt że 
+jest to projekt w głównej mierze edukacyjny. Termin wdrożenia wyklucza bardziej 
+zaawansowane funcjonalności, jako że jest to projekt edukacyjny znajomość 
+technologii będzie budowana w trakcie jego rozwoju co wpłynie między innymi na 
+ograniczenia systemowe. Aplikacja będzie także z zasady obsługiwać wyłącznie 
+pojedynczego użytkownika, a zawarte w niej dane będa  przechowywane wyłącznie 
+lokalnie. Pominięte zostanie także automatyczne pobieranie danych z interfejsów 
+innych aplikacji lub w formie ekstrakcji danych ze skanowanych dokumentów czy 
+kodów EAN lub QR towarów. Aplikacja nie będzie także udostępniać żadnego rodzaju
+ interfejsu programistycznego (API). W momencie zakończenia projektu wszystkie 
+dane użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może 
+jednak zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji 
+użytkownika. Interfejs aplikacji będzie statyczny bez możliwości zmiany przez 
+użytkownika.}
 %
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
@@ -187,7 +185,9 @@ obiektów będzie można grupować na kilku poziomach aby ułatwić użytkowniko
 zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych użytkowników 
 może okazać się przydatna możliwość definiowania i zapisywania własnych 
 wizualizacji i raportów statystycznych - wymagać to będzie jednak implementacji 
-dedykowanego modułu.}
+dedykowanego modułu. Kolejnym obecnie pominiętym aspektem jest zabudowanie reguł
+ przeprowadzających dogłębną analizę statystyczną danych które otwierają dalsze 
+możliwości rozwoju oprogramowania.}
 
 {Funkcjonalności importu i eksportu danych ze standardowych formatów będzie 
 przydatna dla użytkownika podczas korzystania z projektu, wymaga określenia 
@@ -317,9 +317,13 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Import danych} & {C} & {-} & {Import danych w standardowym formacie}\\
     \hline
+    {Walidacja danych} & {C} & {-} & {Potwierdzenie jakości danych}\\
+    \hline
     {Eksport danych} & {C} & {-} & {Import danych do standardowego formatu}\\
     \hline
     {Wiele użytkowników} & {W} & {-} & {Wsparcie dla wielu użytkowników jednocześnie}\\
+    \hline
+    {Personalizacja interfejsu} & {W} & {-} & {Personalizacja interfejsu użytkownika}\\
     \hline
     \end{tabular}
     \caption{Wymagania funkcjonalne}
@@ -330,9 +334,8 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 % [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
 % koniecznych lub alternatywnych nośników danych i peryferiów)
 \section{\customstylesection{Sprzętowe wymagania niefunkcjonalne}}
-{Pamięć 50MB dowolnego typu, pamięć RAM 2GB, 
-klawiatura, mysz komputerowa, dowolny monitor, opcjonalne połączenie z siecią 
-internet.},
+{Pamięć 50MB dowolnego typu, pamięć RAM 2GB, klawiatura, mysz komputerowa, 
+dowolny monitor, opcjonalne połączenie z siecią internet.},
 % [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
 % platformy, pakiety, biblioteki, sterowniki)
 \section{\customstylesection{Systemowe wymagania niefunkcjonalne}}
@@ -348,20 +351,26 @@ internet.},
 {Aplikacja wspierać bedzie diałanie z wyłącznie jednym użytkownikiem 
 jednocześnie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
 danych w aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
-przez użytkownika lokalizacji lokalnej - jeśli wdrożona zostanie funkcjonalność 
-dostępu zdalnego także w lokalizacji sieciowej. Aplikacja wstępnie nie będzie 
-wymagała stałego dostępu do sieci, jednak w przyszłości rozwój jej 
-funkcjonalności może zmienić to wymaganie, wymagać wtedy będzie krótkich 
-okresów dostępu do sieci. Dostęp do danych będzie wymagany w krótkich okresach 
-zapisu danych z pamięci podręcznej aplikacji do bazy oraz odpytania bazy o dane.
-Aplikacja powinna być wykorzystywana na systemach zabezpieczonych przed 
-dostępem osób niepowołanych.}
+przez użytkownika pamięci lokalnej, także zdalnej jeśli wdrożona zostanie 
+funkcjonalność dostępu zdalnego. Aplikacja wstępnie nie będzie wymagała stałego 
+dostępu do sieci, jednak w przyszłości rozwój jej funkcjonalności może zmienić 
+to wymaganie, wymagać wtedy będzie krótkich okresów dostępu do sieci. Dostęp do 
+danych będzie wymagany w krótkich okresach zapisu danych z pamięci podręcznej 
+aplikacji do bazy oraz odpytania bazy o dane. Aplikacja powinna być 
+wykorzystywana na systemach zabezpieczonych przed dostępem osób niepowołanych.}
 
 % [REQUIREMENT] 11. Wymagania dotyczące danych (wykaz tabel, relacji, 
 % typy i rozmiary pól z uzasadnieniem, inne rodzaje danych w tym logi, hasła)
 \chapter{\customstylechapter{Wymagania danych}}
 {Sekcja będzie uzupełniana wraz z rozwojem projektu, w trakcie modelowania i 
 wdrażania tak, aby odzwierciedlała faktyczny stan aplikacji.}
+
+{Użytkownik będzie wprowadzał dane do aplikacji ręcznie lub za pomocą interfejsu
+importującego dane w formacie CSV (Comma Separated Values). Dane wprowadzone 
+przez użytkownika trafią do zbioru tymczasowego z któreg po walidacji 
+potwierdzone prawidłowe dane trafią do zbioru docelowego. Dane które nie przejdą
+ walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytkownik będzie 
+mógł je poprawić, uzupełnić lub usunąć.}
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
 \chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
@@ -377,12 +386,22 @@ z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW
     \includegraphics[width=12cm]{MoSCoW-01.png}
 \end{figure}
 W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
-wszelkie pozostałe kategorie zostaną wdrożone w ramach możliwości. Ponowna 
-priorytetyzacja będzie przeprowadzana cyklicznie aby lepiej dopasować aplikację 
-do potrzeb użytkowników.}
+wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
+uwzględnia także cykliczne przeglądy priorytetów aby lepiej dopasować aplikację 
+do potrzeb użytkowników i kierunku rozwoju projektu. Zadania rozpisane zostaną 
+w metodologii kanban}
 
 \section{\customstylesection{Narzędzia}}
-{lorem ipsum}
+{Podczas projektowania i wdrożenia aplikacji wykorzystane zostaną narzędzia typu
+ Open Source oraz komerycjne dostępne nieodpłatnie dla użytkowników 
+indywidualnych.}
+
+{Kategoryzacja MoSCoW dla poszczególnych funkcjonalności wykonywana będzie na 
+zadaniach zarejstrowanych w tablicy kanban, do metodologii kanban wykorzystany 
+zostanie serwis Trello. Model encji w aplikacji zostanie wykonany w aplikacji 
+StarUML. Do stworzenia bazy SQLite posłuży aplikacja DB Browser for SQLite. 
+Aplikacja Visual Studio Code posłuży do pisania kodu w Python oraz dokumentacji 
+w LaTeX.}
 
 \section{\customstylesection{Techniki}}
 {lorem ipsum}
@@ -408,11 +427,16 @@ do potrzeb użytkowników.}
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 \begin{thebibliography} {books}
-\bibitem{wiki_ekonomia} Wikipedia \raggedright\url{https://pl.wikipedia.org/wiki/Nauki_ekonomiczne}
-\bibitem{gus_sytuacja_budzetowa} Główny Urząd Statystyczny \raggedright\url{https://stat.gov.pl/obszary-tematyczne/warunki-zycia/dochody-wydatki-i-warunki-zycia-ludnosci/sytuacja-gospodarstw-domowych-w-2021-r-w-swietle-badania-budzetow-gospodarstw-domowych,3,21.html}
-\bibitem{o24_budzetowanie} Opcje24, Budzetowanie \raggedright\url{https://www.opcje24h.pl/budzetowanie-przewodnik-planowanie-budzetu/}
-\bibitem{MOSCOW} Product Plan, MOSCOW Prioritetization \raggedright\url{https://www.productplan.com/glossary/moscow-prioritization/}
-\bibitem{MVP} Wikipedia, Minimal Viable Product \raggedright\url{https://en.wikipedia.org/wiki/Minimum_viable_product}
+\bibitem{wiki_ekonomia} Wikipedia, Nauki Ekonomiczne \raggedright\url{
+    https://pl.wikipedia.org/wiki/Nauki_ekonomiczne}
+\bibitem{gus_sytuacja_budzetowa} Główny Urząd Statystyczny \raggedright\url{
+    https://stat.gov.pl/obszary-tematyczne/warunki-zycia/dochody-wydatki-i-warunki-zycia-ludnosci/sytuacja-gospodarstw-domowych-w-2021-r-w-swietle-badania-budzetow-gospodarstw-domowych,3,21.html}
+\bibitem{o24_budzetowanie} Opcje24, Budzetowanie \raggedright\url{
+    https://www.opcje24h.pl/budzetowanie-przewodnik-planowanie-budzetu/}
+\bibitem{MOSCOW} Product Plan, MOSCOW Prioritetization \raggedright\url{
+    https://www.productplan.com/glossary/moscow-prioritization/}
+\bibitem{MVP} Wikipedia, Minimal Viable Product \raggedright\url{
+    https://en.wikipedia.org/wiki/Minimum_viable_product}
 \end{thebibliography}
 
 \listoffigures
