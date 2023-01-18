@@ -28,6 +28,7 @@
 \newcommand{\customstylesection}[1]{\textbf{\textit{#1}}}
 \newcommand{\customstylesidenote}[1]{\Small{\textbf{#1}}}
 \newcommand{\customstyletable}[1]{\footnotesize{\textbf{#1}}}
+\newcommand{\customstyletablecentered}[1]{\footnotesize\centering{\textbf{#1}}}
 
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
@@ -122,27 +123,33 @@
 
 % [REQUIREMENT] 3. Wprowadzenie do tematyki projektu
 \chapter{\customstylechapter{Wprowadzenie do tematyki projektu}}
-{Finanse są dziedziną nauki ekonomicznej zajmującą się rozporzadzaniem pieniędzmi
- \cite{wiki_ekonomia}. Nauka ta w podobnym zakresie a różnej skali 
-wykorzystywana jest tak przez rządy, przedsiębiorstwa jak i zwykłych obywateli - 
-w efekcie jest to dziedzina o stosunkowo prostych podstawach jednak niesamowicie
+{Finanse są dziedziną nauki ekonomicznej któa zajmuje się rozporzadzaniem 
+pieniędzmi \cite{wiki_ekonomia}. Nauka ta w podobnym zakresie a różnej skali 
+wykorzystywana jest tak przez państwa, przedsiębiorstwa jak i zwykłych obywateli
+ - w efekcie jest to dziedzina o stosunkowo prostych podstawach jednak niesamowicie
 skomplikowana w każdym zakresie w którym chętna osoba zadecyduje się ją zagłębić. 
 Wiedza z zakresu finansów staje się szczególnie przydatna podczas gdy na rynku 
 panuje trudna sytuacja ekonomiczna, w takich warunkach nierzadko decyduje ona o 
-jakości oraz stanie życia poszczególnych osób fizycznych jak i całych 
-przedsiębiorstw a nawet krajów.}
+jakości oraz stanie życia poszczególnych osób fizycznych, przedsiębiorstw czy 
+państw. W przypadku państw i firma przeważnie budżetem zarządzają dedykowane 
+osoby lub też całe zespoły, posiadające ekspercką wiedze w dziedzinie finansów. 
+Jednak osoby zarządzające budżetem domowym najczęściej dysponują wyłacznie 
+nabytym doświadczeniem, rzadko jeśi wogóle wspomagając się jakimikolwiek 
+narzędziami które ułatwiałyby to zadanie.}
 %
 % [REQUIREMENT] 4. Zamierzony cel projektu
 \chapter{\customstylechapter{Zamierzony cel projektu}}
-{Celem projektu jest ułatwienie zarządzania finansami i budżetem poprzez 
-uproszczenie analizy wpływów i wydatków dzięki wizualizacji trendów, 
-automatycznej kategoryzacji wydatków i wpływów oraz predefiniowanym 
-zestawieniom. Docelowymi odbiorcami aplikacji są użytkownicy domowi oraz 
-średnie lub małe przedsiębiorstwa. Użytkownik po wprowadzeniu danych będzie 
-w stanie w łatwy sposób zobrazować sytuację finansową osobistą lub 
-przedsiębiorstwa co pozwoli bardziej świadomie podejmować dalsze decyzje 
+{Celem projektu jest ułatwienie zarządzania budżetem domowym poprzez 
+dostarczenie użytkownikowi narzędzia pozwalające na analizę wpływów i wydatków, 
+wizualizację trendów oraz automatyczną kategoryzację wpływów i wydatków. 
+Docelowymi odbiorcami aplikacji są użytkownicy domowi, a możliwe że w miarę 
+rozwoju w późniejszych fazach projektu także średnie lub małe przedsiębiorstwa. 
+Użytkownik po wprowadzeniu danych uzyska dostęp do możliwie czytelnego obrazu 
+sytuacji finansowej co pozwoli bardziej świadomie podejmować dalsze decyzje 
 finansowe, planować budżet, łatwo identyfikować obszary które wymagają 
-usprawnień czy ogólną obserwację trendów.}
+usprawnień czy ogólną obserwację trendów. W efekcie uwidocznione przez aplikację 
+informacje i wyciągnięte z nich wnioski ułatwią użytkownikowi poprawę sytuacji 
+finansowej swojego domostwa poprzez bardziej efektywne zarządzanie budżetem.}
 %
 % [REQUIREMENT] 5. Wstępne założenia i uwarunkowania, w których 
 % projekt będzie powstawał  -----------------------
@@ -177,18 +184,21 @@ użytkownika.}
 %
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
+%[TODO]FIX overspill
 \chapter{\customstylechapter{Założone ograniczenia i możliwosci ewaluacji projektu}}
 {W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
-dane statystyczne prezentujące ilość, zakres i jakość danych a także sugerujące 
-kolejny krok ich usprawnienia. Standard danych w aplikacji dopasowany zostanie 
-do wiodącego globalnego standardu danych w obrębie tej samej tematyki. Typy 
-obiektów będzie można grupować na kilku poziomach aby ułatwić użytkownikowi 
-zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych użytkowników 
-może okazać się przydatna możliwość definiowania i zapisywania własnych 
-wizualizacji i raportów statystycznych - wymagać to będzie jednak implementacji 
-dedykowanego modułu. Kolejnym obecnie pominiętym aspektem jest zabudowanie reguł
- przeprowadzających dogłębną analizę statystyczną danych które otwierają dalsze 
-możliwości rozwoju oprogramowania.}
+dane statystyczne obrazujące ilość, zakres i jakość danych a także sugerujące 
+kolejny krok ich usprawnienia. W miarę możliwości standard danych w aplikacji 
+dopasowany zostanie do wiodącego globalnego standardu danych w obrębie tej samej 
+tematyki. Typy obiektów będzie można grupować na kilku poziomach aby ułatwić 
+użytkownikowi zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych 
+użytkowników może okazać się przydatna możliwość definiowania i zapisywania 
+własnych wizualizacji i raportów statystycznych - wymagać to będzie jednak 
+implementacji dedykowanego modułu. Kolejnym obecnie pominiętym aspektem jest 
+zabudowanie reguł przeprowadzających dogłębną analizę statystyczną danych które 
+otwierają dalsze możliwości rozwoju oprogramowania. Aplikacja dostarczana 
+będzie użytkownikom w skompilowanej wersji spakowanej, jeśli zajdzie taka 
+potrzeba i nastąpi możliwość stworzony zostanie także instalator.}
 
 {Funkcjonalności importu i eksportu danych ze standardowych formatów będzie 
 przydatna dla użytkownika podczas korzystania z projektu, wymaga określenia 
@@ -271,6 +281,7 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 
 {IMPL - Oznaczenie czy wdrożono funkcjonalność}
 
+%[TODO]: FIX formatting
 % Wrapping as per: https://stackoverflow.com/questions/790932/how-to-wrap-text-in-latex-tables
 \begin{table}[h]
     \footnotesize
@@ -280,13 +291,21 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline                  % Draw horizontal line
         
     % & Defines the breaks in the table 
-    \customstyletable{Funkcjonalność} & \customstyletable{PRIO} & \customstyletable{IMPL}& \customstyletable{Opis} \\
+    \customstyletable{Funkcjonalność} & \customstyletablecentered{PRIO} & \customstyletablecentered{IMPL}& \customstyletable{Opis} \\
     \hline
-    {Plik konfiguracji} & {M} & {-} & {Osobny plik konfiguracyjny}\\
+    {Plik konfiguracji} & {M} & {TAK} & {Osobny plik konfiguracyjny}\\
     \hline
-    {Panel konfiguracyjny} & {S} & {-} & {Osobny panel konfiguracyjny}\\
+    {Dodawanie danych} & {M} & {-} & {Dodawanie danych}\\
     \hline
-    {Dostęp zdalny} & {C} & {-} & {Dostęp do zdalnych baz danych}\\
+    {Podsumowanie wydatków} & {M} & {TAK} & {Okresowe podsumowanie wydatków}\\
+    \hline
+    {Podsumowanie przychodów} & {M} & {TAK} & {Okresowe podsumowanie przychodów}\\
+    \hline
+    {Statystyki typów} & {C} & {TAK} & {Statystyki wydatków na dany typ produktu}\\
+    \hline
+    {Statystyki produktów} & {C} & {TAK} & {Statystyki wydatków na dany produkt}\\
+    \hline
+    {Bilans okresowy} & {M} & {TAK} & {Okresowy bilnas zysków i strat}\\
     \hline
     {Definiowanie produktów} & {M} & {-} & {Definiowanie produktów}\\
     \hline
@@ -296,35 +315,29 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Definiowanie typów przychodów} & {M} & {-} & {Definiowanie typów przychodów}\\
     \hline
-    {Podsumowanie wydatków} & {M} & {-} & {Okresowe podsumowanie wydatków}\\
+    {Panel konfiguracyjny} & {S} & {-} & {Osobny panel konfiguracyjny}\\
     \hline
-    {Podsumowanie przychodów} & {M} & {-} & {Okresowe podsumowanie przychodów}\\
+    {Rejestr zdarzeń} & {S} & {-} & {Logi z działania aplikacji}\\
     \hline
-    {Statystyki typów} & {C} & {-} & {Statystyki wydatków na dany typ produktu}\\
-    \hline
-    {Statystyki produktów} & {C} & {-} & {Statystyki wydatków na dany produkt}\\
-    \hline
-    {Bilans okresowy} & {M} & {-} & {Okresowy bilnas zysków i strat}\\
-    \hline
-    {Trendy} & {W} & {-} & {Predykcja trendów wydatkó i wpływów}\\
-    \hline
-    {Porady} & {W} & {-} & {Porady dla użytkownika dotyczące usprawnień budżetu}\\
-    \hline
-    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
-    \hline
-    {Aktualizacje} & {W} & {-} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
-    \hline
-    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
+    {Dostęp zdalny} & {C} & {-} & {Dostęp do zdalnych baz danych}\\
     \hline
     {Import danych} & {C} & {-} & {Import danych w standardowym formacie}\\
     \hline
     {Walidacja danych} & {C} & {-} & {Potwierdzenie jakości danych}\\
     \hline
-    {Eksport danych} & {C} & {-} & {Import danych do standardowego formatu}\\
+    {Eksport danych} & {C} & {-} & {Eksport danych do standardowego formatu}\\
+    \hline
+    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
+    \hline
+    {Trendy} & {W} & {-} & {Predykcja trendów wydatkó i wpływów}\\
+    \hline
+    {Porady} & {W} & {-} & {Porady dla użytkownika dotyczące usprawnień budżetu}\\
     \hline
     {Wiele użytkowników} & {W} & {-} & {Wsparcie dla wielu użytkowników jednocześnie}\\
     \hline
     {Personalizacja interfejsu} & {W} & {-} & {Personalizacja interfejsu użytkownika}\\
+    \hline
+    {Aktualizacje} & {W} & {-} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
     \hline
     \end{tabular}
     \caption{Wymagania funkcjonalne}
@@ -352,7 +365,7 @@ dowolny monitor, opcjonalne połączenie z siecią internet.},
 {Aplikacja wspierać bedzie diałanie z wyłącznie jednym użytkownikiem 
 jednocześnie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
 danych w aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
-przez użytkownika pamięci lokalnej, także zdalnej jeśli wdrożona zostanie 
+przez użytkownika pamięci lokalnej, a także zdalnej jeśli wdrożona zostanie 
 funkcjonalność dostępu zdalnego. Aplikacja wstępnie nie będzie wymagała stałego 
 dostępu do sieci, jednak w przyszłości rozwój jej funkcjonalności może zmienić 
 to wymaganie, wymagać wtedy będzie krótkich okresów dostępu do sieci. Dostęp do 
@@ -368,10 +381,19 @@ wdrażania tak, aby odzwierciedlała faktyczny stan aplikacji.}
 
 {Użytkownik będzie wprowadzał dane do aplikacji ręcznie lub za pomocą interfejsu
 importującego dane w formacie CSV (Comma Separated Values). Dane wprowadzone 
-przez użytkownika trafią do zbioru tymczasowego z któreg po walidacji 
-potwierdzone prawidłowe dane trafią do zbioru docelowego. Dane które nie przejdą
- walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytkownik będzie 
-mógł je poprawić, uzupełnić lub usunąć.}
+przez użytkownika trafią do w bazie danych do zbioru tymczasowego z któreg po 
+walidacji potwierdzone prawidłowe dane trafią do zbioru docelowego. Dane które 
+nie przejdą walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytkownik 
+będzie mógł je poprawić, uzupełnić lub usunąć.}
+
+%[TODO] Uzupełnić
+\section{\customstylesection{Baza danych}}
+
+
+%[TODO] Uzupełnić
+\section{\customstylesection{Kod aplikacji}}
+
+
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
 \chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
