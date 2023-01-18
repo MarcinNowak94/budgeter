@@ -430,8 +430,199 @@ będzie mógł je poprawić, uzupełnić lub usunąć.}
 %[TODO] Uzupełnić
 \section{\customstylesection{Baza danych}}
 
+{Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
+spójną konwencję nazewniczą pól, tabel i widoków.}
 
-%[TODO] Uzupełnić
+\begin{table}[h]
+    \footnotesize
+    \begin{tabular}{|p{0.2\linewidth}|p{0.73\linewidth}|}  % | draws verical line
+    % \usepackage{booktabs} provides different line thicknesses
+    % \toprule, \midrule, \bottomrule
+    \hline                  % Draw horizontal line
+        
+    % & Defines the breaks in the table 
+    \customstyletable{Pole} & \customstyletable{Opis} \\
+    \hline
+    {ID} & {Identyfikator rekordu}\\
+    \hline
+    {Comment} & {Komentarz użytkownika}\\
+    \hline
+    {DateTime} & {Znacznik w standardzie daty międzynarodowej ISO 8601 \cite{ISO 8601}}\\
+    \hline
+    {Amount} & {Koszt, liczba zmiennoprzecinkowa}\\
+    \hline
+    {Pole specyficzne} & {Główna informacja, różne nazwy w każdej tabeli (Type,Product)}\\
+    \hline
+    \end{tabular}
+    \caption{Konwencja nazewnicza bazy danych }
+\end{table}
+
+%-----------------------------TABLES--------------------------------------------
+%ADD: Account_data
+
+
+%[TODO]: Fix - some table span the end of page 
+\begin{lstlisting}[ caption={Tabela ProductTypes},
+                    language=SQL,
+                    deletekeywords={IDENTITY},
+                    deletekeywords={[2]INT},
+                    morekeywords={clustered},
+                    framesep=8pt,
+                    xleftmargin=40pt,
+                    framexleftmargin=40pt,
+                    frame=tb,
+                    framerule=0pt ]
+CREATE TABLE [ProductTypes] (
+    [ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
+    [Type] 		TEXT 	NOT NULL,
+    [Comment] 	TEXT 	DEFAULT NULL
+)
+\end{lstlisting}
+{Tabela ProductTypes zawiera typy produktów zdefiniowane przez użytkownika.}
+
+\begin{lstlisting}[ caption={Tabela Products},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Products] (
+    [ID]        INTEGER PRIMARY KEY AUTOINCREMENT,
+    [Product]   TEXT    NOT NULL,
+    [TypeID]	INTEGER UNSIGNED, 
+    [Comment] 	TEXT    DEFAULT NULL,
+FOREIGN KEY([TypeID]) REFERENCES ProductTypes(ID)
+)
+\end{lstlisting}
+{Tabela Products zawiera produkty zdefiniowane przez użytkownika, pole TypeID 
+zawiera klucz obcy ID z tabeli ProductTypes.}
+
+\begin{lstlisting}[ caption={Tabela Expenditures},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Expenditures] (
+	[ID]	INTEGER,
+	[DateTime]	DATETIME,
+	[ProductID]	INTEGER UNSIGNED,
+	[Amount]	DOUBLE,
+	[Comment]	TEXT DEFAULT NULL,
+	PRIMARY KEY([ID] AUTOINCREMENT),
+	FOREIGN KEY([ProductID]) REFERENCES [Products]([ID])
+)
+\end{lstlisting}
+{Tabela Expenditures zawiera wydatki wprowadzone przez użytkownika.}
+
+\begin{lstlisting}[ caption={Tabela Expenditures\_transitory},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Expenditures_transitory] (
+	[ID]	INTEGER,
+	[DateTime]	DATETIME,
+	[ProductID]	INTEGER UNSIGNED,
+	[Amount]	DOUBLE,
+	[Comment]	TEXT DEFAULT NULL,
+	PRIMARY KEY([ID] AUTOINCREMENT),
+	FOREIGN KEY([ProductID]) REFERENCES [Products]([ID])
+)
+\end{lstlisting}
+{Tabela Expenditures\_transitory tymczasowo przechowuje wydatki wprowadzone przez
+ użytkownika. Dane któe które się w niej znajdują są sprawdzane pod względem 
+ poprawności, po czym poprawne dane są przenoszone do tabeli Expenditures i 
+ usuwane z Expenditures\_transitory. Na dłużej pozostają w niej tylko dane które 
+ użytkownik musi poprawić.}
+
+\begin{lstlisting}[ caption={Tabela Bills},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Bills] (
+    [ID]        INTEGER PRIMARY KEY AUTOINCREMENT,
+    [Amount]    DOUBLE,
+    [Medium]    TEXT,
+    [DateTime]  DATETIME,
+    [Comment]   TEXT DEFAULT NULL
+)
+\end{lstlisting}
+{Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
+
+\begin{lstlisting}[ caption={Tabela Income},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Income] (
+	[ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
+	[Amount]	DOUBLE,
+	[Source]	TEXT,
+	[Type]		TEXT,
+	[DateTime]	DATETIME,
+	[Comment]	TEXT DEFAULT NULL
+)
+\end{lstlisting}
+{Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
+
+
+
+%[TODO]: Fill in for
+%MonthlyCharge
+%Monthly_common_products
+%Monthly_Expenditures_by_Type
+%Temp_check
+%Expenditures_Enriched
+%Products_to_fix
+%Ledger_comparison
+%MonthlyBilance
+%MonthlyIncome
+%MonthlyBills
+%MonthlyExpenditures
+%ProductTypeSummary
+
+
+\begin{lstlisting}[ caption={Widok A},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+FILL ME PLEASE
+\end{lstlisting}
+{Widok podsumowujący dla użytkownika dane o ...}
+
+
+%[TODO]:Fill in
 \section{\customstylesection{Kod aplikacji}}
 
 
@@ -522,9 +713,15 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
     https://www.productplan.com/glossary/moscow-prioritization/}
 \bibitem{MVP} Wikipedia, Minimal Viable Product \raggedright\url{
     https://en.wikipedia.org/wiki/Minimum_viable_product}
+\bibitem{ISO 8601} NASA.gov, A summary of the international standard date and time notation \raggedright\url{
+    https://fits.gsfc.nasa.gov/iso-time.html}
+    
 \end{thebibliography}
 
 \listoffigures
+
+\listoftables
+\lstlistoflistings
 
 \end{document}
 
