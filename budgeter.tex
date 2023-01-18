@@ -18,8 +18,41 @@
 \usepackage{setspace}       % Spacing
 \usepackage{float}          % Forcing figure placement
 \usepackage{tabularray}     % Tables with wrapping
+\usepackage{xcolor,listings}% Code listings
+\usepackage{textcomp}       % Code listings
+\usepackage{color}          % Code listings
 \makeindex
 \graphicspath{ {./} }       %Was ./figures/ changed so i can peek in VS Code
+
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{HTML}{C42043}
+\definecolor{backcolour}{HTML}{F2F2F2}
+\definecolor{bookColor}{cmyk}{0,0,0,0.90}  
+\color{bookColor}
+
+\lstset{upquote=true}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\numberstyle,
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+}
+\lstset{style=mystyle}
 
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
@@ -30,8 +63,16 @@
 \newcommand{\customstyletable}[1]{\footnotesize{\textbf{#1}}}
 \newcommand{\customstyletablecentered}[1]{\footnotesize\centering{\textbf{#1}}}
 
-
+% spacer
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
+
+
+\newcommand\numberstyle[1]{%
+    \footnotesize
+    \color{codegray}%
+    \ttfamily
+    \ifnum#1<10 0\fi#1 |%
+}
 
 % --------------------------- documment starts here ---------------------------
 
@@ -392,7 +433,6 @@ będzie mógł je poprawić, uzupełnić lub usunąć.}
 
 %[TODO] Uzupełnić
 \section{\customstylesection{Kod aplikacji}}
-
 
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
