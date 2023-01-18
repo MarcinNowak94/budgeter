@@ -18,7 +18,7 @@
 \usepackage{float}          % Forcing figure placement
 \usepackage{tabularray}     % Tables with wrapping
 \makeindex
-\graphicspath{ {./figures/} }
+\graphicspath{ {./} }       %Was ./figures/ changed so i can peek in VS Code
 
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
@@ -109,7 +109,7 @@
 	\vfill                  % Position the date lower
 	\begin{center}
     {Katowice 2022}\\	    % \today
-	\includegraphics[width=0.2\textwidth]{WSTI-logo.jpg}\\[1cm]
+	\includegraphics[width=0.2\textwidth]{figures/WSTI-logo.jpg}\\[1cm]
 	\end{center}
 \end{titlepage}
 
@@ -383,7 +383,7 @@ z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW
     \caption{MoSCoW}
     \label{fig:MoSCoW}
     \centering  
-    \includegraphics[width=12cm]{MoSCoW-01.png}
+    \includegraphics[width=12cm]{figures/MoSCoW-01.png}
 \end{figure}
 W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
 wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
@@ -411,8 +411,30 @@ w LaTeX.}
 % obcego autorstwa, w tym open source)
 \chapter{\customstylechapter{Opisy metod}}
 \section{\customstylesection{Główne klasy projektu}}
-{lorem ipsum}
+{Projekt składa się z warstw bazy danych oraz graficznego interfejsu aplikacji. 
+Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
+projektu składają się tabele oraz widoki. Warstwa graficznego interfejsu 
+użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję
+ użytkownika z bazą - prezentację danych przechowywanych w bazie orar 
+ wizualizacje danych.}
 
+\section{\customstylesection{Warstwa bazy danych}}
+
+\begin{figure}[H]           %requires float package
+    \caption{Klasy warstwy bazy danych - tabele}
+    \label{fig:Klasy warstwy bazy danych - tabele}
+    \centering  
+    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Tables.png}
+\end{figure}
+
+\section{\customstylesection{Warstwa graficznego interfejsu użytkownika}}
+
+\begin{figure}[H]           %requires float package
+    \caption{Wizualizacja danych wersja 2}
+    \label{fig:Wizualizacja danych wersja 2}
+    \centering  
+    \includegraphics[width=12cm]{figures/Interface_v0.2.png}
+\end{figure}
 \section{\customstylesection{Metody projektu}}
 {lorem ipsum}
 
