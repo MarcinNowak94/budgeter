@@ -55,6 +55,14 @@
 }
 \lstset{style=mystyle}
 
+% Code listings
+\newcommand\numberstyle[1]{%
+    \footnotesize
+    \color{codegray}%
+    \ttfamily
+    \ifnum#1<10 0\fi#1 |%
+}
+
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
 \newcommand{\customstyletitle}[1]{\Huge{\textbf{#1}}}
@@ -63,17 +71,34 @@
 \newcommand{\customstylesidenote}[1]{\Small{\textbf{#1}}}
 \newcommand{\customstyletable}[1]{\footnotesize{\textbf{#1}}}
 \newcommand{\customstyletablecentered}[1]{\footnotesize\centering{\textbf{#1}}}
+\newcommand{\customstyleindivisible}[1]{
+    \begin{minipage}{\textwidth}
+        {#1}
+    \end{minipage}
+}
 
-% spacer
+\lstnewenvironment{SQLlisting}[2][]%
+  {\noindent\minipage{\linewidth}\medskip
+   {#2}
+   \smallskip
+   \lstset{basicstyle=\ttfamily\footnotesize,
+            frame=single,
+            language=SQL,
+            deletekeywords={IDENTITY},
+            %deletekeywords={[2]INT},
+            morekeywords={clustered},
+            framesep=8pt,
+            xleftmargin=40pt,
+            framexleftmargin=40pt,
+            frame=tb,
+            framerule=0pt,
+            caption=#1}}
+  {\endminipage}
+
+  % spacer
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
 
-% Code listings
-\newcommand\numberstyle[1]{%
-    \footnotesize
-    \color{codegray}%
-    \ttfamily
-    \ifnum#1<10 0\fi#1 |%
-}
+
 
 % --------------------------- documment starts here ---------------------------
 
@@ -563,7 +588,7 @@ powinno ograniczyć nakład pracy wymagany do wdrożenia dodatkowych funkcji.}
 %ADD: Account_data
 
 %[TODO]: Fix - some table span the end of page 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela ProductTypes},
                     language=SQL,
                     deletekeywords={IDENTITY},
@@ -583,7 +608,18 @@ CREATE TABLE [ProductTypes] (
 {Tabela ProductTypes zawiera typy produktów zdefiniowane przez użytkownika.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+%[TODO] Make function accept 2nd parameter and display caption
+%{Tabela ProductTypes zawiera typy produktów zdefiniowane przez użytkownika.}
+%\begin{SQLlisting}[{Tabela ProductTypes (v2)}]
+%    CREATE TABLE [ProductTypes] (
+%        [ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
+%        [Type] 		TEXT 	NOT NULL,
+%        [Comment] 	TEXT 	DEFAULT NULL
+%    )
+%\end{SQLlisting}
+
+
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Products},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -606,7 +642,7 @@ FOREIGN KEY([TypeID]) REFERENCES ProductTypes(ID)
 zawiera klucz obcy ID z tabeli ProductTypes.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Bills},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -628,7 +664,7 @@ CREATE TABLE [Bills] (
 {Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Income},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -651,7 +687,7 @@ CREATE TABLE [Income] (
 {Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Expenditures},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -675,7 +711,7 @@ CREATE TABLE [Expenditures] (
 {Tabela Expenditures zawiera wydatki wprowadzone przez użytkownika.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Expenditures\_transitory},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -707,7 +743,7 @@ CREATE TABLE [Expenditures_transitory] (
 %------------------------------VIEWS--------------------------------------------
 %[TODO]: Add Ledger_comparison, MonthlyCharge
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Expenditures\_Enriched},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -737,7 +773,7 @@ Expenditures wzbogacone o zdefiniowane produkty z tabeli Products i typy z
 tabeli ProductTypes.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok ProductTypeSummary},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -777,7 +813,7 @@ FROM (SELECT
 {Widok ProductTypeSummary podsumowujący dla użytkownika dane o typach produktów.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyExpenditures},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -800,7 +836,7 @@ ORDER BY [Month]
 wydatkach.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyBills},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -823,7 +859,7 @@ ORDER BY [Month]
 w rozrachunku miesięcznym zawartych w tabeli Bills.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyIncome},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -846,7 +882,7 @@ ORDER BY [Month]
 miesięcznym.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyBilance},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -882,7 +918,7 @@ FROM (SELECT
  wpływów w formie pojedynczej liczby.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Monthly\_common\_products},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -911,7 +947,7 @@ zakupiono 4 razy - liczba ta została wybrana arbitralnie metodą kolejnych
 przybliżeń aby otrzymać zadowalający wynik.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Monthly\_Expenditures\_by\_Type},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -939,7 +975,7 @@ ORDER BY [Month] DESC, [Sum] DESC
 typach produktów w ujęciu miesięcznym.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Temp\_check},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -968,7 +1004,7 @@ WHERE [Product_ID] IS NULL
 danych.}
 \end{minipage}
 
-\begin{minipage}{1\textwidth}
+\begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Products\_to\_fix},
     language=SQL,
     deletekeywords={IDENTITY},
