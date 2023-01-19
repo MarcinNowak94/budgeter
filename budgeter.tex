@@ -197,6 +197,13 @@ finansowej swojego domostwa poprzez bardziej efektywne zarządzanie budżetem.}
 % projekt będzie powstawał  -----------------------
 \chapter{\customstylechapter{Wstępne założenia i uwarunkowania}}
 \section{\customstylesection{Założenia}}
+{Z uwagi na specyfikę tematyki potencjalnymi odbiorcami aplikacji będą osoby 
+które o niewielkim lub średnim stopniu zaznajomienia z obsługą komputera. 
+Podczas tworzenia graficznego interfejsu użytkownika cechą która będzie miała 
+największy wpływ na kierunek prac będzie łatwość obsługi. W efekcie aplikacja 
+powinna być możliwie prosta, mieć przejrzysty, minimalistyczny interfejs dzięki 
+czemu użytkownik nie zostanie przytłoczony mnogością dostępnych funkcji.}
+
 {Początkowo użytkownik będzie wprowadzał dane do aplikacji samodzielnie poprzez 
 dedykowany interfejs. Aplikacja zadba o jakość danych przyjmując jednak 
 oznaczając i pomijając dane błędne, niepełne lub niepewne które zaprezentuje w 
@@ -205,7 +212,7 @@ Użytkownik będzie w stanie wybrać zestaw predefiniowanych typów i kategorii
 obiektów lub utworzyć i edytować własne. Aplikacja będzie udostępniać 
 predefiniowane wizualizacje, wliczając możliwość wizualizacji określonego 
 przez użytkownika obiektu.}
-%
+
 \section{\customstylesection{Uwarunkowania}}
 {Celem projektu jest dostarczenie minimalnego opłacalnego produktu \cite{MVP}, 
 obecnie pozostałe funkcjonalności zostaną pominięte z różnych przyczyn jak 
@@ -223,7 +230,7 @@ dane użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości mo
 jednak zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji 
 użytkownika. Interfejs aplikacji będzie statyczny bez możliwości zmiany przez 
 użytkownika.}
-%
+
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
 %[TODO]FIX overspill
@@ -398,7 +405,7 @@ dowolny monitor, opcjonalne połączenie z siecią internet.},
 % Wzory: https://www.microsoft.com/pl-pl/windows/Windows-10-specifications
 % https://examsoft.com/resources/examplify-minimum-system-requirements/
 % https://softwareengineering.stackexchange.com/questions/86863/how-are-minimum-system-requirements-determined
-{System Operacyjny Windows 10, Python3.0, MySQL.}
+{System Operacyjny Windows 10, Python3.0, SQLite.}
 
 % [REQUIREMENT] 10.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
 % poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
@@ -429,8 +436,47 @@ nie przejdą walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytko
 będzie mógł je poprawić, uzupełnić lub usunąć.}
 
 \section{\customstylesection{Baza danych}}
+{Aplikacja wymaga sposobu na trwałe składowanie danych wprowadzonych przez 
+użytkownika. W tym celu dla każdego użytkownika utworzona zostanie dedykowana 
+lokalna bazy danych SQLite \cite{SQLite}. Technologia ta zostałą wybrana ze 
+względu na niewielkie wymagania przestrzeni pamięci trwałej jakie zajmuje oraz 
+w miarę kompletne wsparcie standardowego języka zapytań SQL.}
+
+{Baza powinna zawierać tabele do przechowywania danych o przychodach, rachunkach
+ i wydatkach oraz wszelkie dane pomocnicze wspomagające normalizację danych. 
+Powinna zawierać także widoki wspomagające pracę z danymi obliczające w miarę 
+możliwości automatycznie dane analityczne wykorzystywane później w aplikacji. 
+Aby zachować spójność danych i raportów dane wprowadzane do bazy powinny być 
+odpowiednio walidowane, jednak aby zadbać o ich kompletność użytkownik powinien
+mieć możliwość świadomie wprowadzić dane które wymagają poprawy do późniejszej 
+obróbki.}
+
+{Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{Baza-danych}}
 
 \section{\customstylesection{Kod aplikacji}}
+{Aplikacja powinna udostępniać użytkownikowi intuicyjny sposób wizualizacji 
+danych poprzez interfejs użytkownika. Z uwagi na edukacyjny cel projektu 
+aplikacja zostanie zaimplementowana w języku Python \cite{Python}. Do 
+implementacji interfejsu użytkownika posłuży biblioteka PySimpleGUI 
+\cite{PySimpleGUI} która pozwala tworzyć prosty i responsywny niezależny od 
+platformy interfejs o ograniczonych możliwościach. Jest to adapter 
+(tak zwany wrapper) który łączy kilka popularnych bibliotek udostępnia spójny 
+interfejs który pozwala budować interfejs za pomocą matryc złożonych z 
+udostępnianych jako obiekty widżetów.}
+
+{Poza interfejsem użytkownika aplikacja powinna umożliwiać prostą konfigurację 
+podstawowych opcji jak rozmiar okna niestandarową lokalizację bazy danych czy 
+wygląd interfejsu. Aby ułątwić rozwój aplikacji program powinien zapisywać i 
+przyjmować z pliku dane konfiguracyjne w formie list ciągów znaków w formacie "
+opcja" : "wartość" które utworzą obiekt słownika, lub w wariancie bardziej 
+zaawansowanym aplikacja może przyjmować konfigurację w postaci pliku JSON 
+\cite{JSON}. Rozwiązanie to jest na tyle elastycznie że pozwoli dynamicznie 
+definiować dodatkowe konfiguracji w trakcie powstawania projektu - aplikacja 
+zaczyta konfigurację z pliku i na jej podstawie utworzy słownik, dzięki czemu 
+dodanie nowego parametru sprowadzi się do dopisania linijki tektu do pliku.}
+
+{Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{GUI}}
+
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
 \chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
@@ -478,7 +524,7 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
  użytkownika z bazą - prezentację danych przechowywanych w bazie orar 
  wizualizacje danych.}
 
-\section{\customstylesection{Baza danych}}
+\section{\customstylesection{Baza danych}}  \label{Baza-danych}
 
 {Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
 spójną konwencję nazewniczą pól, tabel i widoków. Dzięki niej interfejs bazy 
@@ -915,7 +961,7 @@ zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
 
 %------------------------- Application layer ----------------------------------- 
 
-\section{\customstylesection{Graficzny interfejs użytkownika}}
+\section{\customstylesection{Graficzny interfejs użytkownika}} \label{GUI}
 
 \begin{figure}[H]           %requires float package
     \caption{Wizualizacja danych wersja 2}
@@ -951,6 +997,14 @@ zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
     https://fits.gsfc.nasa.gov/iso-time.html}
 \bibitem{CSV} Y. Shafranovich, SolidMatrix Technologies, Inc., Common Format and MIME Type for Comma-Separated Values (CSV) Files \raggedright\url{
     https://www.rfc-editor.org/rfc/rfc4180}
+\bibitem{SQLite} sqlite.org, SQLite \raggedright\url{
+    https://www.sqlite.org/index.html}
+\bibitem{Python} python.org, Python \raggedright\url{
+    https://www.python.org/}
+\bibitem{PySimpleGUI} pysimplegui.org, PySimpleGUI Python GUIs for Humans \raggedright\url{
+    https://www.pysimplegui.org/en/latest/}
+\bibitem{JSON} json.org, Introducing JSON \raggedright\url{
+    https://www.json.org/json-en.html}
 \end{thebibliography}
 
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
