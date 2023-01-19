@@ -400,7 +400,7 @@ dowolny monitor, opcjonalne połączenie z siecią internet.},
 % https://softwareengineering.stackexchange.com/questions/86863/how-are-minimum-system-requirements-determined
 {System Operacyjny Windows 10, Python3.0, MySQL.}
 
-% [REQUIREMENT] 11.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
+% [REQUIREMENT] 10.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
 % poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
 % konieczność zapewnienia realnego czasu dostępu itd.itp.)
 \section{\customstylesection{Organizacyjne wymagania niefunkcjonalne}}
@@ -430,6 +430,56 @@ będzie mógł je poprawić, uzupełnić lub usunąć.}
 
 \section{\customstylesection{Baza danych}}
 
+\section{\customstylesection{Kod aplikacji}}
+
+% [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
+\chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
+\section{\customstylesection{Metody pracy}}
+{Aby dostarczyć minimalny opłacalny produkt \cite{MVP} aplikacja będzie 
+rozwijana poprzez wdrażanie wymaganych funkcjonalności w kolejności wynikającej 
+z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW 
+\cite{MOSCOW} która polega na określeniu priorytetu za pomocą jednej z kategorii:
+\begin{figure}[H]           %requires float package
+    \caption{MoSCoW}
+    \label{fig:MoSCoW}
+    \centering  
+    \includegraphics[width=12cm]{figures/MoSCoW-01.png}
+\end{figure}
+W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
+wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
+uwzględnia także cykliczne przeglądy priorytetów aby lepiej dopasować aplikację 
+do potrzeb użytkowników i kierunku rozwoju projektu. Zadania rozpisane zostaną 
+w metodologii kanban}
+
+\section{\customstylesection{Narzędzia}}
+{Podczas projektowania i wdrożenia aplikacji wykorzystane zostaną narzędzia typu
+ Open Source oraz komerycjne dostępne nieodpłatnie dla użytkowników 
+indywidualnych.}
+
+{Kategoryzacja MoSCoW dla poszczególnych funkcjonalności wykonywana będzie na 
+zadaniach zarejstrowanych w tablicy kanban, do metodologii kanban wykorzystany 
+zostanie serwis Trello. Model encji w aplikacji zostanie wykonany w aplikacji 
+StarUML. Do stworzenia bazy SQLite posłuży aplikacja DB Browser for SQLite. 
+Aplikacja Visual Studio Code posłuży do pisania kodu w Python oraz dokumentacji 
+w LaTeX.}
+
+\section{\customstylesection{Techniki}}
+{lorem ipsum}
+
+% [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
+% zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
+% obcego autorstwa, w tym open source)
+\chapter{\customstylechapter{Opisy metod}}
+\section{\customstylesection{Główne klasy projektu}}
+{Projekt składa się z warstw bazy danych oraz graficznego interfejsu aplikacji. 
+Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
+projektu składają się tabele oraz widoki. Warstwa graficznego interfejsu 
+użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję
+ użytkownika z bazą - prezentację danych przechowywanych w bazie orar 
+ wizualizacje danych.}
+
+\section{\customstylesection{Baza danych}}
+
 {Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
 spójną konwencję nazewniczą pól, tabel i widoków. Dzięki niej interfejs bazy 
 jest prostszy a pisanie zapytań bardziej intuicyjne co w ogólnym rozrachunku 
@@ -455,6 +505,13 @@ powinno ograniczyć nakład pracy wymagany do wdrożenia dodatkowych funkcji.}
     \end{tabular}
     \caption{Konwencja nazewnicza bazy danych }
 \end{table}
+
+\begin{figure}[H]           %requires float package
+    \caption{Klasy warstwy bazy danych - tabele}
+    \label{fig:Klasy warstwy bazy danych - tabele}
+    \centering  
+    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Tables.png}
+\end{figure}
 
 %-----------------------------TABLES--------------------------------------------
 %ADD: Account_data
@@ -856,69 +913,9 @@ WHERE [Product] IN (NULL,
 zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
  wartościach w polu PRODUCT lub oznaczeniu [TODO] w komentarzu.}
 
-
 %------------------------- Application layer ----------------------------------- 
 
-%[TODO]:Fill in
-\section{\customstylesection{Kod aplikacji}}
-
-
-% [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
-\chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
-\section{\customstylesection{Metody pracy}}
-{Aby dostarczyć minimalny opłacalny produkt \cite{MVP} aplikacja będzie 
-rozwijana poprzez wdrażanie wymaganych funkcjonalności w kolejności wynikającej 
-z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW 
-\cite{MOSCOW} która polega na określeniu priorytetu za pomocą jednej z kategorii:
-\begin{figure}[H]           %requires float package
-    \caption{MoSCoW}
-    \label{fig:MoSCoW}
-    \centering  
-    \includegraphics[width=12cm]{figures/MoSCoW-01.png}
-\end{figure}
-W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
-wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
-uwzględnia także cykliczne przeglądy priorytetów aby lepiej dopasować aplikację 
-do potrzeb użytkowników i kierunku rozwoju projektu. Zadania rozpisane zostaną 
-w metodologii kanban}
-
-\section{\customstylesection{Narzędzia}}
-{Podczas projektowania i wdrożenia aplikacji wykorzystane zostaną narzędzia typu
- Open Source oraz komerycjne dostępne nieodpłatnie dla użytkowników 
-indywidualnych.}
-
-{Kategoryzacja MoSCoW dla poszczególnych funkcjonalności wykonywana będzie na 
-zadaniach zarejstrowanych w tablicy kanban, do metodologii kanban wykorzystany 
-zostanie serwis Trello. Model encji w aplikacji zostanie wykonany w aplikacji 
-StarUML. Do stworzenia bazy SQLite posłuży aplikacja DB Browser for SQLite. 
-Aplikacja Visual Studio Code posłuży do pisania kodu w Python oraz dokumentacji 
-w LaTeX.}
-
-\section{\customstylesection{Techniki}}
-{lorem ipsum}
-
-% [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
-% zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
-% obcego autorstwa, w tym open source)
-\chapter{\customstylechapter{Opisy metod}}
-\section{\customstylesection{Główne klasy projektu}}
-{Projekt składa się z warstw bazy danych oraz graficznego interfejsu aplikacji. 
-Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
-projektu składają się tabele oraz widoki. Warstwa graficznego interfejsu 
-użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję
- użytkownika z bazą - prezentację danych przechowywanych w bazie orar 
- wizualizacje danych.}
-
-\section{\customstylesection{Warstwa bazy danych}}
-
-\begin{figure}[H]           %requires float package
-    \caption{Klasy warstwy bazy danych - tabele}
-    \label{fig:Klasy warstwy bazy danych - tabele}
-    \centering  
-    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Tables.png}
-\end{figure}
-
-\section{\customstylesection{Warstwa graficznego interfejsu użytkownika}}
+\section{\customstylesection{Graficzny interfejs użytkownika}}
 
 \begin{figure}[H]           %requires float package
     \caption{Wizualizacja danych wersja 2}
@@ -964,15 +961,12 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
 \end{document}
 
 
-
 % ------------------------------ Docummentation -------------------------------
 
 % ------ Project deadline 2023-01-29 ------------------------------------------
 % ------ Part 1: Due 2022-10-21 
 
 % ------ Part 2: Due 2022-11-18 
-% [REQUIREMENT] 14. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY W TRAKCIE TWORZENIA
-
 % [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
 % platformach, konfiguracjach...)
 % [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
@@ -1006,6 +1000,24 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
 % [REQUIREMENT] 8. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY PRZED REALIZACJĄ PROJEKTU
+% [REQUIREMENT] 9. Wymagania funkcjonalne (szczegółowey wykaz wszystkich funkcji 
+% oprogramowania) jakie funkcjonalności oprogramowania chcemy dostarczyć, można 
+% nie zdążyć z dostarczeniem części, lub dopisać dodatkowe dodane w trakcie
+% [REQUIREMENT] 10. Wymagania niefunkcjonalne
+% [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
+% koniecznych lub alternatywnych nośników danych i peryferiów)
+% [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
+% platformy, pakiety, biblioteki, sterowniki)
+% [REQUIREMENT] 10.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
+% poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
+% konieczność zapewnienia realnego czasu dostępu itd.itp.)
+% [REQUIREMENT] 11. Wymagania dotyczące danych (wykaz tabel, relacji, 
+% typy i rozmiary pól z uzasadnieniem, inne rodzaje danych w tym logi, hasła)
+% [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
+% [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
+% zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
+% obcego autorstwa, w tym open source)
+% [REQUIREMENT] 14. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY W TRAKCIE TWORZENIA
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
