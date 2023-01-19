@@ -2,6 +2,7 @@
 % - https://www.latex-project.org/help/documentation/
 % - https://docs.w3cub.com/latex/
 % - https://tex.stackexchange.com/questions/455993/formatting-sql-code
+%   https://www.overleaf.com/learn/latex/Code_listing#Code_styles_and_colours
 
 \documentclass[a4paper,10pt]{report}
 
@@ -25,7 +26,7 @@
 \graphicspath{ {./} }       %Was ./figures/ changed so i can peek in VS Code
 
 
-
+% Code listings
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{HTML}{C42043}
@@ -66,7 +67,7 @@
 % spacer
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
 
-
+% Code listings
 \newcommand\numberstyle[1]{%
     \footnotesize
     \color{codegray}%
@@ -421,25 +422,23 @@ wykorzystywana na systemach zabezpieczonych przed dostępem osób niepowołanych
 wdrażania tak, aby odzwierciedlała faktyczny stan aplikacji.}
 
 {Użytkownik będzie wprowadzał dane do aplikacji ręcznie lub za pomocą interfejsu
-importującego dane w formacie CSV (Comma Separated Values). Dane wprowadzone 
+importującego dane w formacie CSV (Comma Separated Values) \cite{CSV}. Dane wprowadzone 
 przez użytkownika trafią do w bazie danych do zbioru tymczasowego z któreg po 
 walidacji potwierdzone prawidłowe dane trafią do zbioru docelowego. Dane które 
 nie przejdą walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytkownik 
 będzie mógł je poprawić, uzupełnić lub usunąć.}
 
-%[TODO] Uzupełnić
 \section{\customstylesection{Baza danych}}
 
 {Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
-spójną konwencję nazewniczą pól, tabel i widoków.}
+spójną konwencję nazewniczą pól, tabel i widoków. Dzięki niej interfejs bazy 
+jest prostszy a pisanie zapytań bardziej intuicyjne co w ogólnym rozrachunku 
+powinno ograniczyć nakład pracy wymagany do wdrożenia dodatkowych funkcji.}
 
 \begin{table}[h]
     \footnotesize
     \begin{tabular}{|p{0.2\linewidth}|p{0.73\linewidth}|}  % | draws verical line
-    % \usepackage{booktabs} provides different line thicknesses
-    % \toprule, \midrule, \bottomrule
     \hline                  % Draw horizontal line
-        
     % & Defines the breaks in the table 
     \customstyletable{Pole} & \customstyletable{Opis} \\
     \hline
@@ -459,7 +458,6 @@ spójną konwencję nazewniczą pól, tabel i widoków.}
 
 %-----------------------------TABLES--------------------------------------------
 %ADD: Account_data
-
 
 %[TODO]: Fix - some table span the end of page 
 \begin{lstlisting}[ caption={Tabela ProductTypes},
@@ -500,6 +498,47 @@ FOREIGN KEY([TypeID]) REFERENCES ProductTypes(ID)
 \end{lstlisting}
 {Tabela Products zawiera produkty zdefiniowane przez użytkownika, pole TypeID 
 zawiera klucz obcy ID z tabeli ProductTypes.}
+
+\begin{lstlisting}[ caption={Tabela Bills},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Bills] (
+    [ID]        INTEGER PRIMARY KEY AUTOINCREMENT,
+    [Amount]    DOUBLE,
+    [Medium]    TEXT,
+    [DateTime]  DATETIME,
+    [Comment]   TEXT DEFAULT NULL
+)
+\end{lstlisting}
+{Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
+
+\begin{lstlisting}[ caption={Tabela Income},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE TABLE [Income] (
+	[ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
+	[Amount]	DOUBLE,
+	[Source]	TEXT,
+	[Type]		TEXT,
+	[DateTime]	DATETIME,
+	[Comment]	TEXT DEFAULT NULL
+)
+\end{lstlisting}
+{Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
 
 \begin{lstlisting}[ caption={Tabela Expenditures},
     language=SQL,
@@ -549,7 +588,11 @@ CREATE TABLE [Expenditures_transitory] (
  usuwane z Expenditures\_transitory. Na dłużej pozostają w niej tylko dane które 
  użytkownik musi poprawić.}
 
-\begin{lstlisting}[ caption={Tabela Bills},
+
+%------------------------------VIEWS--------------------------------------------
+%[TODO]: Add Ledger_comparison, MonthlyCharge
+
+\begin{lstlisting}[ caption={Widok Expenditures\_Enriched},
     language=SQL,
     deletekeywords={IDENTITY},
     deletekeywords={[2]INT},
@@ -559,17 +602,240 @@ CREATE TABLE [Expenditures_transitory] (
     framexleftmargin=40pt,
     frame=tb,
     framerule=0pt ]
-CREATE TABLE [Bills] (
-    [ID]        INTEGER PRIMARY KEY AUTOINCREMENT,
-    [Amount]    DOUBLE,
-    [Medium]    TEXT,
-    [DateTime]  DATETIME,
-    [Comment]   TEXT DEFAULT NULL
+CREATE VIEW [Expenditures_Enriched] AS
+SELECT  [EXP].[ID]          as ID,
+        [EXP].[DateTime]    as DateTime,
+        [EXP].[Amount]      as Amount,
+        [PRD].[Product]     as Product,
+        [PTY].[Type]        as Type,
+        [EXP].[Comment]     as Comment
+FROM  [Expenditures]            [EXP]
+LEFT JOIN [Products]            [PRD]	
+    ON [EXP].[ProductID]=[PRD].[ID]
+LEFT JOIN [ProductTypes]        [PTY]
+    ON [PRD].[TypeID]=[PTY].[ID]
+ORDER BY DateTime
+\end{lstlisting}
+{Widok Expenditures\_Enriched prezentuje użytkownikowi czytelne dane z tabeli 
+Expenditures wzbogacone o zdefiniowane produkty z tabeli Products i typy z 
+tabeli ProductTypes.}
+
+\begin{lstlisting}[ caption={Widok ProductTypeSummary},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [ProductTypeSummary] AS
+SELECT 
+	*
+	,(CASE WHEN ([Bought Times]>(
+                SELECT 
+                    AVG([Bought Times]) AS [Average] 
+                FROM (SELECT
+                    [Type]
+                    ,Round(SUM([Amount]), 2)AS [Amount]
+                    ,COUNT([DateTime])  AS [Bought Times]
+                    ,MAX(DateTime)      AS [LastBought]
+                    ,MIN(DateTime)  AS [FirstBought]
+                    FROM [Expenditures_Enriched]
+                    GROUP BY [Type]
+                    ORDER BY [Bought Times] DESC)))
+	then 'Common' else 'Uncommon' end) as [Common]
+FROM (SELECT
+        [Type]
+        ,Round(SUM([Amount]), 2) AS [Amount]
+        ,COUNT([DateTime])       AS [Bought Times]
+        ,MAX(DateTime)           AS [LastBought]
+        ,MIN(DateTime)           AS [FirstBought]
+    FROM [Expenditures_Enriched]
+    GROUP BY [Type]
+    ORDER BY [Bought Times] DESC)
+\end{lstlisting}
+{Widok ProductTypeSummary podsumowujący dla użytkownika dane o typach produktów.}
+
+\begin{lstlisting}[ caption={Widok MonthlyExpenditures},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [MonthlyExpenditures] AS
+SELECT 
+    SUBSTR([DateTime], 1, 7)    as [Month]
+    ,SUM([Amount])              as [Amount]
+FROM [Expenditures_Enriched]
+GROUP BY [Month]
+ORDER BY [Month]
+\end{lstlisting}
+{Widok MonthlyExpenditures podsumowujący dla użytkownika dane o miesięcznych 
+wydatkach.}
+
+\begin{lstlisting}[ caption={Widok MonthlyBills},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [MonthlyBills] AS
+SELECT 
+    SUBSTR([DateTime], 1, 7)    as [Month]
+    ,SUM([Amount])              as [Amount]
+FROM [Bills]
+GROUP BY [Month]
+ORDER BY [Month]
+\end{lstlisting}
+{Widok MonthlyBills podsumowujący dla użytkownika dane o rachunkach bieżących 
+w rozrachunku miesięcznym zawartych w tabeli Bills.}
+
+\begin{lstlisting}[ caption={Widok MonthlyIncome},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [MonthlyIncome] AS
+SELECT
+	SUBSTR([DateTime], 1, 7)				as Month
+	,SUM([Amount])							as Amount
+FROM 	[Income]
+GROUP BY [Month]
+ORDER BY [Month]
+\end{lstlisting}
+{Widok MonthlyIncome podsumowujący dla użytkownika dane o przychodach w ujęciu 
+miesięcznym.}
+
+\begin{lstlisting}[ caption={Widok MonthlyBilance},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [MonthlyBilance] AS 
+SELECT 
+    Strftime('%Y-%m', [DateTime])   as [Month],
+    Strftime('%Y',    [DateTime])   as [Year],
+    ROUND(SUM([Amount]), 2)         as [Income]
+    --Previous_month_income - (bills + expenditures)
+FROM (SELECT 
+        DATE(Strftime('%Y-%m-01', [DateTime]),[-1 month]) as [DateTime],
+        [Amount]  
+      FROM [Income]
+      UNION SELECT
+                [DateTime], 
+                -([Amount]) 
+            FROM [Expenditures_Enriched]
+      UNION SELECT
+                [DateTime],
+                -([Amount])
+            FROM [Bills])
+ GROUP BY [Month]
+ ORDER BY [Month] DESC
+\end{lstlisting}
+{Widok MonthlyBilance podsumowujący dla użytkownika bilans miesięczny wydatków i
+ wpływów w formie pojedynczej liczby.}
+
+\begin{lstlisting}[ caption={Widok Monthly\_common\_products},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [Monthly_common_products] AS
+SELECT * 
+FROM (
+    SELECT  Strftime('%Y-%m', [DateTime])   AS [Month],
+            [Product],
+            COUNT([Product])                AS [Items], 
+            SUM([Amount])                   AS [Sum]
+    FROM [Expenditures_Enriched]
+    GROUP BY [Product], [Month]
+    ORDER BY [Month] DESC, [Sum] DESC
+) WHERE [Items]>=4
+\end{lstlisting}
+{Widok Monthly\_common\_products podsumowujący dla użytkownika dane o najczęściej 
+kupowanych produktach danego miesiąca. Uwzględnia wyłącznie produkty które 
+zakupiono 4 razy - liczba ta została wybrana arbitralnie metodą kolejnych 
+przybliżeń aby otrzymać zadowalający wynik.}
+
+\begin{lstlisting}[ caption={Widok Monthly\_Expenditures\_by\_Type},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [Monthly_Expenditures_by_Type] AS 
+SELECT	Strftime('%Y-%m', [DateTime]) as [Month],
+        Strftime('%Y',    [DateTime]) as [Year],
+        ROUND(SUM([Amount]), 2)       as [Sum],
+        [Type]
+FROM (SELECT 
+        [DateTime], 
+        [Type], 
+        [Amount] 
+      FROM [Expenditures_Enriched])
+GROUP BY [Type], [Month]
+ORDER BY [Month] DESC, [Sum] DESC
+\end{lstlisting}
+{Widok Monthly\_Expenditures\_by\_Type podsumowujący dla użytkownika dane o 
+typach produktów w ujęciu miesięcznym.}
+
+\begin{lstlisting}[ caption={Widok Temp\_check},
+    language=SQL,
+    deletekeywords={IDENTITY},
+    deletekeywords={[2]INT},
+    morekeywords={clustered},
+    framesep=8pt,
+    xleftmargin=40pt,
+    framexleftmargin=40pt,
+    frame=tb,
+    framerule=0pt ]
+CREATE VIEW [Temp_check] 
+    (Temp_ID, Temp_Product, Product_ID)
+AS
+SELECT *
+FROM (SELECT 
+        Expenditures_transitory.ID      as [Temp_ID],
+        Expenditures_transitory.Product as [Temp_Product],
+        Products.ID                     as [Product_ID]
+      FROM [Expenditures_transitory]
+      LEFT OUTER JOIN [Products]
+      ON [Expenditures_transitory].[Product]==[Products].[Product]
 )
+WHERE [Product_ID] IS NULL
 \end{lstlisting}
-{Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
+{Widok Temp\_check służy użytkownikowi do weryfikacji poprawności wprowadzonych 
+danych.}
 
-\begin{lstlisting}[ caption={Tabela Income},
+\begin{lstlisting}[ caption={Widok Products\_to\_fix},
     language=SQL,
     deletekeywords={IDENTITY},
     deletekeywords={[2]INT},
@@ -579,48 +845,19 @@ CREATE TABLE [Bills] (
     framexleftmargin=40pt,
     frame=tb,
     framerule=0pt ]
-CREATE TABLE [Income] (
-	[ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
-	[Amount]	DOUBLE,
-	[Source]	TEXT,
-	[Type]		TEXT,
-	[DateTime]	DATETIME,
-	[Comment]	TEXT DEFAULT NULL
-)
+CREATE VIEW [Products_to_fix] AS
+SELECT *
+FROM [Expenditures_Enriched]
+WHERE [Product] IN (NULL,
+                    'UNKNOWN')
+    OR [Comment] LIKE '%[TODO]%'
 \end{lstlisting}
-{Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
+{Widok Products\_to\_fix zawiera dane wprowadzone przez użytkownika któe 
+zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
+ wartościach w polu PRODUCT lub oznaczeniu [TODO] w komentarzu.}
 
 
-
-%[TODO]: Fill in for
-%MonthlyCharge
-%Monthly_common_products
-%Monthly_Expenditures_by_Type
-%Temp_check
-%Expenditures_Enriched
-%Products_to_fix
-%Ledger_comparison
-%MonthlyBilance
-%MonthlyIncome
-%MonthlyBills
-%MonthlyExpenditures
-%ProductTypeSummary
-
-
-\begin{lstlisting}[ caption={Widok A},
-    language=SQL,
-    deletekeywords={IDENTITY},
-    deletekeywords={[2]INT},
-    morekeywords={clustered},
-    framesep=8pt,
-    xleftmargin=40pt,
-    framexleftmargin=40pt,
-    frame=tb,
-    framerule=0pt ]
-FILL ME PLEASE
-\end{lstlisting}
-{Widok podsumowujący dla użytkownika dane o ...}
-
+%------------------------- Application layer ----------------------------------- 
 
 %[TODO]:Fill in
 \section{\customstylesection{Kod aplikacji}}
@@ -715,11 +952,12 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
     https://en.wikipedia.org/wiki/Minimum_viable_product}
 \bibitem{ISO 8601} NASA.gov, A summary of the international standard date and time notation \raggedright\url{
     https://fits.gsfc.nasa.gov/iso-time.html}
-    
+\bibitem{CSV} Y. Shafranovich, SolidMatrix Technologies, Inc., Common Format and MIME Type for Comma-Separated Values (CSV) Files \raggedright\url{
+    https://www.rfc-editor.org/rfc/rfc4180}
 \end{thebibliography}
 
+% [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
 \listoffigures
-
 \listoftables
 \lstlistoflistings
 
@@ -754,7 +992,6 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
 % [REQUIREMENT] 20.5. Podręcznik administratora/użytkownika systemu/gościa
 % [REQUIREMENT] 20.6. Spostrzeżenia i zalecenia do użytkowania projektu
 % [REQUIREMENT] 20.7. Wykryte błędy w działaniu
-% [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
 
 
 % DONE
@@ -770,7 +1007,8 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
 % projektowania i faz projektowania)
 % [REQUIREMENT] 8. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY PRZED REALIZACJĄ PROJEKTU
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
-
+% [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
+% [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
 
 % --------------------------------- Purgatory ----------------------------------
 % Orphaned snippets of texts placed here untill you decide what to do with them
