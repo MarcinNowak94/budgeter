@@ -563,6 +563,7 @@ powinno ograniczyć nakład pracy wymagany do wdrożenia dodatkowych funkcji.}
 %ADD: Account_data
 
 %[TODO]: Fix - some table span the end of page 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela ProductTypes},
                     language=SQL,
                     deletekeywords={IDENTITY},
@@ -580,7 +581,9 @@ CREATE TABLE [ProductTypes] (
 )
 \end{lstlisting}
 {Tabela ProductTypes zawiera typy produktów zdefiniowane przez użytkownika.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela Products},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -601,7 +604,9 @@ FOREIGN KEY([TypeID]) REFERENCES ProductTypes(ID)
 \end{lstlisting}
 {Tabela Products zawiera produkty zdefiniowane przez użytkownika, pole TypeID 
 zawiera klucz obcy ID z tabeli ProductTypes.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela Bills},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -621,7 +626,9 @@ CREATE TABLE [Bills] (
 )
 \end{lstlisting}
 {Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela Income},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -642,7 +649,9 @@ CREATE TABLE [Income] (
 )
 \end{lstlisting}
 {Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela Expenditures},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -664,7 +673,9 @@ CREATE TABLE [Expenditures] (
 )
 \end{lstlisting}
 {Tabela Expenditures zawiera wydatki wprowadzone przez użytkownika.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Tabela Expenditures\_transitory},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -690,11 +701,13 @@ CREATE TABLE [Expenditures_transitory] (
  poprawności, po czym poprawne dane są przenoszone do tabeli Expenditures i 
  usuwane z Expenditures\_transitory. Na dłużej pozostają w niej tylko dane które 
  użytkownik musi poprawić.}
+\end{minipage}
 
 
 %------------------------------VIEWS--------------------------------------------
 %[TODO]: Add Ledger_comparison, MonthlyCharge
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok Expenditures\_Enriched},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -722,7 +735,9 @@ ORDER BY DateTime
 {Widok Expenditures\_Enriched prezentuje użytkownikowi czytelne dane z tabeli 
 Expenditures wzbogacone o zdefiniowane produkty z tabeli Products i typy z 
 tabeli ProductTypes.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok ProductTypeSummary},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -760,7 +775,9 @@ FROM (SELECT
     ORDER BY [Bought Times] DESC)
 \end{lstlisting}
 {Widok ProductTypeSummary podsumowujący dla użytkownika dane o typach produktów.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyExpenditures},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -781,7 +798,9 @@ ORDER BY [Month]
 \end{lstlisting}
 {Widok MonthlyExpenditures podsumowujący dla użytkownika dane o miesięcznych 
 wydatkach.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyBills},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -802,7 +821,9 @@ ORDER BY [Month]
 \end{lstlisting}
 {Widok MonthlyBills podsumowujący dla użytkownika dane o rachunkach bieżących 
 w rozrachunku miesięcznym zawartych w tabeli Bills.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyIncome},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -823,7 +844,9 @@ ORDER BY [Month]
 \end{lstlisting}
 {Widok MonthlyIncome podsumowujący dla użytkownika dane o przychodach w ujęciu 
 miesięcznym.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyBilance},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -857,7 +880,9 @@ FROM (SELECT
 \end{lstlisting}
 {Widok MonthlyBilance podsumowujący dla użytkownika bilans miesięczny wydatków i
  wpływów w formie pojedynczej liczby.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok Monthly\_common\_products},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -884,7 +909,9 @@ FROM (
 kupowanych produktach danego miesiąca. Uwzględnia wyłącznie produkty które 
 zakupiono 4 razy - liczba ta została wybrana arbitralnie metodą kolejnych 
 przybliżeń aby otrzymać zadowalający wynik.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok Monthly\_Expenditures\_by\_Type},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -910,7 +937,9 @@ ORDER BY [Month] DESC, [Sum] DESC
 \end{lstlisting}
 {Widok Monthly\_Expenditures\_by\_Type podsumowujący dla użytkownika dane o 
 typach produktów w ujęciu miesięcznym.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok Temp\_check},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -937,7 +966,9 @@ WHERE [Product_ID] IS NULL
 \end{lstlisting}
 {Widok Temp\_check służy użytkownikowi do weryfikacji poprawności wprowadzonych 
 danych.}
+\end{minipage}
 
+\begin{minipage}{1\textwidth}
 \begin{lstlisting}[ caption={Widok Products\_to\_fix},
     language=SQL,
     deletekeywords={IDENTITY},
@@ -958,6 +989,7 @@ WHERE [Product] IN (NULL,
 {Widok Products\_to\_fix zawiera dane wprowadzone przez użytkownika któe 
 zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
  wartościach w polu PRODUCT lub oznaczeniu [TODO] w komentarzu.}
+\end{minipage}
 
 %------------------------- Application layer ----------------------------------- 
 
