@@ -355,11 +355,11 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 
 {IMPL - Oznaczenie czy wdrożono funkcjonalność}
 
-%[TODO]: FIX formatting
+%[TODO]: try tabularray as suggested
 % Wrapping as per: https://stackoverflow.com/questions/790932/how-to-wrap-text-in-latex-tables
 \begin{table}[h]
     \footnotesize
-    \begin{tabular}{|p{0.2\linewidth}|p{1cm}|l|p{0.6\linewidth}|}  % | draws verical line
+    \begin{tabular}{|p{0.2\linewidth}|p{0.07\linewidth}|p{0.07\linewidth}|p{0.52\linewidth}|}  % | draws verical line
     % \usepackage{booktabs} provides different line thicknesses
     % \toprule, \midrule, \bottomrule
     \hline                  % Draw horizontal line
@@ -500,6 +500,18 @@ definiować dodatkowe konfiguracji w trakcie powstawania projektu - aplikacja
 zaczyta konfigurację z pliku i na jej podstawie utworzy słownik, dzięki czemu 
 dodanie nowego parametru sprowadzi się do dopisania linijki tektu do pliku.}
 
+{W języku Python \cite{Python} dane wczytywane z plików wsadowych są traktowane 
+jako typ string lub pojedyncze bajty \cite{Python_read-file}. Zatem dane 
+wprowadzane przez użytkownika przyjmą formę ciągów znakó klasy string, po czym 
+w programie zostaną przekazanedo konstruktorów klas  gdzie zostaną rzutowane na 
+odpowiednie do zadań typy i zapisane w polach.}
+
+{W samym kodzie aplikacji podstawymi strukturami wizualizacji będą kolekcje 
+złożone z dat i wartości typu double. Wizualizacje będą przechowywane w 
+słownikach, które na podstawie klucza w formacie string służącego także jako 
+nazwa wizualizacji zwrócą wartość w formacie string którą będzie zapytanie do 
+konkretnej tabeli w bazie danych.}
+
 {Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{GUI}}
 
 
@@ -528,11 +540,12 @@ w metodologii kanban}
 indywidualnych.}
 
 {Kategoryzacja MoSCoW dla poszczególnych funkcjonalności wykonywana będzie na 
-zadaniach zarejstrowanych w tablicy kanban, do metodologii kanban wykorzystany 
-zostanie serwis Trello. Model encji w aplikacji zostanie wykonany w aplikacji 
-StarUML. Do stworzenia bazy SQLite posłuży aplikacja DB Browser for SQLite. 
-Aplikacja Visual Studio Code posłuży do pisania kodu w Python oraz dokumentacji 
-w LaTeX.}
+zadaniach zarejstrowanych w tablicy kanban, z wykorzystaniem serwisu Trello 
+\cite{Trello}. Model encji w aplikacji zostanie przygotowany w aplikacji StarUML
+ \cite{StarUML}. Do stworzenia bazy SQLite \cite{SQLite} posłuży aplikacja 
+DB Browser for SQLite \cite{DBBrowser}. Aplikacja Visual Studio Code 
+\cite{VSCode} posłuży do pisania kodu w Python \cite{Python} oraz dokumentacji 
+w LaTeX \cite{LaTeX}.}
 
 \section{\customstylesection{Techniki}}
 {lorem ipsum}
@@ -546,8 +559,8 @@ w LaTeX.}
 Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
 projektu składają się tabele oraz widoki. Warstwa graficznego interfejsu 
 użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję
- użytkownika z bazą - prezentację danych przechowywanych w bazie orar 
- wizualizacje danych.}
+ użytkownika z bazą - prezentację danych przechowywanych w bazie oraz 
+wizualizacje danych.}
 
 \section{\customstylesection{Baza danych}}  \label{Baza-danych}
 
@@ -1073,6 +1086,18 @@ zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
     https://www.pysimplegui.org/en/latest/}
 \bibitem{JSON} json.org, Introducing JSON \raggedright\url{
     https://www.json.org/json-en.html}
+\bibitem{Python_read-file} pythonspot.com, Python tutorials, How to Read a File in Python \raggedright\url{
+    https://pythonspot.com/read-file/}
+\bibitem{Trello} Atlassian, Trello.com \raggedright\url{
+    https://trello.com/}
+\bibitem{StarUML} MKLabs Co.,Ltd, StarUML \raggedright\url{
+    https://staruml.io/}
+\bibitem{LaTeX} The LaTeX Project \raggedright\url{
+    https://www.latex-project.org/}
+\bibitem{VSCode} Microsoft, Visual Studio Code \raggedright\url{
+    https://code.visualstudio.com/}   
+\bibitem{DBBrowser} Public domain, DB Browser for SQLite \raggedright\url{
+    https://sqlitebrowser.org/}   
 \end{thebibliography}
 
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
