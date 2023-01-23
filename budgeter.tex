@@ -616,7 +616,7 @@ CREATE TABLE [ProductTypes] (
     [ID] 		INTEGER PRIMARY KEY AUTOINCREMENT,
     [Type] 		TEXT 	NOT NULL,
     [Comment] 	TEXT 	DEFAULT NULL
-)
+);
 \end{lstlisting}
 {Tabela ProductTypes zawiera typy produktów zdefiniowane przez użytkownika.}
 \end{minipage}
@@ -649,7 +649,7 @@ CREATE TABLE [Products] (
     [TypeID]	INTEGER UNSIGNED, 
     [Comment] 	TEXT    DEFAULT NULL,
 FOREIGN KEY([TypeID]) REFERENCES ProductTypes(ID)
-)
+);
 \end{lstlisting}
 {Tabela Products zawiera produkty zdefiniowane przez użytkownika, pole TypeID 
 zawiera klucz obcy ID z tabeli ProductTypes.}
@@ -672,7 +672,7 @@ CREATE TABLE [Bills] (
     [Medium]    TEXT,
     [DateTime]  DATETIME,
     [Comment]   TEXT DEFAULT NULL
-)
+);
 \end{lstlisting}
 {Tabela Bills zawiera wydatki stałe wprowadzone przez użytkownika.}
 \end{minipage}
@@ -695,7 +695,7 @@ CREATE TABLE [Income] (
 	[Type]		TEXT,
 	[DateTime]	DATETIME,
 	[Comment]	TEXT DEFAULT NULL
-)
+);
 \end{lstlisting}
 {Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
 \end{minipage}
@@ -719,7 +719,7 @@ CREATE TABLE [Expenditures] (
 	[Comment]	TEXT DEFAULT NULL,
 	PRIMARY KEY([ID] AUTOINCREMENT),
 	FOREIGN KEY([ProductID]) REFERENCES [Products]([ID])
-)
+);
 \end{lstlisting}
 {Tabela Expenditures zawiera wydatki wprowadzone przez użytkownika.}
 \end{minipage}
@@ -743,7 +743,7 @@ CREATE TABLE [Expenditures_transitory] (
 	[Comment]	TEXT DEFAULT NULL,
 	PRIMARY KEY([ID] AUTOINCREMENT),
 	FOREIGN KEY([ProductID]) REFERENCES [Products]([ID])
-)
+);
 \end{lstlisting}
 {Tabela Expenditures\_transitory tymczasowo przechowuje wydatki wprowadzone przez
  użytkownika. Dane któe które się w niej znajdują są sprawdzane pod względem 
@@ -779,7 +779,7 @@ LEFT JOIN [Products]            [PRD]
     ON [EXP].[ProductID]=[PRD].[ID]
 LEFT JOIN [ProductTypes]        [PTY]
     ON [PRD].[TypeID]=[PTY].[ID]
-ORDER BY DateTime
+ORDER BY DateTime;
 \end{lstlisting}
 {Widok Expenditures\_Enriched prezentuje użytkownikowi czytelne dane z tabeli 
 Expenditures wzbogacone o zdefiniowane produkty z tabeli Products i typy z 
@@ -821,10 +821,50 @@ FROM (SELECT
         ,MIN(DateTime)           AS [FirstBought]
     FROM [Expenditures_Enriched]
     GROUP BY [Type]
-    ORDER BY [Bought Times] DESC)
+    ORDER BY [Bought Times] DESC);
 \end{lstlisting}
 {Widok ProductTypeSummary podsumowujący dla użytkownika dane o typach produktów.}
 \end{minipage}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Widok ProductSummary},
+        language=SQL,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+CREATE VIEW [ProductSummary] AS
+SELECT
+    *
+    ,(CASE WHEN ([Bought Times]>(
+        SELECT AVG([Bought Times]) AS [Average] 
+        FROM (SELECT
+                [Product]
+                ,Round(SUM([Amount]), 2) AS [Amount]
+                ,COUNT([DateTime])       AS [Bought Times]
+                ,MAX(DateTime)           AS [LastBought]
+                ,MIN(DateTime)           AS [FirstBought]
+                FROM [Expenditures_Enriched]
+                GROUP BY [Product]
+                ORDER BY [Bought Times] DESC)))
+	then 'Common' else 'Uncommon' end) as [Common]
+FROM (SELECT
+        [Product]
+        ,Round(SUM([Amount]), 2)AS [Amount]
+        ,COUNT([DateTime])      AS [Bought Times]
+        ,MAX(DateTime)          AS [LastBought]
+        ,MIN(DateTime)          AS [FirstBought]
+     FROM [Expenditures_Enriched]
+     GROUP BY [Product]
+     ORDER BY [Bought Times] DESC);
+\end{lstlisting}
+{Widok ProductSummary podsumowujący dla użytkownika statystyki produktów.}
+\end{minipage}
+
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyExpenditures},
@@ -843,7 +883,7 @@ SELECT
     ,SUM([Amount])              as [Amount]
 FROM [Expenditures_Enriched]
 GROUP BY [Month]
-ORDER BY [Month]
+ORDER BY [Month];
 \end{lstlisting}
 {Widok MonthlyExpenditures podsumowujący dla użytkownika dane o miesięcznych 
 wydatkach.}
@@ -866,7 +906,7 @@ SELECT
     ,SUM([Amount])              as [Amount]
 FROM [Bills]
 GROUP BY [Month]
-ORDER BY [Month]
+ORDER BY [Month];
 \end{lstlisting}
 {Widok MonthlyBills podsumowujący dla użytkownika dane o rachunkach bieżących 
 w rozrachunku miesięcznym zawartych w tabeli Bills.}
@@ -889,7 +929,7 @@ SELECT
 	,SUM([Amount])							as Amount
 FROM 	[Income]
 GROUP BY [Month]
-ORDER BY [Month]
+ORDER BY [Month];
 \end{lstlisting}
 {Widok MonthlyIncome podsumowujący dla użytkownika dane o przychodach w ujęciu 
 miesięcznym.}
@@ -925,7 +965,7 @@ FROM (SELECT
                 -([Amount])
             FROM [Bills])
  GROUP BY [Month]
- ORDER BY [Month] DESC
+ ORDER BY [Month] DESC;
 \end{lstlisting}
 {Widok MonthlyBilance podsumowujący dla użytkownika bilans miesięczny wydatków i
  wpływów w formie pojedynczej liczby.}
@@ -952,7 +992,7 @@ FROM (
     FROM [Expenditures_Enriched]
     GROUP BY [Product], [Month]
     ORDER BY [Month] DESC, [Sum] DESC
-) WHERE [Items]>=4
+) WHERE [Items]>=4;
 \end{lstlisting}
 {Widok Monthly\_common\_products podsumowujący dla użytkownika dane o najczęściej 
 kupowanych produktach danego miesiąca. Uwzględnia wyłącznie produkty które 
@@ -982,7 +1022,7 @@ FROM (SELECT
         [Amount] 
       FROM [Expenditures_Enriched])
 GROUP BY [Type], [Month]
-ORDER BY [Month] DESC, [Sum] DESC
+ORDER BY [Month] DESC, [Sum] DESC;
 \end{lstlisting}
 {Widok Monthly\_Expenditures\_by\_Type podsumowujący dla użytkownika dane o 
 typach produktów w ujęciu miesięcznym.}
@@ -1011,7 +1051,7 @@ FROM (SELECT
       LEFT OUTER JOIN [Products]
       ON [Expenditures_transitory].[Product]==[Products].[Product]
 )
-WHERE [Product_ID] IS NULL
+WHERE [Product_ID] IS NULL;
 \end{lstlisting}
 {Widok Temp\_check służy użytkownikowi do weryfikacji poprawności wprowadzonych 
 danych.}
@@ -1033,7 +1073,7 @@ SELECT *
 FROM [Expenditures_Enriched]
 WHERE [Product] IN (NULL,
                     'UNKNOWN')
-    OR [Comment] LIKE '%[TODO]%'
+    OR [Comment] LIKE '%[TODO]%';
 \end{lstlisting}
 {Widok Products\_to\_fix zawiera dane wprowadzone przez użytkownika któe 
 zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
