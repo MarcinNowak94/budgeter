@@ -13,10 +13,12 @@
 %
 %Needed functions:
 % - Save and read (persistent) configuration - https://www.pysimplegui.org/en/latest/cookbook/#recipe-the-demo-browser Recipe - Save and Load Program Settings ( https://www.pysimplegui.org/en/latest/#user-settings-api )
-%
-%
+% - Data quarantine for bad inputs - store data that did not go through 
+% validation and let user correct it [preferably also provide reason why it was quarantined] 
+% - Data export to csv
 %
 %Optional functions:
+% - Data statistics (records in each table, firstdate-lastdate, data quality)
 % - Change GUI theme: add selectable list with themes, store it in config #DONE
 % - synopsis for functions
 % - built in manual
@@ -34,8 +36,9 @@
 % - add predicted spending next month (requires: to ProductSummary and 
 %		ProductType Sumary add columns mean[median?] cost (Amount/Bought Times),
 %	  AverageDailyCost (Amount/(lastbought-firstbought))
+% - change used database technology to secure data, centralize and allow simultaneous users
 
-\documentclass[a4paper,10pt]{report}
+\documentclass[a4paper,10pt, twoside]{report}
 
 \usepackage{polski}         % Polish diacretic signs
 \usepackage[utf8]{inputenc} % required for international characters
@@ -53,6 +56,10 @@
 \usepackage{xcolor,listings}% Code listings
 \usepackage{textcomp}       % Code listings
 \usepackage{color}          % Code listings
+\usepackage{nameref}        % Reference chapter, section, etc. by name
+\usepackage{afterpage}
+
+
 \makeindex
 \graphicspath{ {./} }       %Was ./figures/ changed so i can peek in VS Code
 
@@ -213,6 +220,9 @@
 	\end{center}
 \end{titlepage}
 
+%TODO: fix, this moves formatting 
+\null\newpage %TODO: fix, this moves formatting \addtocounter{page}{-1}
+
 % [REQUIREMENT] 2. Spis treści
 \renewcommand*\contentsname{Spis treści}
 \tableofcontents                    % prints automatical table of contents
@@ -221,43 +231,46 @@
 
 % [REQUIREMENT] 3. Wprowadzenie do tematyki projektu
 \chapter{\customstylechapter{Wprowadzenie do tematyki projektu}}
-{Finanse są dziedziną nauki ekonomicznej któa zajmuje się rozporzadzaniem 
+{Finanse są dziedziną nauki ekonomicznej któa zajmuje się rozporządzaniem 
 pieniędzmi \cite{wiki_ekonomia}. Nauka ta w podobnym zakresie a różnej skali 
-wykorzystywana jest tak przez państwa, przedsiębiorstwa jak i zwykłych obywateli
- - w efekcie jest to dziedzina o stosunkowo prostych podstawach jednak niesamowicie
-skomplikowana w każdym zakresie w którym chętna osoba zadecyduje się ją zagłębić. 
-Wiedza z zakresu finansów staje się szczególnie przydatna podczas gdy na rynku 
-panuje trudna sytuacja ekonomiczna, w takich warunkach nierzadko decyduje ona o 
-jakości oraz stanie życia poszczególnych osób fizycznych, przedsiębiorstw czy 
-państw. W przypadku państw i firma przeważnie budżetem zarządzają dedykowane 
-osoby lub też całe zespoły, posiadające ekspercką wiedze w dziedzinie finansów. 
-Jednak osoby zarządzające budżetem domowym najczęściej dysponują wyłacznie 
-nabytym doświadczeniem, rzadko jeśi wogóle wspomagając się jakimikolwiek 
-narzędziami które ułatwiałyby to zadanie.}
+dotyczy państw, przedsiębiorstw jak i zwykłych obywateli - w efekcie jest to 
+dziedzina o stosunkowo prostych podstawach jednak niesamowicie skomplikowana w 
+każdym zakresie w którym można ją zagłębić. Wiedza z zakresu finansów staje się 
+szczególnie przydatna gdy na rynku panuje trudna sytuacja ekonomiczna, w takich 
+warunkach nierzadko decyduje ona o jakości oraz stanie życia poszczególnych 
+osób fizycznych, rentowności przedsiębiorstw czy stabilności państw. W przypadku
+ państw i firma przeważnie budżetem zarządzają dedykowane osoby lub też całe 
+zespoły, posiadające ekspercką wiedzę w tej dziedzinie. Jednak osoby 
+zarządzające budżetem domowym najczęściej dysponują wyłacznie nabytym 
+doświadczeniem, rzadko jeśi wogóle wspomagając się jakimikolwiek narzędziami 
+które ułatwiałyby to zadanie.}
 %
 % [REQUIREMENT] 4. Zamierzony cel projektu
 \chapter{\customstylechapter{Zamierzony cel projektu}}
-{Celem projektu jest ułatwienie zarządzania budżetem domowym poprzez 
-dostarczenie użytkownikowi narzędzia pozwalające na analizę wpływów i wydatków, 
-wizualizację trendów oraz automatyczną kategoryzację wpływów i wydatków. 
-Docelowymi odbiorcami aplikacji są użytkownicy domowi, a możliwe że w miarę 
+{Celem projektu jest utworzenie modułu analitycznego aplikacji któa ułatwi 
+zarządzanie budżetem domowym dostarczając użytkownikowi narzędzia do analizy 
+wpływów i wydatków, wizualizacji trendów oraz automatycznie kategoryzujące 
+wpływy i wydatki.} 
+
+{Docelowymi odbiorcami aplikacji są użytkownicy domowi, możliwe że w miarę 
 rozwoju w późniejszych fazach projektu także średnie lub małe przedsiębiorstwa. 
 Użytkownik po wprowadzeniu danych uzyska dostęp do możliwie czytelnego obrazu 
-sytuacji finansowej co pozwoli bardziej świadomie podejmować dalsze decyzje 
-finansowe, planować budżet, łatwo identyfikować obszary które wymagają 
-usprawnień czy ogólną obserwację trendów. W efekcie uwidocznione przez aplikację 
-informacje i wyciągnięte z nich wnioski ułatwią użytkownikowi poprawę sytuacji 
-finansowej swojego domostwa poprzez bardziej efektywne zarządzanie budżetem.}
+sytuacji finansowej co uwidoczni trendy wydatków i przychodów, pozwoli bardziej
+ świadomie podejmować dalsze decyzje finansowe, planować budżet a także łatwo
+ identyfikować obszary które wymagają usprawnień. W efekcie uwidocznione przez
+ aplikację informacje i wyciągnięte z nich wnioski ułatwią użytkownikowi poprawę
+ sytuacji finansowej swojego domostwa poprzez bardziej efektywne zarządzanie
+ budżetem.}
 %
 % [REQUIREMENT] 5. Wstępne założenia i uwarunkowania, w których 
 % projekt będzie powstawał  -----------------------
 \chapter{\customstylechapter{Wstępne założenia i uwarunkowania}}
 \section{\customstylesection{Założenia}}
 {Z uwagi na specyfikę tematyki potencjalnymi odbiorcami aplikacji będą osoby 
-które o niewielkim lub średnim stopniu zaznajomienia z obsługą komputera. 
-Podczas tworzenia graficznego interfejsu użytkownika cechą która będzie miała 
-największy wpływ na kierunek prac będzie łatwość obsługi. W efekcie aplikacja 
-powinna być możliwie prosta, mieć przejrzysty, minimalistyczny interfejs dzięki 
+w niewielkim lub średnim stopniu zaznajomione z obsługą komputera. Największy
+wpływ na projekt i rozwój graficznego interfejsu użytkownika oraz kierunek
+ rozwoju aplikacji będzie miała łatwość obsługi. W efekcie aplikacja powinna
+ być możliwie prosta, mieć przejrzysty, minimalistyczny interfejs dzięki 
 czemu użytkownik nie zostanie przytłoczony mnogością dostępnych funkcji.}
 
 {Początkowo użytkownik będzie wprowadzał dane do aplikacji samodzielnie poprzez 
@@ -265,56 +278,69 @@ dedykowany interfejs. Aplikacja zadba o jakość danych przyjmując jednak
 oznaczając i pomijając dane błędne, niepełne lub niepewne które zaprezentuje w 
 dedykowanej zakładce gdzie użytkownik będzie mieć możliwość ich poprawy. 
 Użytkownik będzie w stanie wybrać zestaw predefiniowanych typów i kategorii 
-obiektów lub utworzyć i edytować własne. Aplikacja będzie udostępniać 
-predefiniowane wizualizacje, wliczając możliwość wizualizacji określonego 
-przez użytkownika obiektu.}
+wydatkó lub utworzyć i edytować własne. Aplikacja udostępni predefiniowane 
+wizualizacje, wliczając możliwość wizualizacji określonego przez użytkownika 
+produktu lub całej kategorii produktów. We wstępnej wersji aplikacji interfejs
+będzie statyczny, podobnie jak konfiguracja, która przechowywana będzie w pliku.}
 
 \section{\customstylesection{Uwarunkowania}}
-{Celem projektu jest dostarczenie minimalnego opłacalnego produktu \cite{MVP}, 
-obecnie pozostałe funkcjonalności zostaną pominięte z różnych przyczyn jak 
-ograniczony czas wdrożenia, zakres umiejętności technicznych autora czy fakt że 
-jest to projekt w głównej mierze edukacyjny. Termin wdrożenia wyklucza bardziej 
-zaawansowane funcjonalności, jako że jest to projekt edukacyjny znajomość 
-technologii będzie budowana w trakcie jego rozwoju co wpłynie między innymi na 
-ograniczenia systemowe. Aplikacja będzie także z zasady obsługiwać wyłącznie 
-pojedynczego użytkownika, a zawarte w niej dane będa  przechowywane wyłącznie 
-lokalnie. Pominięte zostanie także automatyczne pobieranie danych z interfejsów 
-innych aplikacji lub w formie ekstrakcji danych ze skanowanych dokumentów czy 
-kodów EAN lub QR towarów. Aplikacja nie będzie także udostępniać żadnego rodzaju
- interfejsu programistycznego (API). W momencie zakończenia projektu wszystkie 
-dane użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może 
-jednak zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji 
-użytkownika. Interfejs aplikacji będzie statyczny bez możliwości zmiany przez 
-użytkownika.}
+{Jest to projekt edukacyjny którego celem jest dostarczenie minimalnego
+ opłacalnego produktu \cite{MVP}, swego rodzaju prototypu, na tym etapie funkcje
+ dodatkowe zostaną pominięte ze względu na ograniczony czas produkcji, zakres
+ umiejętności technicznych autora. Bliski termin oddania wyklucza bardziej
+ zaawansowane funkcje, a znajomość technologii będzie budowana w trakcie jego
+ rozwoju co wpłynie między innymi na ograniczenia systemowe. Aplikacja będzie
+ także z zasady obsługiwać wyłącznie pojedynczego użytkownika, a dane przez
+ niego wprowadzone będa przechowywane wyłącznie lokalnie. Pominięte zostanie
+ także automatyczne pobieranie danych z interfejsów innych aplikacji lub w
+ formie ekstrakcji danych ze skanowanych dokumentów czy kodów EAN lub QR
+ produktów. Aplikacja nie będzie także udostępniać żadnego rodzaju interfejsu 
+programistycznego (API). Założono że na tym etapie interfejs aplikacji będzie statyczny bez
+ możliwości zmiany przez użytkownika.}
+
+%Removed due to overspill:
+% W momencie zakończenia projektu wszystkie dane
+% użytkownika przechowywane będą w pojedynczym miejscu, w przyszłości może 
+% jednak zajść potrzeba rozdzielenia danych w aplikacji od konfiguracji 
+% użytkownika.
 
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
-%[TODO]FIX overspill
+%[TODO] Shorten title to FIX overspill in table of contents 
 \chapter{\customstylechapter{Założone ograniczenia i możliwości ewaluacji projektu}}
-{W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
-dane statystyczne obrazujące ilość, zakres i jakość danych a także sugerujące 
-kolejny krok ich usprawnienia. W miarę możliwości standard danych w aplikacji 
-dopasowany zostanie do wiodącego globalnego standardu danych w obrębie tej samej 
-tematyki. Typy obiektów będzie można grupować na kilku poziomach aby ułatwić 
-użytkownikowi zarządzanie danymi i uprościć wizualizacje. Dla zaawansowanych 
-użytkowników może okazać się przydatna możliwość definiowania i zapisywania 
-własnych wizualizacji i raportów statystycznych - wymagać to będzie jednak 
-implementacji dedykowanego modułu. Kolejnym obecnie pominiętym aspektem jest 
-zabudowanie reguł przeprowadzających dogłębną analizę statystyczną danych które 
-otwierają dalsze możliwości rozwoju oprogramowania. Aplikacja dostarczana 
-będzie użytkownikom w skompilowanej wersji spakowanej, jeśli zajdzie taka 
-potrzeba i nastąpi możliwość stworzony zostanie także instalator.}
+{W miarę możliwości standard danych w aplikacji dopasowany zostanie do wiodącego
+ globalnego standardu danych w obrębie tej samej tematyki. Typy obiektów będzie
+ można grupować na kilku poziomach aby ułatwić użytkownikowi zarządzanie danymi
+ i uprościć wizualizacje. Dla zaawansowanych użytkowników może okazać się 
+przydatna możliwość definiowania i zapisywania własnych wizualizacji i raportów 
+statystycznych - wymagać to będzie jednak implementacji dedykowanego modułu. 
+Kolejnym obecnie pominiętym aspektem jest zabudowanie reguł przeprowadzających 
+dogłębną analizę statystyczną danych które otwierają dalsze możliwości rozwoju 
+oprogramowania. Aplikacja dostarczana będzie użytkownikom w formie spakowanej w
+archiwum skompilowanej pełnej wersji, jeśli zajdzie taka potrzeba i pojawi się 
+możliwość stworzony zostanie także instalator. Możliwe że w aplikacji utworzony 
+zostanie panel administracyjny prezentujący użytkownikowi dane statystyczne 
+obrazujące ilość, zakres i jakość danych a także sugerujące kolejny krok ich 
+usprawnienia.}
 
 {Funkcjonalności importu i eksportu danych ze standardowych formatów będzie 
 przydatna dla użytkownika podczas korzystania z projektu, wymaga określenia 
 odpowiedniego formatu i standardu plików co może zająć sporo czasu dlatego 
-zostały uznane za dodatkowe i nie zostaną wdrożone w początkowej fazie projektu.}
+zostały uznane za dodatkowe przez co możliwe że nie zostaną wdrożone w 
+początkowej fazie projektu.}
+
+{Obrane podejście pozwoli na rozwój aplikacji w różnych kiernkach, zależnie od 
+opinii użytkowników. Aplikacja może zmienić model z aplikacji lokalnej która 
+wspiera pojedynczego użytkownika na centralny obsługujących wielu użytkowników 
+zdalnie. Ujednolicony interfejs umożliwia także powstanie potencjalnej wersji 
+mobilnej co otworzy nowe możliwości wprowadzania danych oraz interakcji 
+użytkownika z aplikacją.}
 % [REQUIREMENT] 7. Chronologiczny plan pracy (ujecie przyjetego modelu 
 % projektowania i faz projektowania)
 \chapter{\customstylechapter{Plan pracy}}
-{Prace nad projektem prowadzone będą w formie listy zadań do zrealizowania 
-którym przypisane zostaną priorytety metodą MoSCoW \cite{MOSCOW} lub Matrycy 
-Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco:
+{W toku prac stworzona zostanie lista zadań do zrealizowania, do określenia ich 
+priorytetu posłuży metoda MoSCoW \cite{MOSCOW} lub Matryca Eisenhowera 
+\cite{MatrycaEisenhowera}. Przewidywany plan pracy nad projektem prezentuje się następująco:
 \setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 \begin{enumerate}
     \item Spis założeń w dokumentacji wstępnej
@@ -347,21 +373,22 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
     \end{itemize}
     \item Wstępne wdrożenie
     \begin{itemize}
-        \item Utworzenie struktur bazy danych
+        \item Utworzenie bazy danych
+        \item Utworzenie podstawowych struktur bazy danych - tabele
         \item Wypełnienie danymi testowymi
-        \item Podstawowe triggery i widoki
+        \item Utworzenie złożonych struktur bazy danych - widoki
         \item Projekt interfejsu użytkownika
         \item Szkielet interfejsu użytkownika
         \item Połączenie interfejsu z bazą danych
-        \item Podstawowa wizualizacja
-        \item Iteracyjne uzupełnienie interfejsu i bazy o dodatkowe funkcje
-        \item Usprawnienia
+        \item Projekt podstawowych wizualizacji
+        \item Iteracyjna uzupełnienie interfejsu i bazy o dodatkowe funkcje
+        \item Usprawnienia i refaktoryzacja
     \end{itemize}
     \item Testy rozwiązania
     \begin{itemize}
         \item Utworzenie danych testowych
         \item Określenie spodziewanych wyników
-        \item Porównanie wyników oczekiwanych z otrzymanymi 
+        \item Porównanie wyników oczekiwanych z otrzymanymi
     \end{itemize}
     \item Iteracyjne usprawnienia projektu i uzupełnianie dokumentacji
     \item Retrospekcja
@@ -378,7 +405,8 @@ Eisenhowera. Przewidywany plan pracy nad projektem prezentuje się następująco
 % [REQUIREMENT] 9. Wymagania funkcjonalne (szczegółowey wykaz wszystkich funkcji 
 % oprogramowania) jakie funkcjonalności oprogramowania chcemy dostarczyć, można 
 % nie zdążyć z dostarczeniem części, lub dopisać dodatkowe dodane w trakcie
-\chapter{\customstylechapter{Wymagania funkcjonalne}}
+\chapter{\customstylechapter{Wymagania funkcjonalne}} 
+\label{Wymagania funkcjonalne}
 {Zestawienie funkcji które powinien spełniać program, wraz z informacją któe 
 z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, legenda:}
 
@@ -412,37 +440,37 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Bilans okresowy} & {M} & {TAK} & {Okresowy bilnas zysków i strat}\\
     \hline
-    {Definiowanie produktów} & {M} & {-} & {Definiowanie produktów}\\
+    {Definiowanie produktów} & {M} & {TAK} & {Definiowanie produktów}\\
     \hline
-    {Definiowanie przychodów} & {M} & {-} & {Definiowanie przychodów}\\
+    {Definiowanie przychodów} & {M} & {TAK} & {Definiowanie przychodów}\\
     \hline
-    {Definiowanie typów produktów} & {M} & {-} & {Definiowanie typów produktów}\\
+    {Definiowanie typów produktów} & {M} & {TAK} & {Definiowanie typów produktów}\\
     \hline
-    {Definiowanie typów przychodów} & {M} & {-} & {Definiowanie typów przychodów}\\
+    {Definiowanie typów przychodów} & {C} & {NIE} & {Definiowanie typów przychodów}\\
     \hline
-    {Panel konfiguracyjny} & {S} & {-} & {Osobny panel konfiguracyjny}\\
+    {Panel konfiguracyjny} & {S} & {TAK} & {Osobny panel konfiguracyjny}\\
     \hline
-    {Rejestr zdarzeń} & {S} & {-} & {Logi z działania aplikacji}\\
+    {Rejestr zdarzeń} & {S} & {NIE} & {Logi z działania aplikacji}\\
     \hline
-    {Dostęp zdalny} & {C} & {-} & {Dostęp do zdalnych baz danych}\\
+    {Dostęp zdalny} & {C} & {NIE} & {Dostęp do zdalnych baz danych}\\
     \hline
-    {Import danych} & {C} & {-} & {Import danych w standardowym formacie}\\
+    {Import danych} & {C} & {TAK} & {Import danych w standardowym formacie}\\
     \hline
     {Walidacja danych} & {C} & {-} & {Potwierdzenie jakości danych}\\
     \hline
     {Eksport danych} & {C} & {-} & {Eksport danych do standardowego formatu}\\
     \hline
-    {Instalator} & {C} & {-} & {Prosty instalator aplikacji}\\
+    {Instalator} & {C} & {NIE} & {Prosty instalator aplikacji}\\
     \hline
-    {Trendy} & {W} & {-} & {Predykcja trendów wydatkó i wpływów}\\
+    {Trendy} & {W} & {NIE} & {Predykcja trendów wydatkó i wpływów}\\
     \hline
-    {Porady} & {W} & {-} & {Porady dla użytkownika dotyczące usprawnień budżetu}\\
+    {Porady} & {W} & {NIE} & {Porady dla użytkownika dotyczące usprawnień budżetu}\\
     \hline
-    {Wiele użytkowników} & {W} & {-} & {Wsparcie dla wielu użytkowników jednocześnie}\\
+    {Wiele użytkowników} & {W} & {NIE} & {Wsparcie dla wielu użytkowników jednocześnie}\\
     \hline
-    {Personalizacja interfejsu} & {W} & {-} & {Personalizacja interfejsu użytkownika}\\
+    {Personalizacja interfejsu} & {W} & {TAK} & {Personalizacja interfejsu użytkownika}\\
     \hline
-    {Aktualizacje} & {W} & {-} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
+    {Aktualizacje} & {W} & {NIE} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
     \hline
     \end{tabular}
     \caption{Wymagania funkcjonalne}
@@ -453,50 +481,61 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 % [REQUIREMENT] 10.1. Sprzętowe (w różnych wariantach, w tym dostęp do 
 % koniecznych lub alternatywnych nośników danych i peryferiów)
 \section{\customstylesection{Sprzętowe wymagania niefunkcjonalne}}
-{Pamięć 50MB dowolnego typu, pamięć RAM 2GB, klawiatura, mysz komputerowa, 
-dowolny monitor, opcjonalne połączenie z siecią internet.},
+\begin{itemize}
+    \item Pamięć 50MB dowolnego typu
+    \item Pamięć RAM 4GB (wliczajac system)
+    \item Urządzenia peryferyjne: klawiatura, mysz komputerowa
+    \item Dowolne urządzenie wyświetlające
+\end{itemize}
 % [REQUIREMENT] 10.2. Systemowe (systemy operacyjne, zainstalowane środowiska, 
 % platformy, pakiety, biblioteki, sterowniki)
 \section{\customstylesection{Systemowe wymagania niefunkcjonalne}}
 % Wzory: https://www.microsoft.com/pl-pl/windows/Windows-10-specifications
 % https://examsoft.com/resources/examplify-minimum-system-requirements/
 % https://softwareengineering.stackexchange.com/questions/86863/how-are-minimum-system-requirements-determined
-{System Operacyjny Windows 10, Python3.0, SQLite.}
+{System Operacyjny Windows 10.}
 
 % [REQUIREMENT] 10.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
 % poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
 % konieczność zapewnienia realnego czasu dostępu itd.itp.)
 \section{\customstylesection{Organizacyjne wymagania niefunkcjonalne}}
-{Aplikacja wspierać bedzie diałanie z wyłącznie jednym użytkownikiem 
-jednocześnie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
-danych w aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
-przez użytkownika pamięci lokalnej, a także zdalnej jeśli wdrożona zostanie 
-funkcjonalność dostępu zdalnego. Aplikacja wstępnie nie będzie wymagała stałego 
-dostępu do sieci, jednak w przyszłości rozwój jej funkcjonalności może zmienić 
-to wymaganie, wymagać wtedy będzie krótkich okresów dostępu do sieci. Dostęp do 
-danych będzie wymagany w krótkich okresach zapisu danych z pamięci podręcznej 
-aplikacji do bazy oraz odpytania bazy o dane. Aplikacja powinna być 
-wykorzystywana na systemach zabezpieczonych przed dostępem osób niepowołanych.}
+{Projekt aplikacji obejmuje interakcje z pojedynczym użytkownikiem w danym 
+momencie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
+danych aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
+przez użytkownika pamięci lokalnej określonej w pliku konfiguracyjnym, a także 
+zdalnej jeśli wdrożona zostanie funkcjonalność dostępu zdalnego. Aplikacja 
+wstępnie nie będzie wymagała stałego dostępu do sieci, jednak w przyszłości 
+jej rozwój może zmienić to wymaganie - wymagać wtedy będzie krótkich okresów 
+dostępu do sieci. Dostęp do danych będzie wymagany w krótkich okresach zapisu 
+danych z pamięci podręcznej aplikacji do bazy oraz odpytania bazy o dane. 
+Aplikacja powinna być wykorzystywana na systemach zabezpieczonych przed dostępem
+ osób niepowołanych.}
 
 % [REQUIREMENT] 11. Wymagania dotyczące danych (wykaz tabel, relacji, 
 % typy i rozmiary pól z uzasadnieniem, inne rodzaje danych w tym logi, hasła)
 \chapter{\customstylechapter{Wymagania danych}}
-{Sekcja będzie uzupełniana wraz z rozwojem projektu, w trakcie modelowania i 
-wdrażania tak, aby odzwierciedlała faktyczny stan aplikacji.}
+{W tej sekcji spisano wymagania wstępne, jak w każdym projekcie wymagania 
+zmieniały się wraz z jego rozwojem w trakcie modelowania i 
+wdrażania. Aktualny reprezentatywny stan danych w aplikacji z wyróżnieniem 
+wszystkich warstw opisuje rozdział \nameref{Opisy metod}.}
 
 {Użytkownik będzie wprowadzał dane do aplikacji ręcznie lub za pomocą interfejsu
-importującego dane w formacie CSV (Comma Separated Values) \cite{CSV}. Dane wprowadzone 
-przez użytkownika trafią do w bazie danych do zbioru tymczasowego z któreg po 
-walidacji potwierdzone prawidłowe dane trafią do zbioru docelowego. Dane które 
-nie przejdą walidacji pomyślnie pozostaną w zbiorze tymczasowym gdzie użytkownik 
-będzie mógł je poprawić, uzupełnić lub usunąć.}
+importującego dane w formacie CSV (Comma Separated Values) \cite{CSV}. Dane 
+wprowadzone przez użytkownika po walidacji trafią odpowiedniej tabeli w bazie 
+danych, natomiast te któe walidacji nie przejdą do zbioru tymczasowego w którym 
+użytkownik będzie je mógł poprawić - po przejściu prawidłowo walidacji trafią 
+do zbioru docelowego. Wszystkie dane wprowadzone przez użytkownika będą 
+traktowane jako ciągi znaków a następnie rzutowane na typy odpowiadające 
+docelowym polom w bazie danych do których zostaną przekazane. Wymagania 
+danych w bazie oraz aplikacji podzielono na poszczególne sekcje poniżej.}
 
 \section{\customstylesection{Baza danych}}
 {Aplikacja wymaga sposobu na trwałe składowanie danych wprowadzonych przez 
-użytkownika. W tym celu dla każdego użytkownika utworzona zostanie dedykowana 
-lokalna bazy danych SQLite \cite{SQLite}. Technologia ta zostałą wybrana ze 
-względu na niewielkie wymagania przestrzeni pamięci trwałej jakie zajmuje oraz 
-w miarę kompletne wsparcie standardowego języka zapytań SQL.}
+użytkownika. W tym celu wraz z aplikacją każdy użytkownik otrzyma dedykowaną 
+lokalną instancję bazy danych SQLite \cite{SQLite} do włąsnego użytku. Za 
+wyborem tej technologii przemawiają niewielkie wymagania przestrzeni pamięci 
+trwałej jakie zajmuje oraz w miarę kompletne wsparcie standardowego języka 
+zapytań SQL \cite{SQL}.}
 
 {Baza powinna zawierać tabele do przechowywania danych o przychodach, rachunkach
  i wydatkach oraz wszelkie dane pomocnicze wspomagające normalizację danych. 
@@ -507,50 +546,50 @@ odpowiednio walidowane, jednak aby zadbać o ich kompletność użytkownik powin
 mieć możliwość świadomie wprowadzić dane które wymagają poprawy do późniejszej 
 obróbki.}
 
-{Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{Baza-danych}}
+{Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \nameref{Baza danych}}
 
 \section{\customstylesection{Kod aplikacji}}
-{Python jest językiem elastycznym, dzięki czemu dane można przyjmowac w dowolnej 
-formie bez definiowania typu, w efekcie klasy będą projektowane w trakcie 
-tworzenia programu.}
+{Python jest językiem elastycznym, dzięki czemu przyjmuje dane w dowolnej 
+formie bez definiowania typu, co pozwala odroczyć projekt klas do momentu 
+implementacji a nawet refactoringu programu. W języku Python \cite{Python} 
+domyślnie wszystkie zmienne są typu Any co pozwala definiować typy zależnie od 
+potrzeb w trakcie tworzenia programu. Wszystkie wczytywane z plików dane 
+domyślnie przyjmują typ string lub są traktowane jako pojedyncze bajty 
+\cite{Python_read-file}. W efekcie dane wprowadzane przez użytkownika przyjmą 
+formę ciągów znaków klasy string, po czym w programie zostaną przekazane do 
+konstruktorów klas gdzie zostaną rzutowane na odpowiednie do zadań typy i 
+zapisane w polach.}
 
-{Aplikacja powinna udostępniać użytkownikowi intuicyjny sposób wizualizacji 
-danych poprzez interfejs użytkownika. Z uwagi na edukacyjny cel projektu 
-aplikacja zostanie zaimplementowana w języku Python \cite{Python}. Do 
-implementacji interfejsu użytkownika posłuży biblioteka PySimpleGUI 
-\cite{PySimpleGUI} która pozwala tworzyć prosty i responsywny niezależny od 
-platformy interfejs o ograniczonych możliwościach. Jest to adapter 
-(tak zwany wrapper) który łączy kilka popularnych bibliotek udostępnia spójny 
-interfejs co pozwala budować interfejs za pomocą matryc złożonych z 
-udostępnianych jako obiekty widżetów.}
+{Aby ułatwić rozwój aplikacji program powinien zapisywać i przyjmować z pliku 
+dane konfiguracyjne w formie list ciągów znaków w formacie "opcja" : "wartość" 
+które utworzą obiekt słownika, lub w wariancie bardziej zaawansowanym aplikacja 
+może przyjmować konfigurację w postaci pliku JSON \cite{JSON}. Rozwiązanie to 
+jest na tyle elastycznie że pozwoli dynamicznie definiować dodatkowe 
+konfiguracji w trakcie powstawania projektu - aplikacja zaczyta konfigurację z 
+pliku i na jej podstawie utworzy słownik, dzięki czemu dodanie nowego parametru 
+sprowadzi się do dopisania linijki tektu do pliku.}
 
-{Poza interfejsem użytkownika aplikacja może umożliwiać prostą konfigurację 
-podstawowych opcji jak rozmiar okna niestandarową lokalizację bazy danych czy 
-wygląd interfejsu. Aby ułatwić rozwój aplikacji program powinien zapisywać i 
-przyjmować z pliku dane konfiguracyjne w formie list ciągów znaków w formacie "
-opcja" : "wartość" które utworzą obiekt słownika, lub w wariancie bardziej 
-zaawansowanym aplikacja może przyjmować konfigurację w postaci pliku JSON 
-\cite{JSON}. Rozwiązanie to jest na tyle elastycznie że pozwoli dynamicznie 
-definiować dodatkowe konfiguracji w trakcie powstawania projektu - aplikacja 
-zaczyta konfigurację z pliku i na jej podstawie utworzy słownik, dzięki czemu 
-dodanie nowego parametru sprowadzi się do dopisania linijki tektu do pliku.}
-
-{W języku Python \cite{Python} domyślnie wszystkie zmienne są typu Any co 
-pozwala definiować typy zależnie od potrzeb w trakcie tworzenia programu. 
-Wszystkie wczytywane z plików wsadowych dane domyślnie przyjmują typ string lub 
-pojedyncze są traktowane jako pojedyncze bajty \cite{Python_read-file}. Zatem 
-dane wprowadzane przez użytkownika przyjmą formę ciągów znaków klasy string, po 
-czym w programie zostaną przekazane do konstruktorów klas gdzie zostaną 
-rzutowane na odpowiednie do zadań typy i zapisane w polach.}
+{Aplikacja powinna udostępniać użytkownikowi intuicyjne wizualizacje danych 
+dostępne przez interfejs użytkownika. Ponieważ jest to projekt edukacyjny 
+aplikacja zostanie zaimplementowana w języku Python \cite{Python} którego autor 
+chce się nauczyć. Do implementacji interfejsu użytkownika posłuży biblioteka 
+PySimpleGUI \cite{PySimpleGUI} która pozwala tworzyć prosty i responsywny, 
+niezależny od platformy interfejs o ograniczonych możliwościach. Jest to adapter
+ (tak zwany wrapper) który łączy kilka popularnych bibliotek służących do 
+tworzenia interfejsu, udostępnia spójny interfejs dzięki czemu warstwę 
+prezentacji można budować wykorzystując tablice złożone z udostępnianych jako 
+obiekty widżetów. W fazie prototypu interfejsu nie będzie można konfigurować z 
+poziomu aplikacji, natomiast niewykluczone że użytkownik będzie w stanie zmienić
+ podstawowe ustawienia edytując dostarczony plik konfiguracyjny. Szczegóły 
+implementacji interfejsu opisano w sekcji 
+\nameref{Graficzny interfejs użytkownika}.}
 
 {W samym kodzie aplikacji podstawymi strukturami wizualizacji będą kolekcje 
 złożone z dat i wartości typu double. Wizualizacje będą przechowywane w 
 słownikach, które na podstawie klucza w formacie string służącego także jako 
 nazwa wizualizacji zwrócą wartość w formacie string którą będzie zapytanie do 
-konkretnej tabeli w bazie danych.}
-
-{Szczegóły implementacji wraz z kodem opisane zostaną w sekcjach \ref{Code} oraz
-\ref{GUI}}
+konkretnej tabeli w bazie danych. Szczegóły implementacji kodu opisano w sekcji 
+\nameref{Logika aplikacji}.}
 
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
@@ -558,34 +597,38 @@ konkretnej tabeli w bazie danych.}
 \section{\customstylesection{Metody pracy}}
 {Aby dostarczyć minimalny opłacalny produkt \cite{MVP} aplikacja będzie 
 rozwijana poprzez wdrażanie wymaganych funkcjonalności w kolejności wynikającej 
-z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW 
-\cite{MOSCOW} która polega na określeniu priorytetu za pomocą jednej z kategorii:
+z ich priorytetów. Podczas planowania projektu wykorzystana zostanie 
+priorytetyzacja MoSCoW \cite{MOSCOW} która polega na określeniu priorytetu za 
+pomocą jednej z poniżej wymienionych kategorii, jak miało to miejsce w sekcji 
+\nameref{Wymagania funkcjonalne}:
 \begin{figure}[H]           %requires float package
     \caption{MoSCoW}
     \label{fig:MoSCoW}
     \centering  
     \includegraphics[width=12cm]{figures/MoSCoW-01.png}
 \end{figure}
-W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast 
-wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
-uwzględnia także cykliczne przeglądy priorytetów aby lepiej dopasować aplikację 
-do potrzeb użytkowników i kierunku rozwoju projektu. Zadania rozpisane zostaną 
-w metodologii kanban. W każdej iteracji kod będzie dodatkowo refaktoryzowany i 
-upraszczany, a dane w projekcie abstrachowane do dedykowanych klas jeśli 
-zajdzie taka potrzeba lub uprości to logikę aplikacji i zwiększy czytelność.}
+W fazie prototypu zostaną wdrożone wszystkie funkcjonalności wymagane (M), 
+natomiast wdrożenie wszelkich pozostałych kategorii zostanie rozpatrzone w fazie
+ rozwoju aplikacji. Plan uwzględnia także cykliczne przeglądy priorytetów aby 
+ lepiej dopasować aplikację do potrzeb użytkowników i kierunku rozwoju projektu.
+ Zadania rozpisane zostaną w metodologii kanban \cite{Kanban}. Zgodnie z 
+zasadami LEAN \cite{LEAN} w każdej iteracji kod będzie dodatkowo refaktoryzowany
+ i upraszczany, jeśli zajdzie taka potrzeba i uprości to interfejsy funkcji i 
+zwiększy czytelność dane zostaną także zebrane w dedykowane klasy.}
 
 \section{\customstylesection{Narzędzia}}
 {Podczas projektowania i wdrożenia aplikacji wykorzystane zostaną narzędzia typu
  Open Source oraz komerycjne dostępne nieodpłatnie dla użytkowników 
 indywidualnych.}
 
-{Kategoryzacja MoSCoW dla poszczególnych funkcjonalności wykonywana będzie na 
-zadaniach zarejstrowanych w tablicy kanban, z wykorzystaniem serwisu Trello 
-\cite{Trello}. Model encji w aplikacji zostanie przygotowany w aplikacji StarUML
- \cite{StarUML}. Do stworzenia bazy SQLite \cite{SQLite} posłuży aplikacja 
-DB Browser for SQLite \cite{DBBrowser}. Aplikacja Visual Studio Code 
+{Kategoryzacja MoSCoW \cite{MOSCOW} dla poszczególnych funkcjonalności 
+wykonywana będzie na zadaniach zarejstrowanych w tablicy kanban, w serwisie 
+serwisu Trello \cite{Trello}. Do stworzenia bazy SQLite \cite{SQLite} posłuży 
+aplikacja DB Browser for SQLite \cite{DBBrowser}. Aplikacja Visual Studio Code 
 \cite{VSCode} posłuży do pisania kodu w Python \cite{Python} oraz dokumentacji 
-w LaTeX \cite{LaTeX}.}
+w LaTeX \cite{LaTeX}. Do rozwoju dokumentacji oraz kodu aplikacji posłuży 
+system kontroli źródła GIT \cite{GIT}, a oba kody źródłowe przechowywane będą w 
+osobnych projektach na platformie GitHub \cite{GitHub}.}
 
 \section{\customstylesection{Techniki}}
 {lorem ipsum}
@@ -593,7 +636,7 @@ w LaTeX \cite{LaTeX}.}
 % [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
 % zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
 % obcego autorstwa, w tym open source)
-\chapter{\customstylechapter{Opisy metod}}
+\chapter{\customstylechapter{Opisy metod}} \label{Opisy metod}
 \section{\customstylesection{Główne klasy projektu}}
 {Projekt składa się z warstw bazy danych oraz graficznego interfejsu aplikacji. 
 Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
@@ -602,7 +645,7 @@ użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcj�
  użytkownika z bazą - prezentację danych przechowywanych w bazie oraz 
 wizualizacje danych.}
 
-\section{\customstylesection{Baza danych}}  \label{Baza-danych}
+\section{\customstylesection{Baza danych}}  \label{Baza danych}
 
 {Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
 spójną konwencję nazewniczą pól, tabel i widoków. Dzięki niej interfejs bazy 
@@ -670,7 +713,6 @@ CREATE TABLE [ProductTypes] (
 %        [Comment] 	TEXT 	DEFAULT NULL
 %    )
 %\end{SQLlisting}
-
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Tabela Products},
@@ -1150,7 +1192,7 @@ zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
 \end{minipage}
 
 %------------------------- Application layer ----------------------------------- 
-\section{\customstylesection{Logika aplikacji}} \label{Code}
+\section{\customstylesection{Logika aplikacji}} \label{Logika aplikacji}
 {W toku prac stopniowo zmienne w formie kolekcji słowników wykorzystywane w 
 projekcie zamieniano w klasy które spajają dane. Wyłoniły się one w odpowiedzi 
 na potrzeby w wyniku refaktoryzacji i tworzenia abstrakcji upraszczających 
@@ -1277,7 +1319,7 @@ class CellEdition():
  polach odpowiednio: }
 \end{minipage}
 
-\section{\customstylesection{Graficzny interfejs użytkownika}} \label{GUI}
+\section{\customstylesection{Graficzny interfejs użytkownika}} \label{Graficzny interfejs użytkownika}
 {Graficzny interfejs użytkownika (GUI, Graphical User interface) aplikacji 
 utworzono z wykorzystaniem biblioteki PySimpleGUI \cite{PySimpleGUI}. 
 Dzięki temu interfejs definiowany jest w postaci kolekcji jak listy, lub listy 
@@ -1311,6 +1353,8 @@ list, obiektów klas zawartyvh w bibliotece.}
     https://www.opcje24h.pl/budzetowanie-przewodnik-planowanie-budzetu/}
 \bibitem{MOSCOW} Product Plan, MOSCOW Prioritetization \raggedright\url{
     https://www.productplan.com/glossary/moscow-prioritization/}
+\bibitem{MatrycaEisenhowera}Praca.pl, Matryca Eisenhowera - czym jest, zasada, prioryteryzacja zadań \raggedright\url{
+    https://www.praca.pl/poradniki/rynek-pracy/matryca-eisenhowera-czym-jest,zasada,prioryteryzacja-zadan_pr-2012.html}
 \bibitem{MVP} Wikipedia, Minimal Viable Product \raggedright\url{
     https://en.wikipedia.org/wiki/Minimum_viable_product}
 \bibitem{ISO 8601} NASA.gov, A summary of the international standard date and time notation \raggedright\url{
@@ -1319,6 +1363,8 @@ list, obiektów klas zawartyvh w bibliotece.}
     https://www.rfc-editor.org/rfc/rfc4180}
 \bibitem{SQLite} sqlite.org, SQLite \raggedright\url{
     https://www.sqlite.org/index.html}
+\bibitem{SQL} wikipedia.org, SQL - Structured Query Language \raggedright\url{
+    https://en.wikipedia.org/wiki/SQL}
 \bibitem{Python} python.org, Python \raggedright\url{
     https://www.python.org/}
 \bibitem{PySimpleGUI} pysimplegui.org, PySimpleGUI Python GUIs for Humans \raggedright\url{
@@ -1334,10 +1380,24 @@ list, obiektów klas zawartyvh w bibliotece.}
 \bibitem{LaTeX} The LaTeX Project \raggedright\url{
     https://www.latex-project.org/}
 \bibitem{VSCode} Microsoft, Visual Studio Code \raggedright\url{
-    https://code.visualstudio.com/}   
+    https://code.visualstudio.com/}
 \bibitem{DBBrowser} Public domain, DB Browser for SQLite \raggedright\url{
-    https://sqlitebrowser.org/}   
+    https://sqlitebrowser.org/}
+\bibitem{Kanban} Lean Action PLan, Kanban – układ nerwowy sterowania produkcją w koncepcji Lean Manufacturing \raggedright\url{
+    https://leanactionplan.pl/kanban/}
+\bibitem{LEAN} Wikipedia, Lean software development \raggedright\url{
+    https://pl.wikipedia.org/wiki/Lean_software_development}
+\bibitem{GIT} git-scm.com, git \raggedright\url{
+    https://git-scm.com/}
+\bibitem{GitHub} https://github.com/ \raggedright\url{
+    https://github.com/}
 \end{thebibliography}
+
+
+
+
+%https://github.com/MarcinNowak94/budgeter
+%https://github.com/MarcinNowak94/DatabaseShenanigans
 
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
 \listoffigures
