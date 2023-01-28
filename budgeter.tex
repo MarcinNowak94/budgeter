@@ -9,17 +9,19 @@
 %--------------------------------------------------------------------------------
 %Add in dcummentation 
 % - class description - basic PySimpleGUI class
+% - applicatin can become crossplatform in the future (check how installers work)
 %
 %Needed functions:
 % - Save and read (persistent) configuration - https://www.pysimplegui.org/en/latest/cookbook/#recipe-the-demo-browser Recipe - Save and Load Program Settings ( https://www.pysimplegui.org/en/latest/#user-settings-api )
-% - Splash screen (currently it looks a bit barren
-% 
 %
 %
 %
 %Optional functions:
-% - Change GUI theme: add selectable list with themes, store it in config
-% - Language versions
+% - Change GUI theme: add selectable list with themes, store it in config #DONE
+% - synopsis for functions
+% - built in manual
+% - error handling
+% - Localization - Language versions
 % - logs (easy-ish): logfile.append(date, event)
 % - fix in place table editting
 % - allow user to remove data
@@ -27,6 +29,11 @@
 % 	- dump database creation script into sql file
 %	- create dummy Finances.sqlite wherever user wants
 %	- use script as database initialisation
+% - automatically deduce the encoding GetDataFromCSV
+% - add tresholds to graph (automatic based on average, user specified)
+% - add predicted spending next month (requires: to ProductSummary and 
+%		ProductType Sumary add columns mean[median?] cost (Amount/Bought Times),
+%	  AverageDailyCost (Amount/(lastbought-firstbought))
 
 \documentclass[a4paper,10pt]{report}
 
@@ -186,7 +193,7 @@
     %---Title---------------------------------------------
 	\begin{center}
     \HRule\\[0.4cm]
-	{\customstyletitle{Projekt i wdrożenie aplikacji wspomagającej zarządzanie budżetem domowym}}\\[0.4cm] 
+	{\customstyletitle{Projekt i implementacja aplikacji wspomagającej zarządzanie budżetem domowym}}\\[0.4cm] 
     \HRule\\[1.5cm]
     \end{center}
 	
@@ -283,7 +290,7 @@ użytkownika.}
 % [REQUIREMENT] 6. Założone ograniczenia (ramy czasowe, umiejętności) 
 % i możliwość ewaluacji projektu
 %[TODO]FIX overspill
-\chapter{\customstylechapter{Założone ograniczenia i możliwosci ewaluacji projektu}}
+\chapter{\customstylechapter{Założone ograniczenia i możliwości ewaluacji projektu}}
 {W aplikacji utworzony zostanie panel administracyjny prezentujący użytkownikowi 
 dane statystyczne obrazujące ilość, zakres i jakość danych a także sugerujące 
 kolejny krok ich usprawnienia. W miarę możliwości standard danych w aplikacji 
@@ -503,6 +510,10 @@ obróbki.}
 {Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{Baza-danych}}
 
 \section{\customstylesection{Kod aplikacji}}
+{Python jest językiem elastycznym, dzięki czemu dane można przyjmowac w dowolnej 
+formie bez definiowania typu, w efekcie klasy będą projektowane w trakcie 
+tworzenia programu.}
+
 {Aplikacja powinna udostępniać użytkownikowi intuicyjny sposób wizualizacji 
 danych poprzez interfejs użytkownika. Z uwagi na edukacyjny cel projektu 
 aplikacja zostanie zaimplementowana w języku Python \cite{Python}. Do 
@@ -510,12 +521,12 @@ implementacji interfejsu użytkownika posłuży biblioteka PySimpleGUI
 \cite{PySimpleGUI} która pozwala tworzyć prosty i responsywny niezależny od 
 platformy interfejs o ograniczonych możliwościach. Jest to adapter 
 (tak zwany wrapper) który łączy kilka popularnych bibliotek udostępnia spójny 
-interfejs który pozwala budować interfejs za pomocą matryc złożonych z 
+interfejs co pozwala budować interfejs za pomocą matryc złożonych z 
 udostępnianych jako obiekty widżetów.}
 
-{Poza interfejsem użytkownika aplikacja powinna umożliwiać prostą konfigurację 
+{Poza interfejsem użytkownika aplikacja może umożliwiać prostą konfigurację 
 podstawowych opcji jak rozmiar okna niestandarową lokalizację bazy danych czy 
-wygląd interfejsu. Aby ułątwić rozwój aplikacji program powinien zapisywać i 
+wygląd interfejsu. Aby ułatwić rozwój aplikacji program powinien zapisywać i 
 przyjmować z pliku dane konfiguracyjne w formie list ciągów znaków w formacie "
 opcja" : "wartość" które utworzą obiekt słownika, lub w wariancie bardziej 
 zaawansowanym aplikacja może przyjmować konfigurację w postaci pliku JSON 
@@ -524,11 +535,13 @@ definiować dodatkowe konfiguracji w trakcie powstawania projektu - aplikacja
 zaczyta konfigurację z pliku i na jej podstawie utworzy słownik, dzięki czemu 
 dodanie nowego parametru sprowadzi się do dopisania linijki tektu do pliku.}
 
-{W języku Python \cite{Python} dane wczytywane z plików wsadowych są traktowane 
-jako typ string lub pojedyncze bajty \cite{Python_read-file}. Zatem dane 
-wprowadzane przez użytkownika przyjmą formę ciągów znakó klasy string, po czym 
-w programie zostaną przekazanedo konstruktorów klas  gdzie zostaną rzutowane na 
-odpowiednie do zadań typy i zapisane w polach.}
+{W języku Python \cite{Python} domyślnie wszystkie zmienne są typu Any co 
+pozwala definiować typy zależnie od potrzeb w trakcie tworzenia programu. 
+Wszystkie wczytywane z plików wsadowych dane domyślnie przyjmują typ string lub 
+pojedyncze są traktowane jako pojedyncze bajty \cite{Python_read-file}. Zatem 
+dane wprowadzane przez użytkownika przyjmą formę ciągów znaków klasy string, po 
+czym w programie zostaną przekazane do konstruktorów klas gdzie zostaną 
+rzutowane na odpowiednie do zadań typy i zapisane w polach.}
 
 {W samym kodzie aplikacji podstawymi strukturami wizualizacji będą kolekcje 
 złożone z dat i wartości typu double. Wizualizacje będą przechowywane w 
@@ -536,7 +549,8 @@ słownikach, które na podstawie klucza w formacie string służącego także ja
 nazwa wizualizacji zwrócą wartość w formacie string którą będzie zapytanie do 
 konkretnej tabeli w bazie danych.}
 
-{Szczegóły implementacji wraz z kodem opisane zostaną w sekcji \ref{GUI}}
+{Szczegóły implementacji wraz z kodem opisane zostaną w sekcjach \ref{Code} oraz
+\ref{GUI}}
 
 
 % [REQUIREMENT] 12. Metody pracy, narzędzia i techniki
@@ -552,11 +566,13 @@ z ich priorytetów. W projekcie będzie wykorzystywana priorytetyzacja MoSCoW
     \centering  
     \includegraphics[width=12cm]{figures/MoSCoW-01.png}
 \end{figure}
-W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast  
+W fazie projektu zostaną wdrożone wszystkie funkcjonalności wymagane, natomiast 
 wszelkie pozostałe kategorie zostaną wdrożone w miarę możliwości. Plan 
 uwzględnia także cykliczne przeglądy priorytetów aby lepiej dopasować aplikację 
 do potrzeb użytkowników i kierunku rozwoju projektu. Zadania rozpisane zostaną 
-w metodologii kanban}
+w metodologii kanban. W każdej iteracji kod będzie dodatkowo refaktoryzowany i 
+upraszczany, a dane w projekcie abstrachowane do dedykowanych klas jeśli 
+zajdzie taka potrzeba lub uprości to logikę aplikacji i zwiększy czytelność.}
 
 \section{\customstylesection{Narzędzia}}
 {Podczas projektowania i wdrożenia aplikacji wykorzystane zostaną narzędzia typu
@@ -811,7 +827,7 @@ tabeli ProductTypes.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-\begin{lstlisting}[ caption={Widok ProductTypeSummary},
+\begin{lstlisting}[ caption={Widok TypeSummary},
     language=SQL,
     deletekeywords={IDENTITY},
     deletekeywords={[2]INT},
@@ -821,33 +837,46 @@ tabeli ProductTypes.}
     framexleftmargin=40pt,
     frame=tb,
     framerule=0pt ]
-CREATE VIEW [ProductTypeSummary] AS
-SELECT 
+CREATE VIEW IF NOT EXISTS [TypeSummary] AS
+SELECT
+	[ProductTypes].[ID]						AS [ID]
+	,[ProductTypes].[Type]					AS [Type]
+	,[ProductTypes].[Comment]				AS [Comment]
+	,IFNULL([Summary].[Amount], 0)			AS [Amount]
+	,IFNULL([Summary].[Bought Times], 0)	AS [Bought Times]
+	,[Summary].[FirstBought]				AS [FirstBought]
+	,[Summary].[LastBought]					AS [LastBought]
+	,IFNULL([Summary].[Common], 'Absent')	AS [Common]
+FROM [ProductTypes]
+LEFT JOIN (SELECT 
 	*
 	,(CASE WHEN ([Bought Times]>(
-                SELECT 
-                    AVG([Bought Times]) AS [Average] 
-                FROM (SELECT
-                    [Type]
-                    ,Round(SUM([Amount]), 2)AS [Amount]
-                    ,COUNT([DateTime])  AS [Bought Times]
-                    ,MAX(DateTime)      AS [LastBought]
-                    ,MIN(DateTime)  AS [FirstBought]
-                    FROM [Expenditures_Enriched]
-                    GROUP BY [Type]
-                    ORDER BY [Bought Times] DESC)))
+					SELECT 
+						AVG([Bought Times]) AS [Average] 
+					FROM (	SELECT
+							   [Type]
+							   ,Round(SUM([Amount]), 2)	AS [Amount]
+							   ,COUNT([DateTime])		AS [Bought Times]
+							   ,MAX([DateTime])			AS [LastBought]
+							   ,MIN([DateTime])			AS [FirstBought]
+							FROM [Expenditures_Enriched]
+							GROUP BY [Type]
+							ORDER BY [Bought Times] DESC))) 
 	then 'Common' else 'Uncommon' end) as [Common]
-FROM (SELECT
-        [Type]
-        ,Round(SUM([Amount]), 2) AS [Amount]
-        ,COUNT([DateTime])       AS [Bought Times]
-        ,MAX(DateTime)           AS [LastBought]
-        ,MIN(DateTime)           AS [FirstBought]
-    FROM [Expenditures_Enriched]
-    GROUP BY [Type]
-    ORDER BY [Bought Times] DESC);
+	
+FROM (	SELECT
+		   [Type]
+		   ,Round(SUM([Amount]), 2)	AS [Amount]
+		   ,COUNT([DateTime])		AS [Bought Times]
+		   ,MAX(DateTime)			AS [LastBought]
+		   ,MIN(DateTime)			AS [FirstBought]
+		FROM [Expenditures_Enriched]
+		GROUP BY [Type]
+		ORDER BY [Bought Times] DESC))
+as [Summary]
+ON [ProductTypes].[Type]=[Summary].[Type];
 \end{lstlisting}
-{Widok ProductTypeSummary podsumowujący dla użytkownika dane o typach produktów.}
+{Widok TypeSummary podsumowujący dla użytkownika dane o typach produktów.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -861,30 +890,46 @@ FROM (SELECT
         framexleftmargin=40pt,
         frame=tb,
         framerule=0pt ]
-CREATE VIEW [ProductSummary] AS
+CREATE VIEW IF NOT EXISTS [ProductSummary] AS
+	
 SELECT
-    *
-    ,(CASE WHEN ([Bought Times]>(
-        SELECT AVG([Bought Times]) AS [Average] 
-        FROM (SELECT
-                [Product]
-                ,Round(SUM([Amount]), 2) AS [Amount]
-                ,COUNT([DateTime])       AS [Bought Times]
-                ,MAX(DateTime)           AS [LastBought]
-                ,MIN(DateTime)           AS [FirstBought]
-                FROM [Expenditures_Enriched]
-                GROUP BY [Product]
-                ORDER BY [Bought Times] DESC)))
+	[Products].[ID]							AS [ID]
+	,[Products].[Product]					AS [Product]
+	,[Products].[TypeID]					AS [TypeID]
+	,[Products].[Comment]					AS [Comment]
+	,IFNULL([Summary].[Amount], 0)			AS [Amount]
+	,IFNULL([Summary].[Bought Times], 0)	AS [Bought Times]
+	,[Summary].[FirstBought]				AS [FirstBought]
+	,[Summary].[LastBought]					AS [LastBought]
+	,IFNULL([Summary].[Common], 'Absent')	AS [Common]
+FROM [Products]
+LEFT JOIN (SELECT 
+	*
+	,(CASE WHEN ([Bought Times]>(
+					SELECT 
+						AVG([Bought Times]) AS [Average] 
+					FROM (	SELECT
+							   [Product]
+							   ,Round(SUM([Amount]), 2)	AS [Amount]
+							   ,COUNT([DateTime])		AS [Bought Times]
+							   ,MAX([DateTime])			AS [LastBought]
+							   ,MIN([DateTime])			AS [FirstBought]
+							FROM [Expenditures_Enriched]
+							GROUP BY [Product]
+							ORDER BY [Bought Times] DESC))) 
 	then 'Common' else 'Uncommon' end) as [Common]
-FROM (SELECT
-        [Product]
-        ,Round(SUM([Amount]), 2)AS [Amount]
-        ,COUNT([DateTime])      AS [Bought Times]
-        ,MAX(DateTime)          AS [LastBought]
-        ,MIN(DateTime)          AS [FirstBought]
-     FROM [Expenditures_Enriched]
-     GROUP BY [Product]
-     ORDER BY [Bought Times] DESC);
+	
+FROM (	SELECT
+		   [Product]
+		   ,Round(SUM([Amount]), 2)	AS [Amount]
+		   ,COUNT([DateTime])		AS [Bought Times]
+		   ,MAX(DateTime)			AS [LastBought]
+		   ,MIN(DateTime)			AS [FirstBought]
+		FROM [Expenditures_Enriched]
+		GROUP BY [Product]
+		ORDER BY [Bought Times] DESC))
+as [Summary]
+ON [Products].[Product]=[Summary].[Product];
 \end{lstlisting}
 {Widok ProductSummary podsumowujący dla użytkownika statystyki produktów.}
 \end{minipage}
@@ -1105,8 +1150,138 @@ zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
 \end{minipage}
 
 %------------------------- Application layer ----------------------------------- 
+\section{\customstylesection{Logika aplikacji}} \label{Code}
+{W toku prac stopniowo zmienne w formie kolekcji słowników wykorzystywane w 
+projekcie zamieniano w klasy które spajają dane. Wyłoniły się one w odpowiedzi 
+na potrzeby w wyniku refaktoryzacji i tworzenia abstrakcji upraszczających 
+interfejs funkcji. Klasy projektowano tak, by były w miarę możliwości oczywiste
+ i zrozumiałe, co mapoprawia czytelność i łatwość zrozumienia kodu.}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Klasa Database},
+        language=Python,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+class Database():
+    def __init__(self, 
+                 fullpath,
+                 schema,
+                 selects, 
+                 inserts,
+                 updates):
+        self.fullpath = fullpath
+        self.schema = schema
+        self.selects = selects
+        self.inserts = inserts
+        self.updates = updates
+    \end{lstlisting}
+{Obiekty klasy Database zawierają komplet informacji wymaganych do interakcji z
+ bazą danych wykorzystwaną w aplikacji. Pole fullpath to w pełni kwalifikowana
+ ścieżka do bazy danych, schema jest kolekcją obiektów typu string która 
+przechowuje schemat bazy danych. Pozostałe pola: selects, inserts, updates to 
+słowniki które pozwalają po nazwie odwołać się do odpowiednio zapytań (SELECT), 
+dodawania rekordów do tabel (INSERT), oraz aktualizacji danych w tabelach 
+(updates).}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Klasa ChartSelect},
+        language=Python,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+class ChartSelect():
+    def __init__(self,
+                 database,
+                 select,
+                 label
+                ):
+        self.database=str(database),
+        self.select=str(select),
+        self.label=str(label)
+    \end{lstlisting}
+{Obiekty klasy ChartSelect posiada trzy atrybuty typu string: database
+ przechowuje w pełni kwalifikowaną ścieżkę do bazy danych aplikacji, select 
+to zapytanie SQL do bazy, natomiast pole label to etykieta wykresu danych 
+wyświetlanego użytkownikowi.}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Klasa Chart},
+        language=Python,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+class Chart():
+    def __init__(self,
+                 selects,
+                 caption):
+        self.selects = selects
+        self.caption = caption
+    \end{lstlisting}
+{Obiekty klasy Chart definiuje dane do wizualizacji. Atrybut caption przyjmuje 
+wartości typu string wyświetlane jako nagłówek wizualizacji, natomiast atrybut 
+selects jest listą obiektów typu ChartSelect - zbioru zapytań które zostaną 
+wyświetlone w ramach pojedynczej wizualizacji.}
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Klasa CellEdition},
+        language=Python,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+class CellEdition():
+    def __init__(self,
+                 table, 
+                 ID, 
+                 field, 
+                 newvalue,
+                 oldvalue): 
+        self.table = table
+        self.ID = ID
+        self.field = field
+        self.newvalue = newvalue
+        self.oldvalue = oldvalue
+
+    def __repr__(self): 
+        return "Table % s modified. ID: % s field: % s oldvalue: % s newvalue: % s" % (self.table, 
+                 self.ID, 
+                 self.field, 
+                 self.newvalue,
+                 self.oldvalue)
+    \end{lstlisting}
+{Obiekty klasy CellEdition służy do przechowywania danych rekordu bazy danych
+ edytowanych przez użytkownika poprzez interfejs. Każdy obiekt przechowuje w
+ polach odpowiednio: }
+\end{minipage}
 
 \section{\customstylesection{Graficzny interfejs użytkownika}} \label{GUI}
+{Graficzny interfejs użytkownika (GUI, Graphical User interface) aplikacji 
+utworzono z wykorzystaniem biblioteki PySimpleGUI \cite{PySimpleGUI}. 
+Dzięki temu interfejs definiowany jest w postaci kolekcji jak listy, lub listy 
+list, obiektów klas zawartyvh w bibliotece.}
 
 \begin{figure}[H]           %requires float package
     \caption{Wizualizacja danych wersja 2}
