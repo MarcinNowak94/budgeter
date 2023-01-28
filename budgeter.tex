@@ -58,7 +58,7 @@
 \usepackage{color}          % Code listings
 \usepackage{nameref}        % Reference chapter, section, etc. by name
 \usepackage{afterpage}
-
+\usepackage{tcolorbox}      % Colored boxes for inline Code
 
 \makeindex
 \graphicspath{ {./} }       %Was ./figures/ changed so i can peek in VS Code
@@ -136,7 +136,7 @@
   % spacer
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % horizontal lines
 
-
+\newtcbox{\inlinecode}{on line, boxrule=0pt, boxsep=0pt, top=2pt, left=2pt, bottom=2pt, right=2pt, colback=gray!15, colframe=white, fontupper={\ttfamily \footnotesize}}
 
 % --------------------------- documment starts here ---------------------------
 
@@ -1416,7 +1416,128 @@ zależnie od potrzeb. Funkcje opisane są w dalszej części w sekcji
 
 \section{\customstylesection{Metody projektu}} 
 \label{Metody projektu}
-{lorem ipsum}
+{Kod aplikacji podzielono na funkcje aby zgodnie z dobrymi praktykami zebrać 
+logikę realizującą konkretne zadanie w jednym miejscu.}
+
+%TODO: All was revewed untill this point 
+\medskip
+{Funkcja \inlinecode{PrepareStatement(query, values)} przygotowuje i zwraca 
+zapytania dodające lub modyfikujące jeden lub wiele rekordów bazy danych na 
+podstawie zapytania podanego w argumencie query i tablicy wartości w argumencie 
+values.}
+
+\medskip
+{Funkcja \inlinecode{GetFromDB(database, select)} pobiera dane z bazy wskazanej 
+argumentem database zapytaniem podanym jako argument select. Oba argumenty są 
+typu string. Zwraca dane jako tablicę złożoną z poszczególnych pól tablicy w 
+bazie jako rekordów i poszczególnych wpisów w jako rekordów.}
+
+\medskip
+{Procedura \inlinecode{SendToDB(database, todb)} wysyła dane do bazy wskazanej
+argumentem database zapytaniem podanym jako argument select. Oba argumenty są 
+typu string. Nie zwraca wartości.}
+
+\medskip
+{Funkcja \inlinecode{GetCollectionFromDB(collection)} przyjmuje jako argument 
+obiekt klasy chart który zawiera listę złożoną z zapytań do bazy i 
+odpowiadających im opisów wykresów. Funkcja ta zwraca listę krotek złożonych z 
+tablicy danych pobranych z bazy funkcją \inlinecode{GetFromDB} oraz ciągu znaków
+ klasy string z etykietą danych prezentowaną na wykresie.}
+
+\medskip
+{Funkcja \inlinecode{GetDBInfo(database)} przyjmuje ciąg znaków który jest 
+ścieżką do bazy danych. Wykorzystując funkcję \inlinecode{GetFromDB} oraz 
+predefiniowane zapytania buduje pobiera schemat bazy pobierając listę dostępnych
+ tabel i widoków, a następnie nazwy kolumn każdej z nich. Tak zebrane dane 
+tworzą słownik w którym pod nazwą danej tabeli lub indeksem w słowniku kryje się
+ obiekt z nazwą tablicy jako parametr name, i listą kolumn w polu columns.}
+
+\medskip
+{Funkcja \inlinecode{Prepare\_plot(set, title)} przetwarza dane do wykresu . 
+Przyjmuje w argumencie set listę tablic złożonych z listy dat w formie ciagu znaków 
+klasy strting i wartości liczbowych, i pojedynczego ciągu znaków który stanie 
+się etykietą wykresu - dane zwrócone z funkcji \inlinecode{GetCollectionFromDB}.
+ Parsuje daty każdego rekordu do odpowiedniego formatu przy pomocy zewnętrznej 
+biblioteki. Następnie z danych tworzona jest linia wykresu oznaczona etykietą. 
+Na koniec linie łaczone są w jeden wykres, a argument title przypisywany jest 
+jako jego nagłówek - tak przygotowany wykres jest zwracany przez funkcję.}
+
+\medskip
+{Funkcja \inlinecode{draw\_figure(canvas, figure)} przetwarza obiekt danych 
+wykresu dostarczony w argumencie figure na grafikę prezentowaną w specjalnym 
+elemencie interfejsu wskazanym w argumencie canvas. Zwraca referencję do tak 
+przygotowanego obiektu na ekranie.}
+
+\medskip
+{Funkcja \inlinecode{Listfromtable(table, addvalues=True)} tworzy z danych 
+tablicy podanej w argumencie table listę, jeśli wywołano ją z argumentem 
+addvalues, lub nie podano tego argumentu wogóle, dopisuje w nawiasach wartości 
+z tabeli. Tak stworzoną listę ciągów znakó klasy string zwraca.}
+
+\medskip
+{Funkcja \inlinecode{PrepareCharts()} wstępnie dynamicznie przetwarza część 
+zapytań wywoływanych z interfejsu. Tworzy obiekty klasy ChartSelect - pobiera 
+dane z bazy o kilku najpopularniejszych produktach, dane o najczęściej kupowanym
+ typie produktu, dane o przychodach w ujęciu miesięcznym oraz bilansie 
+miesięcznym przychdó i wydatków. Tak przygotowany słownik obiektów złożony z 
+nazw w formie ciągów znaków klasy string i przypisanych im obiektów klasy 
+ChartSelect jest zwracany.}
+
+\medskip
+{Funkcja \inlinecode{GivenProduct(product)} przygotowuje w całości obiekt klasy 
+Chart reprezentujący zapytanie do bazy o podsumowanie danych produktu wskazanego
+ w argumencie product, po czym wyciąga wskazane dane z bazy funckją 
+\inlinecode{GetCollectionFromDB}, przygotowuje wykres funkcją 
+\inlinecode{Prepare\_plot(set, title)} i zwraca go do wyświetlenia.}
+
+\medskip
+{Funkcja \inlinecode{GivenType(type)} przygotowuje w całości obiekt klasy 
+Chart reprezentujący zapytanie do bazy o podsumowanie danych typu produktów 
+wskazanego w argumencie type, po czym wyciąga wskazane dane z bazy funckją 
+\inlinecode{GetCollectionFromDB}, przygotowuje wykres funkcją 
+\inlinecode{Prepare\_plot(set, title)} i zwraca go do wyświetlenia..}
+
+\medskip
+{Funkcja \inlinecode{Visualize(chart)} przyjmuje dane klasy Chart jako argument 
+chart, wyciąga wskazane dane z bazy funckją \inlinecode{GetCollectionFromDB}, 
+przygotowuje wykres funkcją \inlinecode{Prepare\_plot(set, title)} i zwraca go 
+do wyświetlenia.}
+
+\medskip
+{Funkcja \inlinecode{TableToLayout(table)} tworzy na podstawie tabeli podanej w 
+argumencie table obiekt biblioteki PySimpleGUI - tablicę osadzaną w interfejsie 
+użytkownika.}
+
+\medskip
+{Funkcja \inlinecode{GenerateTableEditor(table)} tworzy i zwraca interfejs 
+edycji tabeli wskazanej w argumencie table w formie ciągu znaków klasy string. 
+Na interfejs składają się: tytuł, przycisk Import Data do importu danych z 
+pliku, przycisk Add record wywołujący okno dodawania rekodru do tabeli oraz 
+osadzoną tabelę uzyskaną wywołaniem funkcji \inlinecode{TableToLayout}.}
+
+\medskip
+{Funkcja \inlinecode{TableInputWindow(name)} tworzy okno aplikacji służące do 
+edycji danych w tabeli wskazanej atrybutem name który jest ciągiem znaków klasy 
+string. Funkcja wykorzystuje dane o schemacie bazy do zbudowania listy pól do 
+wprowadzania danych przez użytkownika. Jeśłi napotka pola zawierające 
+identyfikatory które są odwołaniem do innych tabel podmienia je na listę 
+rozwijaną która prezentuje użytkownikowi wyłącznie prawidłowe wartości jako 
+nazwy, natomiast ich wybranie przypisuje danem polu odpowiadającą mu wartość ID.
+Funkcja otwiera tak przygotowane okno i zwraca rekord jako słownik w którym 
+nazwa kolumny jest indeksem a wartość wpisanym przez użytkownika tekstem w polu.}
+
+\medskip
+{Funkcja \inlinecode{ChangeLayout(window, element)} .}
+
+\medskip
+{Funkcja \inlinecode{GetDataFromCSV(filename)} .}
+
+\medskip
+{Funkcja \inlinecode{EditCell(window, key, row, col, edition)} .}
+
+\medskip
+{Funkcja \inlinecode{PrepareWindow(theme=chosentheme)} .}
+
 
 \section{\customstylesection{Obiekty projektu}}
 {lorem ipsum}
