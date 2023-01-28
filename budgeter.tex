@@ -624,14 +624,17 @@ indywidualnych.}
 {Kategoryzacja MoSCoW \cite{MOSCOW} dla poszczególnych funkcjonalności 
 wykonywana będzie na zadaniach zarejstrowanych w tablicy kanban, w serwisie 
 serwisu Trello \cite{Trello}. Do stworzenia bazy SQLite \cite{SQLite} posłuży 
-aplikacja DB Browser for SQLite \cite{DBBrowser}. Aplikacja Visual Studio Code 
+aplikacja DataGrid \cite{DataGrid}. Aplikacja Visual Studio Code 
 \cite{VSCode} posłuży do pisania kodu w Python \cite{Python} oraz dokumentacji 
 w LaTeX \cite{LaTeX}. Do rozwoju dokumentacji oraz kodu aplikacji posłuży 
 system kontroli źródła GIT \cite{GIT}, a oba kody źródłowe przechowywane będą w 
 osobnych projektach na platformie GitHub \cite{GitHub}.}
 
 \section{\customstylesection{Techniki}}
-{lorem ipsum}
+{W trakcie tworzeznia projektu wykorzystano model przyrostowy 
+\cite{Model Przyrostowy} w oparciu o klasyfikację funkcji do wdrożenia metodą 
+MoSCoW \cite{MOSCOW}. Ponadto stosowane będą techniki programowania LEAN 
+\cite{LEAN} poprawiające czytelność i jakość tworzonego kodu.}
 
 % [REQUIREMENT] 13. Opis głównych klas, metod, obiektów, struktur i algorytmów
 % zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
@@ -639,14 +642,14 @@ osobnych projektach na platformie GitHub \cite{GitHub}.}
 \chapter{\customstylechapter{Opisy metod}} \label{Opisy metod}
 \section{\customstylesection{Główne klasy projektu}}
 {Projekt składa się z warstw bazy danych oraz graficznego interfejsu aplikacji. 
-Warstwa bazy przechowuje dane wprowadzone przez użytkownika, na główne klasy 
-projektu składają się tabele oraz widoki. Warstwa graficznego interfejsu 
-użytkownika odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję
- użytkownika z bazą - prezentację danych przechowywanych w bazie oraz 
-wizualizacje danych.}
+Baza danych przechowuje dane wprowadzone przez użytkownika w tabelach oraz 
+generuje podsumowania i zestawienia w formie widoków. Oba typy obiektów składają
+ się na główne klasy projektu. Warstwa graficznego interfejsu użytkownika 
+odpowiedzialna jest za interakcję z użytkownikiem oraz interakcję użytkownika z 
+bazą - prezentację danych przechowywanych w bazie oraz wizualizacje danych. 
+Dodatkowo zbudowano w niej klasy upraszczające interfejs poszczególnych funkcji.}
 
 \section{\customstylesection{Baza danych}}  \label{Baza danych}
-
 {Podczas tworzenia bazy danych przyjęto kilka podstawowych założeń aby utrzymać 
 spójną konwencję nazewniczą pól, tabel i widoków. Dzięki niej interfejs bazy 
 jest prostszy a pisanie zapytań bardziej intuicyjne co w ogólnym rozrachunku 
@@ -677,7 +680,7 @@ powinno ograniczyć nakład pracy wymagany do wdrożenia dodatkowych funkcji.}
     \caption{Klasy warstwy bazy danych - tabele}
     \label{fig:Klasy warstwy bazy danych - tabele}
     \centering  
-    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Tables.png}
+    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Tables_DataGrid.png}
 \end{figure}
 
 %-----------------------------TABLES--------------------------------------------
@@ -779,7 +782,7 @@ CREATE TABLE [Income] (
 	[Comment]	TEXT DEFAULT NULL
 );
 \end{lstlisting}
-{Tabela Income zawiera wpływy wprowadzone przez użytkownika.}
+{Tabela Income zawiera przychody wprowadzone przez użytkownika.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -827,16 +830,22 @@ CREATE TABLE [Expenditures_transitory] (
 	FOREIGN KEY([ProductID]) REFERENCES [Products]([ID])
 );
 \end{lstlisting}
-{Tabela Expenditures\_transitory tymczasowo przechowuje wydatki wprowadzone przez
- użytkownika. Dane któe które się w niej znajdują są sprawdzane pod względem 
- poprawności, po czym poprawne dane są przenoszone do tabeli Expenditures i 
- usuwane z Expenditures\_transitory. Na dłużej pozostają w niej tylko dane które 
- użytkownik musi poprawić.}
+{Tabela Expenditures\_transitory jest tabelą tymczasową, przechowuje wydatki 
+wprowadzone przez użytkownika które nie przeszły walidacji. Użytkownik poprawia 
+je po czym prawidłowe dane są przenoszone do tabeli Expenditures i  usuwane z 
+Expenditures\_transitory.}
 \end{minipage}
 
 
 %------------------------------VIEWS--------------------------------------------
 %[TODO]: Add Ledger_comparison, MonthlyCharge
+
+\begin{figure}[H]           %requires float package
+    \caption{Klasy warstwy bazy danych - widoki}
+    \label{fig:Klasy warstwy bazy danych - widoki}
+    \centering  
+    \includegraphics[width=12cm]{figures/Budgeter_Finances-db_Views_DataGrid.png}
+\end{figure}
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok Expenditures\_Enriched},
@@ -864,118 +873,9 @@ LEFT JOIN [ProductTypes]        [PTY]
 ORDER BY DateTime;
 \end{lstlisting}
 {Widok Expenditures\_Enriched prezentuje użytkownikowi czytelne dane z tabeli 
-Expenditures wzbogacone o zdefiniowane produkty z tabeli Products i typy z 
+Expenditures wzbogacone o produkty zdefiniowane w tabeli Products i typy z 
 tabeli ProductTypes.}
 \end{minipage}
-
-\begin{minipage}{\textwidth}
-\begin{lstlisting}[ caption={Widok TypeSummary},
-    language=SQL,
-    deletekeywords={IDENTITY},
-    deletekeywords={[2]INT},
-    morekeywords={clustered},
-    framesep=8pt,
-    xleftmargin=40pt,
-    framexleftmargin=40pt,
-    frame=tb,
-    framerule=0pt ]
-CREATE VIEW IF NOT EXISTS [TypeSummary] AS
-SELECT
-	[ProductTypes].[ID]						AS [ID]
-	,[ProductTypes].[Type]					AS [Type]
-	,[ProductTypes].[Comment]				AS [Comment]
-	,IFNULL([Summary].[Amount], 0)			AS [Amount]
-	,IFNULL([Summary].[Bought Times], 0)	AS [Bought Times]
-	,[Summary].[FirstBought]				AS [FirstBought]
-	,[Summary].[LastBought]					AS [LastBought]
-	,IFNULL([Summary].[Common], 'Absent')	AS [Common]
-FROM [ProductTypes]
-LEFT JOIN (SELECT 
-	*
-	,(CASE WHEN ([Bought Times]>(
-					SELECT 
-						AVG([Bought Times]) AS [Average] 
-					FROM (	SELECT
-							   [Type]
-							   ,Round(SUM([Amount]), 2)	AS [Amount]
-							   ,COUNT([DateTime])		AS [Bought Times]
-							   ,MAX([DateTime])			AS [LastBought]
-							   ,MIN([DateTime])			AS [FirstBought]
-							FROM [Expenditures_Enriched]
-							GROUP BY [Type]
-							ORDER BY [Bought Times] DESC))) 
-	then 'Common' else 'Uncommon' end) as [Common]
-	
-FROM (	SELECT
-		   [Type]
-		   ,Round(SUM([Amount]), 2)	AS [Amount]
-		   ,COUNT([DateTime])		AS [Bought Times]
-		   ,MAX(DateTime)			AS [LastBought]
-		   ,MIN(DateTime)			AS [FirstBought]
-		FROM [Expenditures_Enriched]
-		GROUP BY [Type]
-		ORDER BY [Bought Times] DESC))
-as [Summary]
-ON [ProductTypes].[Type]=[Summary].[Type];
-\end{lstlisting}
-{Widok TypeSummary podsumowujący dla użytkownika dane o typach produktów.}
-\end{minipage}
-
-\begin{minipage}{\textwidth}
-    \begin{lstlisting}[ caption={Widok ProductSummary},
-        language=SQL,
-        deletekeywords={IDENTITY},
-        deletekeywords={[2]INT},
-        morekeywords={clustered},
-        framesep=8pt,
-        xleftmargin=40pt,
-        framexleftmargin=40pt,
-        frame=tb,
-        framerule=0pt ]
-CREATE VIEW IF NOT EXISTS [ProductSummary] AS
-	
-SELECT
-	[Products].[ID]							AS [ID]
-	,[Products].[Product]					AS [Product]
-	,[Products].[TypeID]					AS [TypeID]
-	,[Products].[Comment]					AS [Comment]
-	,IFNULL([Summary].[Amount], 0)			AS [Amount]
-	,IFNULL([Summary].[Bought Times], 0)	AS [Bought Times]
-	,[Summary].[FirstBought]				AS [FirstBought]
-	,[Summary].[LastBought]					AS [LastBought]
-	,IFNULL([Summary].[Common], 'Absent')	AS [Common]
-FROM [Products]
-LEFT JOIN (SELECT 
-	*
-	,(CASE WHEN ([Bought Times]>(
-					SELECT 
-						AVG([Bought Times]) AS [Average] 
-					FROM (	SELECT
-							   [Product]
-							   ,Round(SUM([Amount]), 2)	AS [Amount]
-							   ,COUNT([DateTime])		AS [Bought Times]
-							   ,MAX([DateTime])			AS [LastBought]
-							   ,MIN([DateTime])			AS [FirstBought]
-							FROM [Expenditures_Enriched]
-							GROUP BY [Product]
-							ORDER BY [Bought Times] DESC))) 
-	then 'Common' else 'Uncommon' end) as [Common]
-	
-FROM (	SELECT
-		   [Product]
-		   ,Round(SUM([Amount]), 2)	AS [Amount]
-		   ,COUNT([DateTime])		AS [Bought Times]
-		   ,MAX(DateTime)			AS [LastBought]
-		   ,MIN(DateTime)			AS [FirstBought]
-		FROM [Expenditures_Enriched]
-		GROUP BY [Product]
-		ORDER BY [Bought Times] DESC))
-as [Summary]
-ON [Products].[Product]=[Summary].[Product];
-\end{lstlisting}
-{Widok ProductSummary podsumowujący dla użytkownika statystyki produktów.}
-\end{minipage}
-
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}[ caption={Widok MonthlyExpenditures},
@@ -996,8 +896,7 @@ FROM [Expenditures_Enriched]
 GROUP BY [Month]
 ORDER BY [Month];
 \end{lstlisting}
-{Widok MonthlyExpenditures podsumowujący dla użytkownika dane o miesięcznych 
-wydatkach.}
+{Widok MonthlyExpenditures podsumowuje dane o miesięcznych wydatkach użytkownika.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1019,8 +918,8 @@ FROM [Bills]
 GROUP BY [Month]
 ORDER BY [Month];
 \end{lstlisting}
-{Widok MonthlyBills podsumowujący dla użytkownika dane o rachunkach bieżących 
-w rozrachunku miesięcznym zawartych w tabeli Bills.}
+{Widok MonthlyBills dane o rachunkach bieżących użytkownika w rozrachunku 
+miesięcznym na podstawie danych zawartych w tabeli Bills.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1042,7 +941,7 @@ FROM 	[Income]
 GROUP BY [Month]
 ORDER BY [Month];
 \end{lstlisting}
-{Widok MonthlyIncome podsumowujący dla użytkownika dane o przychodach w ujęciu 
+{Widok MonthlyIncome podsumowuje dane o przychodach użytkownika w ujęciu 
 miesięcznym.}
 \end{minipage}
 
@@ -1078,8 +977,8 @@ FROM (SELECT
  GROUP BY [Month]
  ORDER BY [Month] DESC;
 \end{lstlisting}
-{Widok MonthlyBilance podsumowujący dla użytkownika bilans miesięczny wydatków i
- wpływów w formie pojedynczej liczby.}
+{Widok MonthlyBilance podsumowuje bilans miesięczny wydatków i wpływów 
+użytkownika w formie pojedynczej liczby.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1097,7 +996,7 @@ CREATE VIEW [Monthly_common_products] AS
 SELECT * 
 FROM (
     SELECT  Strftime('%Y-%m', [DateTime])   AS [Month],
-            [Product],
+                                               [Product],
             COUNT([Product])                AS [Items], 
             SUM([Amount])                   AS [Sum]
     FROM [Expenditures_Enriched]
@@ -1105,10 +1004,10 @@ FROM (
     ORDER BY [Month] DESC, [Sum] DESC
 ) WHERE [Items]>=4;
 \end{lstlisting}
-{Widok Monthly\_common\_products podsumowujący dla użytkownika dane o najczęściej 
-kupowanych produktach danego miesiąca. Uwzględnia wyłącznie produkty które 
-zakupiono 4 razy - liczba ta została wybrana arbitralnie metodą kolejnych 
-przybliżeń aby otrzymać zadowalający wynik.}
+{Widok Monthly\_common\_products podsumowuje dane o produkach które użykownik 
+kupował najczęściej każdego miesiąca. Uwzględnia wyłącznie produkty które 
+zakupiono 4 razy - liczbę wybrano arbitralnie metodą kolejnych przybliżeń aby 
+otrzymać zadowalający wynik.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1135,8 +1034,8 @@ FROM (SELECT
 GROUP BY [Type], [Month]
 ORDER BY [Month] DESC, [Sum] DESC;
 \end{lstlisting}
-{Widok Monthly\_Expenditures\_by\_Type podsumowujący dla użytkownika dane o 
-typach produktów w ujęciu miesięcznym.}
+{Widok Monthly\_Expenditures\_by\_Type podsumowuj dane o typach produktów 
+zakupionych przez użytkownika w ujęciu miesięcznym.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1164,8 +1063,7 @@ FROM (SELECT
 )
 WHERE [Product_ID] IS NULL;
 \end{lstlisting}
-{Widok Temp\_check służy użytkownikowi do weryfikacji poprawności wprowadzonych 
-danych.}
+{Widok Temp\_check weryfikuje poprawność danych wprowadzonych przez użytkownika.}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
@@ -1186,18 +1084,125 @@ WHERE [Product] IN (NULL,
                     'UNKNOWN')
     OR [Comment] LIKE '%[TODO]%';
 \end{lstlisting}
-{Widok Products\_to\_fix zawiera dane wprowadzone przez użytkownika któe 
-zostały zaakceptowane jednak wymagają poprawy. Rozpoznawane są po specjalnych
- wartościach w polu PRODUCT lub oznaczeniu [TODO] w komentarzu.}
+{Widok Products\_to\_fix zawiera dane wprowadzone przez użytkownika poprawnie i 
+oznaczone jako dane do uzupełnienia specjalnymi etykietami - wartością w polu 
+PRODUCT=UNKNOWN lub [TODO] w komentarzu.}
 \end{minipage}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Widok TypeSummary},
+        language=SQL,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+    CREATE VIEW IF NOT EXISTS [TypeSummary] AS
+    SELECT
+        [ProductTypes].[ID]                         AS [ID]
+        ,[ProductTypes].[Type]                    AS [Type]
+        ,[ProductTypes].[Comment]              AS [Comment]
+        ,IFNULL([Summary].[Amount], 0)          AS [Amount]
+     ,IFNULL([Summary].[Bought Times], 0) AS [Bought Times]
+        ,[Summary].[FirstBought]           AS [FirstBought]
+        ,[Summary].[LastBought]             AS [LastBought]
+        ,IFNULL([Summary].[Common], 'Absent')   AS [Common]
+    FROM [ProductTypes]
+    LEFT JOIN (SELECT 
+        *
+        ,(CASE WHEN ([Bought Times]>(
+            SELECT 
+                AVG([Bought Times]) AS [Average] 
+            FROM (SELECT
+                    [Type]
+                    ,Round(SUM([Amount]), 2) AS [Amount]
+                    ,COUNT([DateTime]) AS [Bought Times]
+                    ,MAX([DateTime])     AS [LastBought]
+                    ,MIN([DateTime])    AS [FirstBought]
+                FROM [Expenditures_Enriched]
+                GROUP BY [Type]
+                ORDER BY [Bought Times] DESC))) 
+        then 'Common' else 'Uncommon' end) as [Common]
+        
+    FROM (	SELECT
+               [Type]
+               ,Round(SUM([Amount]), 2) AS [Amount]
+               ,COUNT([DateTime])       AS [Bought Times]
+               ,MAX(DateTime)           AS [LastBought]
+               ,MIN(DateTime)           AS [FirstBought]
+            FROM [Expenditures_Enriched]
+            GROUP BY [Type]
+            ORDER BY [Bought Times] DESC))
+    AS [Summary]
+    ON [ProductTypes].[Type]=[Summary].[Type];
+    \end{lstlisting}
+    {Widok TypeSummary podsumowuj dane o typach produktów użytkownika.}
+    \end{minipage}
+    
+    \begin{minipage}{\textwidth}
+        \begin{lstlisting}[ caption={Widok ProductSummary},
+            language=SQL,
+            deletekeywords={IDENTITY},
+            deletekeywords={[2]INT},
+            morekeywords={clustered},
+            framesep=8pt,
+            xleftmargin=40pt,
+            framexleftmargin=40pt,
+            frame=tb,
+            framerule=0pt ]
+    CREATE VIEW IF NOT EXISTS [ProductSummary] AS
+    SELECT
+        [Products].[ID]                             AS [ID]
+        ,[Products].[Product]                  AS [Product]
+        ,[Products].[TypeID]                    AS [TypeID]
+        ,[Products].[Comment]                  AS [Comment]
+        ,IFNULL([Summary].[Amount], 0)          AS [Amount]
+     ,IFNULL([Summary].[Bought Times], 0) AS [Bought Times]
+        ,[Summary].[FirstBought]           AS [FirstBought]
+        ,[Summary].[LastBought]             AS [LastBought]
+        ,IFNULL([Summary].[Common], 'Absent')   AS [Common]
+    FROM [Products]
+    LEFT JOIN (SELECT 
+        *
+        ,(CASE WHEN ([Bought Times]>(
+            SELECT 
+                AVG([Bought Times]) AS [Average] 
+            FROM (SELECT
+                    [Product]
+                    ,Round(SUM([Amount]), 2) AS [Amount]
+                    ,COUNT([DateTime]) AS [Bought Times]
+                    ,MAX([DateTime])     AS [LastBought]
+                    ,MIN([DateTime])    AS [FirstBought]
+                FROM [Expenditures_Enriched]
+                GROUP BY [Product]
+                ORDER BY [Bought Times] DESC))) 
+        then 'Common' else 'Uncommon' end) as [Common]
+        
+    FROM (	SELECT
+               [Product]
+               ,Round(SUM([Amount]), 2) AS [Amount]
+               ,COUNT([DateTime])       AS [Bought Times]
+               ,MAX(DateTime)           AS [LastBought]
+               ,MIN(DateTime)           AS [FirstBought]
+            FROM [Expenditures_Enriched]
+            GROUP BY [Product]
+            ORDER BY [Bought Times] DESC))
+    as [Summary]
+    ON [Products].[Product]=[Summary].[Product];
+    \end{lstlisting}
+    {Widok ProductSummary podsumowujący dla użytkownika statystyki produktów.}
+    \end{minipage}
 
 %------------------------- Application layer ----------------------------------- 
 \section{\customstylesection{Logika aplikacji}} \label{Logika aplikacji}
-{W toku prac stopniowo zmienne w formie kolekcji słowników wykorzystywane w 
-projekcie zamieniano w klasy które spajają dane. Wyłoniły się one w odpowiedzi 
-na potrzeby w wyniku refaktoryzacji i tworzenia abstrakcji upraszczających 
-interfejs funkcji. Klasy projektowano tak, by były w miarę możliwości oczywiste
- i zrozumiałe, co mapoprawia czytelność i łatwość zrozumienia kodu.}
+{W toku prac stopniowo wykorzystywane w projekcie zmienne w formie kolekcji 
+słowników  zamieniano w klasy które spajają dane. Wyłoniły się one w wyniku 
+refaktoryzacji i tworzenia abstrakcji upraszczających interfejs funkcji. Klasy 
+projektowano tak, by były w miarę możliwości oczywiste i zrozumiałe, co ma na 
+celu poprawić czytelność i zrozumiałość kodu.}
 
 \begin{minipage}{\textwidth}
     \begin{lstlisting}[ caption={Klasa Database},
@@ -1253,7 +1258,7 @@ class ChartSelect():
         self.select=str(select),
         self.label=str(label)
     \end{lstlisting}
-{Obiekty klasy ChartSelect posiada trzy atrybuty typu string: database
+{Obiekty klasy ChartSelect posiadają trzy atrybuty typu string: database
  przechowuje w pełni kwalifikowaną ścieżkę do bazy danych aplikacji, select 
 to zapytanie SQL do bazy, natomiast pole label to etykieta wykresu danych 
 wyświetlanego użytkownikowi.}
@@ -1277,7 +1282,7 @@ class Chart():
         self.selects = selects
         self.caption = caption
     \end{lstlisting}
-{Obiekty klasy Chart definiuje dane do wizualizacji. Atrybut caption przyjmuje 
+{Obiekty klasy Chart definiują dane do wizualizacji. Atrybut caption przyjmuje 
 wartości typu string wyświetlane jako nagłówek wizualizacji, natomiast atrybut 
 selects jest listą obiektów typu ChartSelect - zbioru zapytań które zostaną 
 wyświetlone w ramach pojedynczej wizualizacji.}
@@ -1314,24 +1319,103 @@ class CellEdition():
                  self.newvalue,
                  self.oldvalue)
     \end{lstlisting}
-{Obiekty klasy CellEdition służy do przechowywania danych rekordu bazy danych
- edytowanych przez użytkownika poprzez interfejs. Każdy obiekt przechowuje w
- polach odpowiednio: }
+{Obiekty klasy CellEdition przechowują dane edytowanego przez użytkownika 
+używającego interfejsu aplikacji rekordu bazy danych. Każdy obiekt przechowuje w
+ polach odpowiednio:}
+\begin{itemize}
+    \item table - tabelę któej dotyczy zmiana
+    \item ID - identyfikator modyfikowanego rekordu
+    \item field - pole które jest zmieniane
+    \item newvalue - nowa wartość pola
+    \item oldvalue - wartość pola przed zmianą
+\end{itemize}
+{Funkcja składowa \_\_repr\_\_ formatuje dane które zawiera obiekt do postaci 
+tekstu. Obecnie nieużywana, możliwe że w późniejszych etapach zostanie 
+wykorzystana do rejestrowania zdarzenia w logu aplikacji.}
 \end{minipage}
 
-\section{\customstylesection{Graficzny interfejs użytkownika}} \label{Graficzny interfejs użytkownika}
+\section{\customstylesection{Graficzny interfejs użytkownika}} 
+\label{Graficzny interfejs użytkownika}
 {Graficzny interfejs użytkownika (GUI, Graphical User interface) aplikacji 
-utworzono z wykorzystaniem biblioteki PySimpleGUI \cite{PySimpleGUI}. 
-Dzięki temu interfejs definiowany jest w postaci kolekcji jak listy, lub listy 
-list, obiektów klas zawartyvh w bibliotece.}
+utworzono z wykorzystaniem biblioteki PySimpleGUI \cite{PySimpleGUI}. Dzięki 
+temu interfejs definiowany jest w postaci kolekcji jak listy, lub listy list, 
+obiektów klas zawartych w bibliotece - jako przykład przedstawiono opcje listy 
+rozwijanej na poniższym listingu. %TODO: Figure out how to reference listings \ref{Dropdown}. 
+Aby zapewnić responsywność interfejs budowany jest w kilku etapach, a cała 
+budowa wydzielona do specjalnych funkcji generujących wywoływanych później 
+zależnie od potrzeb. Funkcje opisane są w dalszej części w sekcji 
+\nameref{Metody projektu}.}
+
+\begin{minipage}{\textwidth}
+    \begin{lstlisting}[ caption={Lista rozwijana przykład definicji interfejsu},
+        language=Python,
+        deletekeywords={IDENTITY},
+        deletekeywords={[2]INT},
+        morekeywords={clustered},
+        framesep=8pt,
+        xleftmargin=40pt,
+        framexleftmargin=40pt,
+        frame=tb,
+        framerule=0pt ]
+    menu = [['Visualizations', 
+                ['Most common products', 
+                 'Income summary',
+                 'Monthly Bilance',
+                 'TopTypeMonthly',
+                 'Type'
+                    ,[types],
+                 'Product'
+                    ,[products]]],
+            ['Browse data',
+                #TODO: Add views as uneditable
+                ['Expenditures',
+                 'Bills',
+                 'Income',
+                 'Types' ,
+                 'Products',]],
+            ['Options',
+                [#'Configure',
+                 'Change Theme',
+                    [themes],
+                'Version',
+                'About...',
+                'Manual']] #TODO: Wishful thinking - built in manual
+            ]
+    \end{lstlisting}
+\end{minipage}
+
+{Interfejs przedstawiono poglądowo na poniższyczh grafikach.}
+%{Jego iteracyjny rozwój zaprezentowano na przykładzie zakładki Visualizations.} %TODO: optional
+\begin{figure}[H]           %requires float package
+    \caption{Wizualizacja danych}
+    \label{fig:Wizualizacja danych}
+    \centering  
+    \includegraphics[width=12cm]{figures/Interface_Visualizations_v0.3.png}
+\end{figure}
 
 \begin{figure}[H]           %requires float package
-    \caption{Wizualizacja danych wersja 2}
-    \label{fig:Wizualizacja danych wersja 2}
+    \caption{Opcje}
+    \label{fig:Opcje}
     \centering  
-    \includegraphics[width=12cm]{figures/Interface_v0.2.png}
+    \includegraphics[width=12cm]{figures/Interface_Options_v0.3.png}
 \end{figure}
-\section{\customstylesection{Metody projektu}}
+
+\begin{figure}[H]           %requires float package
+    \caption{Import danych}
+    \label{fig:Import danych}
+    \centering  
+    \includegraphics[width=12cm]{figures/Interface_Browse_Import_v0.3.png}
+\end{figure}
+
+\begin{figure}[H]           %requires float package
+    \caption{Dodawanie rekordu}
+    \label{fig:Dodawanie rekordu}
+    \centering  
+    \includegraphics[width=12cm]{figures/Interface_Browse_AddRecord_v0.3.png}
+\end{figure}
+
+\section{\customstylesection{Metody projektu}} 
+\label{Metody projektu}
 {lorem ipsum}
 
 \section{\customstylesection{Obiekty projektu}}
@@ -1381,8 +1465,8 @@ list, obiektów klas zawartyvh w bibliotece.}
     https://www.latex-project.org/}
 \bibitem{VSCode} Microsoft, Visual Studio Code \raggedright\url{
     https://code.visualstudio.com/}
-\bibitem{DBBrowser} Public domain, DB Browser for SQLite \raggedright\url{
-    https://sqlitebrowser.org/}
+\bibitem{DataGrid} JetBrains, DataGrid \raggedright\url{
+    https://www.jetbrains.com/datagrip/}
 \bibitem{Kanban} Lean Action PLan, Kanban – układ nerwowy sterowania produkcją w koncepcji Lean Manufacturing \raggedright\url{
     https://leanactionplan.pl/kanban/}
 \bibitem{LEAN} Wikipedia, Lean software development \raggedright\url{
@@ -1391,6 +1475,9 @@ list, obiektów klas zawartyvh w bibliotece.}
     https://git-scm.com/}
 \bibitem{GitHub} https://github.com/ \raggedright\url{
     https://github.com/}
+\bibitem{Model Przyrostowy} Wikipedia, Model Przyrostowy \raggedright\url{
+    https://pl.wikipedia.org/wiki/Model_przyrostowy}
+
 \end{thebibliography}
 
 
