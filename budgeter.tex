@@ -101,6 +101,8 @@
     \ifnum#1<10 0\fi#1 |%
 }
 
+\renewcommand{\lstlistlistingname}{Listingi}
+
 % ------------------------------ Custom Commands ------------------------------
 % Usage: \command\{text}  
 \newcommand{\customstyletitle}[1]{\Huge{\textbf{#1}}}
@@ -1288,6 +1290,7 @@ selects jest listą obiektów typu ChartSelect - zbioru zapytań które zostaną
 wyświetlone w ramach pojedynczej wizualizacji.}
 \end{minipage}
 
+\label{Classes-CellEdition}
 \begin{minipage}{\textwidth}
     \begin{lstlisting}[ caption={Klasa CellEdition},
         language=Python,
@@ -1572,13 +1575,57 @@ wartość domyślna jest zapisana w pliku konfiguracyjnym. Gotowe wygenerowane o
  podejmuje odpowiednie akcje.}
 
 \section{\customstylesection{Obiekty projektu}}
-{lorem ipsum}
+{Projekt w trakcie działania wykorzystuje grupę obiektów pomocniczych 
+przechowujących dane ustawienia - głównie zaczytane z pliku konfiguracyjnego - 
+oraz obiekty tworzone w locie których głównym celem jest zebranie informacji 
+wymaganych w funkcji w formie jednej, spójnej zmiennej. W efekcie pełnią one 
+rolę struktur. Większość klas wykorzystywanych w projekcie zostało 
+zaprojektowanych jako struktury ponieważ wymagane funkcje są na tyle ogólne że 
+ujęcie ich jako metody wewnątrz klas wymusiłoby albo ich ponowną implementację w
+ innym miejscu do specyficznych potrzeb, albo tworzenie w większości pustych 
+obiektów tylko żeby skorzystać z możliwości któe udostępniają za pomocą swoich 
+metod.}
+
+{W zasadzie głównymi obiektami są elementy interfejsu. Są to instancje różnych 
+obiektów klas zdefiniowanych w bibliotece PySimpleGUI osadzone w liście list 
+która tworzy układ. Następnie układ ten osadzany jest w obiekcie klasy 
+\inlinecode{Window} biblioteki PySimpleGUI - oknie aplikacji z któym użytkownik 
+wchodzi w interakcję.}
+
+{Jedyną faktycznie pełnoprawną klasą w projekcie obecnie jest kalsa 
+\inlinecode{CellEdition} która poza atrybutami zbudowana jest także z metody 
+\inlinecode{\_\_repr\_\_} do formatowania atrybutów obiektu do postaci tekstu. 
+Metoda ta nie jest jednak wykorzystywana na obecnym etapie rozwoju aplikacji. 
+Szczegóły tej klasy znajdują się w sekcji \ref*{Classes-CellEdition}.}
 
 \section{\customstylesection{Struktury projektu}}
-{lorem ipsum}
+{Klasy \inlinecode{Database}, \inlinecode{ChartSelect} oraz \inlinecode{Chart} 
+szczegółowo opisane w sekcji \ref*{Classes-CellEdition} są w istocie strukturami
+ przechowującymi dane w ustandaryzowany sposób aby uprościć interfejs funckji i 
+poprawić czytelność kodu.}
 
 \section{\customstylesection{Algorytmy projektu}}
-{lorem ipsum}
+{Projekt nie wykorzystuje żadnych zaawansowanych algorytmów ponieważ z Założenia
+ ich nie wymaga. Jego głównym celem jest udostępnienie przejrzystego i 
+intuicyjnego interfejsu do gromadzenia danych oraz modułu analitycznego który 
+pozwala na ich czytelną wizualizację. Nacisk przygotowania danych do 
+wizualizacji położony został na warstwę bazy danych, w której dane zbierane i 
+przetwarzane są z wykorzystaniem zapytań w języku SQL.}
+
+{W warstwie Graficznego Interfejsu Użytkownika oraz kodu aplikacji projekt 
+składa się natomiast z implementacji rozwiązań dostępnych w wykorzystywanych 
+bibliotekach w sposób możliwie wydajny. Na miarę możliwości wykorzystano 
+generatory wspomagające proste budowanie powtarzalnych i stałych elementów 
+interfejsu.}
+
+{W projekcie widnieje także obenie nie wykorzystywany fragment funkcji edycji 
+tabeli przez interfejs graficzny który jest w trakcie wdrażania. Ponieważ 
+domyślnie biblioteka PySimpleGUI nie udostępnia takiej interakcji obejście 
+wykorzystuje bibliotekę Tkinter \cite{Tkinter} jedną z bibliotek wykorzystywanych
+wewnątrz elementów interfejsu PySimpleGUI. Z powodu ograniczeń projektu 
+opisanych w sekcji \nameref{Metody projektu}, w opisie funkcji 
+\inlinecode{EditCell}, w projekcie wykorzystano kod rozwiązania dostępny 
+publicznie \cite{EdittableTable}.}
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 \begin{thebibliography} {books}
@@ -1630,11 +1677,11 @@ wartość domyślna jest zapisana w pliku konfiguracyjnym. Gotowe wygenerowane o
     https://github.com/}
 \bibitem{Model Przyrostowy} Wikipedia, Model Przyrostowy \raggedright\url{
     https://pl.wikipedia.org/wiki/Model_przyrostowy}
-
+\bibitem{EdittableTable} YouTube The CS Classroom, PySimpleGUI - Excel-style Editable Table \raggedright\url{
+    https://www.youtube.com/watch?v=ETHtvd-_FJg}
+\bibitem{Tkinter} python.org, tkinter — Python interface to Tcl/Tk \raggedright\url{
+    https://docs.python.org/3/library/tkinter.html}
 \end{thebibliography}
-
-
-
 
 %https://github.com/MarcinNowak94/budgeter
 %https://github.com/MarcinNowak94/DatabaseShenanigans
