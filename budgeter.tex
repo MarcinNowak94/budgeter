@@ -19,7 +19,6 @@
 %
 %Optional functions:
 % - Data statistics (records in each table, firstdate-lastdate, data quality)
-% - Change GUI theme: add selectable list with themes, store it in config #DONE
 % - synopsis for functions
 % - built in manual
 % - error handling
@@ -28,7 +27,7 @@
 % - fix in place table editting
 % - allow user to remove data
 % - (loose idea) VERY optional: create database programatically: 
-% 	- dump database creation script into sql file
+% 	- dump database creation script into sql file DONE
 %	- create dummy Finances.sqlite wherever user wants
 %	- use script as database initialisation
 % - automatically deduce the encoding GetDataFromCSV
@@ -429,7 +428,7 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Plik konfiguracji} & {M} & {TAK} & {Osobny plik konfiguracyjny}\\
     \hline
-    {Dodawanie danych} & {M} & {-} & {Dodawanie danych}\\
+    {Dodawanie danych} & {M} & {TAK} & {Dodawanie danych}\\
     \hline
     {Podsumowanie wydatków} & {M} & {TAK} & {Okresowe podsumowanie wydatków}\\
     \hline
@@ -457,9 +456,9 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Import danych} & {C} & {TAK} & {Import danych w standardowym formacie}\\
     \hline
-    {Walidacja danych} & {C} & {-} & {Potwierdzenie jakości danych}\\
+    {Walidacja danych} & {C} & {NIE} & {Potwierdzenie jakości danych}\\
     \hline
-    {Eksport danych} & {C} & {-} & {Eksport danych do standardowego formatu}\\
+    {Eksport danych} & {C} & {NIE} & {Eksport danych do standardowego formatu}\\
     \hline
     {Instalator} & {C} & {NIE} & {Prosty instalator aplikacji}\\
     \hline
@@ -473,6 +472,8 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline
     {Aktualizacje} & {W} & {NIE} & {Automatyczne sprawdzanie wersji i aktualizacja}\\
     \hline
+   % {Lokalizacje} & {C} & {NIE} & {LRóżne wersje językowe interfejsu do wyboru}\\
+    %\hline
     \end{tabular}
     \caption{Wymagania funkcjonalne}
 \end{table}
