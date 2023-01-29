@@ -1704,6 +1704,11 @@ przez fakt, że użytkownicy mają także dostęp bezpośrednio do bazy danych d
 czemu mogą osobiście poprawić swoje błędnie wprowadzone dane z pominięciem 
 aplikacji.}
 
+{W kwestii interfejsu użytkownika zdarza się że zmiana wizualizacji wyłącza 
+systemowe skalowanie okna aplikacji, przez co niektóre elementy interfejsu 
+przestają wyświetlać się prawidłowo. Problem ten jest ograniczony, występuje 
+tylko w systemach gdzie użytkownik ustawiłw systemie skalowanie inne niż 100\%.}
+
 % [REQUIREMENT] 18. Konserwacja systemu
 \chapter{\customstylechapter{Konserwacja systemu}}
 {Wynikiem projektu jest aplikacja dostarczana w formie spakowanego archiwum, a 
@@ -1727,10 +1732,35 @@ kodzie aplikacji.}
 % (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
 \chapter{\customstylechapter{Podsumowanie projektu}}
 \section{\customstylesection{Wnioski z implementacji}}
+{Wynik finalny projektu jest zadowalający zarówno pod względem dostarczonych 
+funkcji jak i walorów edukacyjnych. Aplikacja jest responsywna, zadziwiająco 
+funkcjonalna jak na tak krótki czas implementacji, a plik wynikowy ma niewielkie
+ rozmiary i nie wymaga instalacji co czyni ją przenośną. Wykorzystana biblioteka
+PySimpleGUI jest dość intuicyjna i bardzo upraszcza projektowanie w pełni 
+działającego Graficznego Interfejsu Użytkownika, mimo że ma swoje ograniczenia.}
 
+\medskip
+{Mając jednak na uwadze obecnie panujące standardy rynkowe aplikacja wygląda 
+dość archaicznie, a sam model tak zwanych aplikacji desktopowych nie jest już 
+tak popoularny jak kiedyś. Ponadto sama biblioteka PySimpleGUI ma pewne 
+ograniczenia - co prawda implementacja standardowych elementó jest bardzo 
+prosta, jednak wszelkie nieprzewidziane przez autorów funkcje są możliwe jednak 
+dopiero po zgłębieniu szczegółów technicznych biblioteki niższego poziomu 
+która jest wykorzystywana przez obiekt danego typu, co znacznie zwiększa 
+złożoność programowanego rozwiązania i wymaga projektowania na wielu poziomach 
+abstrakcji jednocześnie.}
 
 \section{\customstylesection{Alternatywne sposoby realizacji projektu}}
-
+{Podczas wdrażania aplikacji rozważano także alternatywne możliwości realizacji 
+projektu. Jako interfejs aplikacji możnaby zastosować przeglądarkę, co znacznie 
+unowowcześni projekt a takze pozwoli skorzystać z szerszej gamy dostępnych 
+bibliotek. Aplikacja możnaby także przenieść na urządzenia mobilne które mają 
+dodatkowe możliwości techniczne, przez co otworzą nowe drogi rozwoju projektu. 
+Zmienićmożna także model działania z aplikacji lokalnej na klient-serwer z 
+centralną bazą danych przechowującą jednocześnie dane wszystkich użytkowników 
+co z jednej strony pozwoli na tworzenie nowych funkcji statystycznych na 
+znacznie większym zakresie danych jednak niesie za sobą problemy natury 
+prywatności użytkowników i poufności informacji.}
 
 
 
