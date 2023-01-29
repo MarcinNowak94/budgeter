@@ -1337,9 +1337,10 @@ używającego interfejsu aplikacji rekordu bazy danych. Każdy obiekt przechowuj
     \item newvalue - nowa wartość pola
     \item oldvalue - wartość pola przed zmianą
 \end{itemize}
-{Funkcja składowa \_\_repr\_\_ formatuje dane które zawiera obiekt do postaci 
-tekstu. Obecnie nieużywana, możliwe że w późniejszych etapach zostanie 
-wykorzystana do rejestrowania zdarzenia w logu aplikacji.}
+{Funkcja składowa \inlinecode{\_\_repr\_\_} formatuje dane które zawiera obiekt 
+do ciągu znaków. Obecnie używana wyłacznie do logowania wpisu na standardowe 
+wyjście, aplikacji. Możliwe że w późniejszych etapach zostanie wykorzystana do 
+rejestrowania zdarzenia w logu aplikacji.}
 \end{minipage}
 
 \section{\customstylesection{Graficzny interfejs użytkownika}} 
@@ -1762,6 +1763,117 @@ co z jednej strony pozwoli na tworzenie nowych funkcji statystycznych na
 znacznie większym zakresie danych jednak niesie za sobą problemy natury 
 prywatności użytkowników i poufności informacji.}
 
+% [REQUIREMENT] 20. Dokumentacja dla użytkownika (Podręczni kużytkownika)
+% [REQUIREMENT] 20.1. Przeznaczenie i główne możliwości systemu
+% [REQUIREMENT] 20.2. Podstawowe wymagania
+% [REQUIREMENT] 20.3. Opis instalacji/uruchamiania
+% [REQUIREMENT] 20.4. Kompletny opis działających funkcji (menu, opis interface...),
+% formatów danych, obsługi błędów użytkowania, zakresów danych 
+% [REQUIREMENT] 20.5. Podręcznik administratora/użytkownika systemu/gościa
+% [REQUIREMENT] 20.6. Spostrzeżenia i zalecenia do użytkowania projektu
+% [REQUIREMENT] 20.7. Wykryte błędy w działaniu
+\chapter{\customstylechapter{Podręcznik użytkownika}}
+
+%original Przeznaczenie i główne możliwości systemu
+\section{\customstylesection{Budgeter: Co, jak i właściwie to po co?}}
+{Drogi użytkowniku, aplikacja Budgeter jest Twoim prywatnym doradcą finansowym. 
+Pomoże Ci zarządzać domowym budżetem, planować wydatki i wskaże gdzie szukać 
+oszczędności, a także poinformuje na jakie kategorie produktów pochłaniają 
+największą część Twojego budżetu domowego. Te kilka prostych informacji pozwoli 
+Ci zachować więcej ciężko zarobionych pieniędzy które wraz ze swoją rodziną 
+będziesz mógł wydać na przyjemności małe i wielkie. Brzmi dobrze prawda?}
+
+{Jedyne czego potrzebuje od Ciebie to informacje o Twoich wydatkach bieżących, 
+stałych rachunkach i zarobkach na które tak ciężko pracujesz. Dzięki odrobinie 
+wytrwałości i skrupulatnym wprowadzaniu danych niebawem dowiesz się o swoich 
+finansach rzeczy których nawet się nie spodziewałeś. Wprowadzanie danych nigdy 
+nie było takie łatwe - minimalistyczny, przejrzysty interfejs pozwoli Ci 
+intuicyjnie poruszać się po aplikacji aby w mgnieniu oka uzyskać efekt jakiego 
+oczekujesz. Jeśli posiadasz już dane których chciałbyś użyć w aplikacji możesz
+przenieść je kilkoma klinięciami dziśki możliwości importu danych z pliku w 
+jednym z najszerzej wykorzystywanych standardów na świecie.}
+
+{Jeśli cenisz sobie możliwość dostosowania narzędzia do własnych potrzeb, nie 
+mogłeś trafić lepiej - Budgeter jest narzędziem elastycznym, dopasowującym się 
+do użytkownika. Ty sam możesz wprowadzić nazwy produktów których będziesz używał
+w aplikacji. Dodatkowo możesz definiować także Typu które pozwalają grupować 
+kaetegorie produktów. Dla zbiory informacji możesz dowoli personalizować, lub 
+skorzystać z dopracowanego przez naszych ekspertów szablonu co pozwoli Ci skupić
+ się na używaniu aplikacji. Każdy ma włąsny styl, doceniamy to i szanujemy, 
+ dlatwgo wygląd okna aplikacji także możesz dopasować do siebie i swoich 
+ oczekiwań.}
+
+\section{\customstylesection{Wymagania}}
+{Aplikacja ma bardzo małe wymagania, jedyne czego potrzebujesz aby korzystać 
+już dziś wystarczy:}
+
+\begin{minipage}{\textwidth}
+    \begin{itemize}
+        \item Pamięć 50MB dowolnego typu
+        \item Pamięć RAM 4GB (wliczajac system)
+        \item Urządzenia peryferyjne: klawiatura, mysz komputerowa
+        \item Dowolne urządzenie wyświetlające
+    \end{itemize}
+\end{minipage}
+
+\section{\customstylesection{Uruchamianie aplikacji}}
+{Instalacja składa się z kilku prostych kroków. Po pobraniu aplikacji otwórz 
+folder do Pobrane - znajdziesz tam plik Budgeter.zip który możesz przenieść do 
+dowolnego folderu na twoim komputarze. Kiedy umieścisz już archiwum tam gdzie Ci
+ wygodnie kliknij prawym przyciskiem myszy i wybierz opcję Wyodrębnij wszystkie.}
+
+\begin{figure}[H]           %requires float package
+    \caption{Wypakuj archiwum}
+    \label{fig:Wypakuj archiwum}
+    \centering  
+    \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_01_unzip-archive.png}
+\end{figure}
+
+{Po otwarciu archiwum wskaż folder do którego chcesz wypakować aplikację.}
+
+\begin{figure}[H]           %requires float package
+    \caption{Wskaż folder}
+    \label{fig:Wskaż folder}
+    \centering  
+    \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_01_unzip-archive_p2.png}
+\end{figure}
+
+{Po wykakowaniu archiwum w wybranym miejscu pojawi się folder w którym znajduje 
+się aplikacja, pozostaje otworzyć ją jak każdy inny program klikając dwukrotnie 
+lewym przciskiem myszki i możesz już zacząć swoją przygodę z aplikacją Budgeter.}
+
+\begin{figure}[H]           %requires float package
+    \caption{Otwórz katalog}
+    \label{fig:Otwórz katalog}
+    \centering  
+    \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_02_open.png}
+\end{figure}
+
+\begin{figure}[H]           %requires float package
+    \caption{Otwóż aplikację}
+    \label{fig:Otwóż aplikację}
+    \centering  
+    \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_02_open_p2.png}
+\end{figure}
+
+\begin{figure}[H]           %requires float package
+    \caption{Ekran powitalny aplikacji}
+    \label{fig:Ekran powitalny aplikacji}
+    \centering  
+    \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_03_splashscreen.png}
+\end{figure}
+
+\section{\customstylesection{Funkcje}}
+
+
+\section{\customstylesection{Podręcznik administratora/użytkownika systemu/gości}}
+
+
+\section{\customstylesection{Spostrzeżenia i zalecenia do użytkowania projektu}}
+
+
+\section{\customstylesection{Potencjalne błędy}}
+
 
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
@@ -1836,22 +1948,6 @@ prywatności użytkowników i poufności informacji.}
 
 
 % ------------------------------ Docummentation -------------------------------
-
-% ------ Project deadline 2023-01-29 ------------------------------------------
-% ------ Part 1: Due 2022-10-21 
-% ------ Part 2: Due 2022-11-18 
-% [REQUIREMENT] 20. Dokumentacja dla użytkownika (Podręczni kużytkownika)
-% [REQUIREMENT] 20.1. Przeznaczenie i główne możliwości systemu
-% [REQUIREMENT] 20.2. Podstawowe wymagania
-% [REQUIREMENT] 20.3. Opis instalacji/uruchamiania
-% [REQUIREMENT] 20.4. Kompletny opis działających funkcji (menu, opis interface...),
-% formatów danych, obsługi błędów użytkowania, zakresów danych 
-% [REQUIREMENT] 20.5. Podręcznik administratora/użytkownika systemu/gościa
-% [REQUIREMENT] 20.6. Spostrzeżenia i zalecenia do użytkowania projektu
-% [REQUIREMENT] 20.7. Wykryte błędy w działaniu
-
-
-% DONE
 % [REQUIREMENT] 1. Strona tytułowa
 % [REQUIREMENT] 2. Spis treści
 % [REQUIREMENT] 3. Wprowadzenie do tematyki projektu
@@ -1891,10 +1987,18 @@ prywatności użytkowników i poufności informacji.}
 % [REQUIREMENT] 18. Konserwacja systemu
 % [REQUIREMENT] 19. Podsumowanie i alternatywne sposoby stworzenia projektu
 % (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
-
-% [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
-% [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
+% [REQUIREMENT] 20. Dokumentacja dla użytkownika (Podręczni kużytkownika)
+% [REQUIREMENT] 20.1. Przeznaczenie i główne możliwości systemu
+% [REQUIREMENT] 20.2. Podstawowe wymagania
+% [REQUIREMENT] 20.3. Opis instalacji/uruchamiania
+% [REQUIREMENT] 20.4. Kompletny opis działających funkcji (menu, opis interface...),
+% formatów danych, obsługi błędów użytkowania, zakresów danych 
+% [REQUIREMENT] 20.5. Podręcznik administratora/użytkownika systemu/gościa
+% [REQUIREMENT] 20.6. Spostrzeżenia i zalecenia do użytkowania projektu
+% [REQUIREMENT] 20.7. Wykryte błędy w działaniu
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
+% [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
+% [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
 
 % --------------------------------- Purgatory ----------------------------------
 % Orphaned snippets of texts placed here untill you decide what to do with them
