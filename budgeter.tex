@@ -495,7 +495,12 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 % Wzory: https://www.microsoft.com/pl-pl/windows/Windows-10-specifications
 % https://examsoft.com/resources/examplify-minimum-system-requirements/
 % https://softwareengineering.stackexchange.com/questions/86863/how-are-minimum-system-requirements-determined
-{System Operacyjny Windows 10.}
+{System Operacyjny Windows 1, Python 3 z biblioteką matplotlib, PySimpleGUI - 
+instalowane poleceniami:}
+
+\inlinecode{python -m pip install -U matplotlib}
+
+\inlinecode{python -m pip install -U pysimplegui}
 
 % [REQUIREMENT] 10.3. Organizacyjne (np. organizacja pracy z systemem, warunki 
 % poprawnej pracy przy większej liczbie użytkownikó, stanowisk, obciążeniu sieci,
@@ -630,7 +635,8 @@ aplikacja DataGrid \cite{DataGrid}. Aplikacja Visual Studio Code
 \cite{VSCode} posłuży do pisania kodu w Python \cite{Python} oraz dokumentacji 
 w LaTeX \cite{LaTeX}. Do rozwoju dokumentacji oraz kodu aplikacji posłuży 
 system kontroli źródła GIT \cite{GIT}, a oba kody źródłowe przechowywane będą w 
-osobnych projektach na platformie GitHub \cite{GitHub}.}
+osobnych projektach \cite[DatabaseShenanigans]{GITBudgeterApp} oraz 
+\cite[budgeter]{GITBudgeterDoc} na platformie GitHub \cite{GitHub}.}
 
 \section{\customstylesection{Techniki}}
 {W trakcie tworzeznia projektu wykorzystano model przyrostowy 
@@ -1592,7 +1598,7 @@ która tworzy układ. Następnie układ ten osadzany jest w obiekcie klasy
 \inlinecode{Window} biblioteki PySimpleGUI - oknie aplikacji z któym użytkownik 
 wchodzi w interakcję.}
 
-{Jedyną faktycznie pełnoprawną klasą w projekcie obecnie jest kalsa 
+{Jedyną faktycznie pełnoprawną klasą w projekcie obecnie jest klasa 
 \inlinecode{CellEdition} która poza atrybutami zbudowana jest także z metody 
 \inlinecode{\_\_repr\_\_} do formatowania atrybutów obiektu do postaci tekstu. 
 Metoda ta nie jest jednak wykorzystywana na obecnym etapie rozwoju aplikacji. 
@@ -1626,6 +1632,62 @@ wewnątrz elementów interfejsu PySimpleGUI. Z powodu ograniczeń projektu
 opisanych w sekcji \nameref{Metody projektu}, w opisie funkcji 
 \inlinecode{EditCell}, w projekcie wykorzystano kod rozwiązania dostępny 
 publicznie \cite{EdittableTable}.}
+
+%TODO: Describe installation - finish application > PyInstaller > package and try to use it
+% [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
+% platformach, konfiguracjach...)
+\chapter{\customstylechapter{Przebieg uruchamiania projektu}}
+
+\section{\customstylesection{Wariant aplikacji w formie skryptu}}
+
+{Projekt uruchamiano na platformie Windows 10. Python jest językiem skryptowym 
+więc wstępnie należy zainstalować wymagane biblioteki poleceniami:}
+\begin{itemize}
+    \item \inlinecode{python -m pip install -U matplotlib}
+    \item \inlinecode{python -m pip install -U pysimplegui}
+\end{itemize}
+{Następnie uznależy umieścić archiwum w którym dostarczono projekt w dowolnej 
+lokalizacji i rozpakować. W rozpakowanym katalogu znajdują się wszystkie 
+wymagane pliki projektu. Jeśli środowisko Python jest skonfigurowano w systemie 
+użytkownika prawidłowo do uruchomienia aplikacji wystarczy w katalogu 
+aplikacji kliknąć prawym przyciskiem myszki na pustą przestrzeń, wybrać opcję 
+Otwórz w terminalu. W terminalu wydanie polecenia 
+\inlinecode{python .\\Budgeter.py} spowoduje uruchomienie aplikacji.}
+
+{Alternatywnie użytkownik moze uruchomić terminal i wydać polecenie 
+uruchamiające aplikację podając w pełni kwalifikowaną nazwę pliku Budgeter.py z 
+dowolnego miejsca w systemie.}
+
+%TODO: after PyInstaller prepare section
+\section{\customstylesection{Aplikacja w formie pliku wykonywalnego}}
+
+{Uruchomienie aplikacji w wersji skompilowanej do pliku wykonywalnego z 
+wykorzystaniem narzędzia PyInstaller \cite[text]{PyInstaller} jest o wiele 
+prostsze. Polega na rozpakowaniu dostarczonego archiwum, wejściu do katalogu 
+aplikacji i uruchomieniu pliku wykonywalnego z rozszerzeniem .exe .}
+
+% [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
+% testów)
+\chapter{\customstylechapter{Przebieg testowania projektu}}
+
+\section{\customstylesection{Warstwa bazy danych}}
+
+{Implementacja logiki podsumowań w warstwie bazy danych w języku SQL gwarantuje 
+poprawność danych, nie mniej jednak podczas tworzenia zapytań utworzono testową 
+wersję bazy danych którą wypełniono niewielkim zestawem testowych danych których
+ wyniki podsumowań obliczono. Wyniki podsumowań obliczonych ręcznie i z 
+wykorzystaniem zapytań w bazie dawały taki sam wynik, co sugeruje że logika 
+została zaimplementowana prawidłowo - przynajmniej na małych zestawach danych.}
+
+\section{\customstylesection{Warstwa aplikacji}}
+{Ponieważ Python jest językiem skryptowym aplikacja testowana była manualnie 
+na bieżąco podczas jej wytwarzania. Tak Graficzny Interfejs Użytkownika, jak 
+funkcje przez niego realizowane sprawdzano tuż po ich utworzeniu a wszelkie 
+znalezione błędy lub nieprzewidziane działanie eliminowano od ręki. Testy 
+powtarzano także po wprowadzeniu modyfikacji lub wyseparowaniu części funkcji 
+realizującej niezależne zadanie do osobnej funkcji. Takie iteracyjne podejście 
+będzie stosowane w dalszym rozwoju aplikacji.}
+
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 \begin{thebibliography} {books}
@@ -1681,10 +1743,14 @@ publicznie \cite{EdittableTable}.}
     https://www.youtube.com/watch?v=ETHtvd-_FJg}
 \bibitem{Tkinter} python.org, tkinter — Python interface to Tcl/Tk \raggedright\url{
     https://docs.python.org/3/library/tkinter.html}
-\end{thebibliography}
+\bibitem{PyInstaller} pyinstaller.org, PyInstaller Manual \raggedright\url{
+    https://pyinstaller.org/en/stable/}
+\bibitem{GITBudgeterApp} github.com MarcinNowak94, DatabaseShenanigans \raggedright\url{
+    https://github.com/MarcinNowak94/DatabaseShenanigans}
+\bibitem{GITBudgeterDoc} github.com MarcinNowak94, budgeter \raggedright\url{
+    https://github.com/MarcinNowak94/budgeter}
 
-%https://github.com/MarcinNowak94/budgeter
-%https://github.com/MarcinNowak94/DatabaseShenanigans
+\end{thebibliography}
 
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
 \listoffigures
@@ -1700,8 +1766,7 @@ publicznie \cite{EdittableTable}.}
 % ------ Part 1: Due 2022-10-21 
 
 % ------ Part 2: Due 2022-11-18 
-% [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
-% platformach, konfiguracjach...)
+
 % [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
 % testów)
 % [REQUIREMENT] 17. Wnioski z przebiegu testowania (wykryte defekty, wrażliwość
@@ -1751,6 +1816,11 @@ publicznie \cite{EdittableTable}.}
 % zastosowanych w projekcie (uwzględniając stsosowanie gotowych narzędzi
 % obcego autorstwa, w tym open source)
 % [REQUIREMENT] 14. POWYŻSZĄ CZĘŚĆ DOKUMENTACJI ODDAJEMY W TRAKCIE TWORZENIA
+% [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
+% platformach, konfiguracjach...)
+% [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
+% testów)
+
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
 % [REQUIREMENT] 21. Spisy ilustracji (spis obiektów graficznych, diagramów, tabel...)
