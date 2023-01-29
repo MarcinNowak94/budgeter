@@ -325,11 +325,10 @@ zostanie panel administracyjny prezentujący użytkownikowi dane statystyczne
 obrazujące ilość, zakres i jakość danych a także sugerujące kolejny krok ich 
 usprawnienia.}
 
-{Funkcjonalności importu i eksportu danych ze standardowych formatów będzie 
-przydatna dla użytkownika podczas korzystania z projektu, wymaga określenia 
-odpowiedniego formatu i standardu plików co może zająć sporo czasu dlatego 
-zostały uznane za dodatkowe przez co możliwe że nie zostaną wdrożone w 
-początkowej fazie projektu.}
+{Funkcje importu i eksportu danych ze standardowych formatów będą przydatne dla 
+użytkownika podczas korzystania z projektu, wymaga określenia odpowiedniego 
+formatu i standardu plików co może zająć sporo czasu dlatego zostały uznane za 
+dodatkowe przez co możliwe że nie zostaną wdrożone w początkowej fazie projektu.}
 
 {Obrane podejście pozwoli na rozwój aplikacji w różnych kiernkach, zależnie od 
 opinii użytkowników. Aplikacja może zmienić model z aplikacji lokalnej która 
@@ -414,7 +413,7 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
 
 {PRIO - Priorytet w jednej z kategorii MOSCOW \cite{MOSCOW}}
 
-{IMPL - Oznaczenie czy wdrożono funkcjonalność}
+{IMPL - Oznaczenie czy funkcję wdrożono}
 
 %[TODO]: try tabularray as suggested
 % Wrapping as per: https://stackoverflow.com/questions/790932/how-to-wrap-text-in-latex-tables
@@ -426,7 +425,7 @@ z nich zostały spełnione. Nagłówki z powodu objętości zostały skrócone, 
     \hline                  % Draw horizontal line
         
     % & Defines the breaks in the table 
-    \customstyletable{Funkcjonalność} & \customstyletablecentered{PRIO} & \customstyletablecentered{IMPL}& \customstyletable{Opis} \\
+    \customstyletable{Funkcja} & \customstyletablecentered{PRIO} & \customstyletablecentered{IMPL}& \customstyletable{Opis} \\
     \hline
     {Plik konfiguracji} & {M} & {TAK} & {Osobny plik konfiguracyjny}\\
     \hline
@@ -510,7 +509,7 @@ instalowane poleceniami:}
 momencie, każdy z użytkowników będzie korzystał z własnej instancji bazy 
 danych aplikacji która bedzie przechowywana w dowolnej dogodnej określonej 
 przez użytkownika pamięci lokalnej określonej w pliku konfiguracyjnym, a także 
-zdalnej jeśli wdrożona zostanie funkcjonalność dostępu zdalnego. Aplikacja 
+zdalnej jeśli wdrożona zostanie funkcja dostępu zdalnego. Aplikacja 
 wstępnie nie będzie wymagała stałego dostępu do sieci, jednak w przyszłości 
 jej rozwój może zmienić to wymaganie - wymagać wtedy będzie krótkich okresów 
 dostępu do sieci. Dostęp do danych będzie wymagany w krótkich okresach zapisu 
@@ -603,7 +602,7 @@ konkretnej tabeli w bazie danych. Szczegóły implementacji kodu opisano w sekcj
 \chapter{\customstylechapter{Metody pracy, narzędzia i techniki}}
 \section{\customstylesection{Metody pracy}}
 {Aby dostarczyć minimalny opłacalny produkt \cite{MVP} aplikacja będzie 
-rozwijana poprzez wdrażanie wymaganych funkcjonalności w kolejności wynikającej 
+rozwijana poprzez wdrażanie wymaganych funkcji w kolejności wynikającej 
 z ich priorytetów. Podczas planowania projektu wykorzystana zostanie 
 priorytetyzacja MoSCoW \cite{MOSCOW} która polega na określeniu priorytetu za 
 pomocą jednej z poniżej wymienionych kategorii, jak miało to miejsce w sekcji 
@@ -614,7 +613,7 @@ pomocą jednej z poniżej wymienionych kategorii, jak miało to miejsce w sekcji
     \centering  
     \includegraphics[width=12cm]{figures/MoSCoW-01.png}
 \end{figure}
-W fazie prototypu zostaną wdrożone wszystkie funkcjonalności wymagane (M), 
+W fazie prototypu zostaną wdrożone wszystkie funkcje wymagane (M), 
 natomiast wdrożenie wszelkich pozostałych kategorii zostanie rozpatrzone w fazie
  rozwoju aplikacji. Plan uwzględnia także cykliczne przeglądy priorytetów aby 
  lepiej dopasować aplikację do potrzeb użytkowników i kierunku rozwoju projektu.
@@ -628,15 +627,15 @@ zwiększy czytelność dane zostaną także zebrane w dedykowane klasy.}
  Open Source oraz komerycjne dostępne nieodpłatnie dla użytkowników 
 indywidualnych.}
 
-{Kategoryzacja MoSCoW \cite{MOSCOW} dla poszczególnych funkcjonalności 
-wykonywana będzie na zadaniach zarejstrowanych w tablicy kanban, w serwisie 
-serwisu Trello \cite{Trello}. Do stworzenia bazy SQLite \cite{SQLite} posłuży 
-aplikacja DataGrid \cite{DataGrid}. Aplikacja Visual Studio Code 
-\cite{VSCode} posłuży do pisania kodu w Python \cite{Python} oraz dokumentacji 
-w LaTeX \cite{LaTeX}. Do rozwoju dokumentacji oraz kodu aplikacji posłuży 
-system kontroli źródła GIT \cite{GIT}, a oba kody źródłowe przechowywane będą w 
-osobnych projektach \cite[DatabaseShenanigans]{GITBudgeterApp} oraz 
-\cite[budgeter]{GITBudgeterDoc} na platformie GitHub \cite{GitHub}.}
+{Kategoryzacja MoSCoW \cite{MOSCOW} dla poszczególnych funkcji wykonywana będzie
+ na zadaniach zarejstrowanych w tablicy kanban, w serwisie serwisu Trello 
+\cite{Trello}. Do stworzenia bazy SQLite \cite{SQLite} posłuży aplikacja 
+DataGrid \cite{DataGrid}. Aplikacja Visual Studio Code \cite{VSCode} posłuży do
+ pisania kodu w Python \cite{Python} oraz dokumentacji w LaTeX \cite{LaTeX}. Do 
+rozwoju dokumentacji oraz kodu aplikacji posłuży system kontroli źródła GIT 
+\cite{GIT}, a oba kody źródłowe przechowywane będą w osobnych projektach 
+\cite[DatabaseShenanigans]{GITBudgeterApp} oraz \cite[budgeter]{GITBudgeterDoc}
+ na platformie GitHub \cite{GitHub}.}
 
 \section{\customstylesection{Techniki}}
 {W trakcie tworzeznia projektu wykorzystano model przyrostowy 
@@ -1637,9 +1636,7 @@ publicznie \cite{EdittableTable}.}
 % [REQUIREMENT] 15. Przebieg uruchamiania projektu (być może na różnych 
 % platformach, konfiguracjach...)
 \chapter{\customstylechapter{Przebieg uruchamiania projektu}}
-
 \section{\customstylesection{Wariant aplikacji w formie skryptu}}
-
 {Projekt uruchamiano na platformie Windows 10. Python jest językiem skryptowym 
 więc wstępnie należy zainstalować wymagane biblioteki poleceniami:}
 \begin{itemize}
@@ -1660,7 +1657,6 @@ dowolnego miejsca w systemie.}
 
 %TODO: after PyInstaller prepare section
 \section{\customstylesection{Aplikacja w formie pliku wykonywalnego}}
-
 {Uruchomienie aplikacji w wersji skompilowanej do pliku wykonywalnego z 
 wykorzystaniem narzędzia PyInstaller \cite[text]{PyInstaller} jest o wiele 
 prostsze. Polega na rozpakowaniu dostarczonego archiwum, wejściu do katalogu 
@@ -1669,15 +1665,19 @@ aplikacji i uruchomieniu pliku wykonywalnego z rozszerzeniem .exe .}
 % [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
 % testów)
 \chapter{\customstylechapter{Przebieg testowania projektu}}
-
 \section{\customstylesection{Warstwa bazy danych}}
-
 {Implementacja logiki podsumowań w warstwie bazy danych w języku SQL gwarantuje 
 poprawność danych, nie mniej jednak podczas tworzenia zapytań utworzono testową 
 wersję bazy danych którą wypełniono niewielkim zestawem testowych danych których
  wyniki podsumowań obliczono. Wyniki podsumowań obliczonych ręcznie i z 
 wykorzystaniem zapytań w bazie dawały taki sam wynik, co sugeruje że logika 
-została zaimplementowana prawidłowo - przynajmniej na małych zestawach danych.}
+została zaimplementowana prawidłowo - przynajmniej na małych zestawach danych. 
+Celowo oraz omyłkowo próbowano także wprowadzić błędne dane do tabel.}
+
+{Dodatkowo rozwój bazy wymagał zmian zbudowanych tabel i widoków, dzięki temu 
+potwierdzono także że ewentualne próbu usunięcia tabel wykorzystywanych w 
+innych zapytaniach kończą się niepowodzeniem - baza danych sama w sobie nie 
+pozwoli naruszyć więzów relacji.}
 
 \section{\customstylesection{Warstwa aplikacji}}
 {Ponieważ Python jest językiem skryptowym aplikacja testowana była manualnie 
@@ -1687,6 +1687,51 @@ znalezione błędy lub nieprzewidziane działanie eliminowano od ręki. Testy
 powtarzano także po wprowadzeniu modyfikacji lub wyseparowaniu części funkcji 
 realizującej niezależne zadanie do osobnej funkcji. Takie iteracyjne podejście 
 będzie stosowane w dalszym rozwoju aplikacji.}
+
+% [REQUIREMENT] 17. Wnioski z przebiegu testowania (wykryte defekty, wrażliwość
+% na specyficzne dane, błędy ukryte i niewidoczne dla użytkownika, sytuacje
+% niejednoznaczne itp.)
+\section{\customstylesection{Wnioski z testów}}
+{Testy aplikacji wykazały ze warstwa bazy danych działa stabilnie, jednak w 
+niektórych przypadkach pozwala wprowadzić błędne dane przez połączenie apikacji 
+przy czym próby wprowadzenia takiego zestawu danych ręcznie na bazie kończą się 
+błędem. W połaczeniu z faktem że interfejs przyjmuje dane użytkownika w formie 
+ciągów znaków klasy string, a funkcja walidacji danych nie została wdrożona na 
+obecnym etapie prototypu możliwe są błędy danych w aplikacji. Podnosi to 
+priorytet funkcji walidacji danych, nalezy więc rozpatrzyć szybkie wdrożenie 
+funkcje w następnym etapie projektu. Problem jest nieco mitygowany %TODO: Fix, i don't like this word
+przez fakt, że użytkownicy mają także dostęp bezpośrednio do bazy danych dzięki 
+czemu mogą osobiście poprawić swoje błędnie wprowadzone dane z pominięciem 
+aplikacji.}
+
+% [REQUIREMENT] 18. Konserwacja systemu
+\chapter{\customstylechapter{Konserwacja systemu}}
+{Wynikiem projektu jest aplikacja dostarczana w formie spakowanego archiwum, a 
+sama aplikacja nie wymaga instalacji ani szczególnej ścieżki działania. W 
+efekcie konserwacja systemu sprowadza się wyłącznie do pobrania nowej wersji 
+aplikacji, rozpakowania jej w dowolnej lokalizacji i podmiany dostarczonej bazy 
+danych na obecnie wykorzystywaną przez użytkownika, lub samego pliku 
+konfiguracyjnego \inlinecode{Config.py} który ma postać edytowalnego pliku 
+tekstowego a zatem użytkownik może wprowadzać w nim dowolne zmiany parametrów 
+dopóki nie spowoduje w ten sposób awarii aplikacji. W takim przypadku wystarczy 
+przywrócić poprzednią wersję pliku lub pobrać domyślną wersję wraz z dystrybucją
+ aplikacji.}
+
+{Eewntualne zmiany na warstwie bazy danych nie są planowane jednak nie są także 
+wykluczone, w takim przypadku w aplikacji zostanie zabudowana funkcja która 
+wykryje czy baza danych jest zgodna z wersją aplikacji i jeśli będzie to możliwe
+ wprowadzi ewentualne zmiany na bazie wykorzystując skrypt SQL zabudowany w 
+kodzie aplikacji.}
+
+% [REQUIREMENT] 19. Podsumowanie i alternatywne sposoby stworzenia projektu
+% (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
+\chapter{\customstylechapter{Podsumowanie projektu}}
+\section{\customstylesection{Wnioski z implementacji}}
+
+
+\section{\customstylesection{Alternatywne sposoby realizacji projektu}}
+
+
 
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
@@ -1764,17 +1809,7 @@ będzie stosowane w dalszym rozwoju aplikacji.}
 
 % ------ Project deadline 2023-01-29 ------------------------------------------
 % ------ Part 1: Due 2022-10-21 
-
 % ------ Part 2: Due 2022-11-18 
-
-% [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
-% testów)
-% [REQUIREMENT] 17. Wnioski z przebiegu testowania (wykryte defekty, wrażliwość
-% na specyficzne dane, błędy ukryte i niewidoczne dla użytkownika, sytuacje
-% niejednoznaczne itp.)
-% [REQUIREMENT] 18. Konserwacja systemu
-% [REQUIREMENT] 19. Podsumowanie i alternatywne sposoby stworzenia projektu
-% (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
 % [REQUIREMENT] 20. Dokumentacja dla użytkownika (Podręczni kużytkownika)
 % [REQUIREMENT] 20.1. Przeznaczenie i główne możliwości systemu
 % [REQUIREMENT] 20.2. Podstawowe wymagania
@@ -1820,6 +1855,12 @@ będzie stosowane w dalszym rozwoju aplikacji.}
 % platformach, konfiguracjach...)
 % [REQUIREMENT] 16. Przebieg testowania projektu (rodzaje i metody przeprowadzonych
 % testów)
+% [REQUIREMENT] 17. Wnioski z przebiegu testowania (wykryte defekty, wrażliwość
+% na specyficzne dane, błędy ukryte i niewidoczne dla użytkownika, sytuacje
+% niejednoznaczne itp.)
+% [REQUIREMENT] 18. Konserwacja systemu
+% [REQUIREMENT] 19. Podsumowanie i alternatywne sposoby stworzenia projektu
+% (po zdobytym doświadczeniu, przy dostępie do innych narzędzi, przy innej wizji...)
 
 % [REQUIREMENT] 23. Przypisy dolne, stopki (nr stron), nagłówki...
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
