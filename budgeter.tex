@@ -1866,7 +1866,7 @@ lewym przciskiem myszki i możesz już zacząć swoją przygodę z aplikacją Bu
     \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_03_splashscreen.png}
 \end{figure}
 
-\section{\customstylesection{Funkcje}}
+\section{\customstylesection{Funkcje i instruykcja obsługi}}
 {Przygodę z aplikacją Budgeter warto zacząć od dodania kilku typów produktów, 
 w tym celu wejdź w zakładkę Browse Data, następnie wybierz opcję Types.}
 
@@ -1960,15 +1960,53 @@ dostosować wygląd aplikacji do swoich upodobań.}
     \includegraphics[width=12cm]{figures/Guide/Budgeter_Instruction_06_Options_Change-theme.png}
 \end{figure}
 
-
-\section{\customstylesection{Podręcznik administratora/użytkownika systemu/gości}}
-
-
 \section{\customstylesection{Spostrzeżenia i zalecenia do użytkowania projektu}}
+{Obecnie projekt aplikacji Budgeter jest w fazie prototypu, w wyniku tego 
+obecnie składa się wyłacznie z głównego modułu analitycznego i wymaganych 
+funkcji podstawowych. Drogi użytkowniiku, miej to na uwadze korzystając z 
+aplikacji Budgeter - wprowadzaj dane uważnie żeby zapewnić sobie komfort 
+korzystania z aplikacji, i rozważ proszę zgłoszenie wszelkich zauważonych 
+błędów, co pozwoli dopracować projekt do Twoich oczekiwań. Projekt rozwijany 
+będzie na bieżąco dlatego sprawdzaj okresowo czy w repozytorium pojawiła się 
+nowa wersja, w ten sposób zyskasz dostęp do nowych funkcji wprowadzonych w 
+kolejnych wersjach. Fakt że używasz aplikacji Budgeter oznacza że Twoje dane są 
+dla Ciebie ważne, dlatego pamiętaj żeby okresowo zabezpieczać swoje dane żeby 
+nie stracić miesięcy wprowadzanych wydatków, przychodów, dopieszczonych 
+produktów i ich typów.}
 
+{Przedewszystkim najważniesze zalecenie: czerp przyjemność korzystając z 
+aplikacji Budgeter!}
 
 \section{\customstylesection{Potencjalne błędy}}
+{Jak każdy program aplikacja Budgeter nie jest wolna od błędów. Należy jednak 
+pamiętać że obecnie jest to prototyp, dlatego z pewnością znajdziesz w niej 
+wiele możliwych usprawnień warto je zgłosić autorowi projektu, co stwarza szansę
+ wyeliminowania błędu w kolejnej wersji oprogramowania.}
 
+{jak wywnioskowałeś z powyższego opisu nie wszystkie błędy są na ten moment 
+znane jednak przed kilkoma z nich możesz się ustrzec. Tego typu błędami są:}
+
+\begin{itemize}
+    \item Błędne dane wejściowe wpisywane ręcznie - w chwili obecnej aplikacja 
+    nie sprawdza całkowicie poprawności danych wejściowych. Wszystkei informacje
+     przyjmuje w formie tekstu. W efekcie wprowadzenie błędnych danych 
+     najpewniej spowoduje błędne wyświetlanie danych w wykresie.
+    \item Błędne dane wejściowe z plikó - jak wyżej
+    \item Błędny plik wsadowy - wraz z aplikacją dostarczono szablony plików CSV 
+    służących do importu danych do aplikacji. Aplikacja nei sprawdza jednak czy 
+    wybrano prawidłowy plik, co pozwala wysłać dane przeznaczone do jednego 
+    zbioru (na przykład Produktów) do drugiego, nieprawidłowego (na przykład 
+    Wydatków). Aplikacja nie powinna przyjąć takich danych, w tym aspekcie 
+    obecnie jest jeszcze rozwijana. Do momentu wydania kolejnej wersji aplikacji
+     musisz jednak uważać.
+    \item Brak możliwości edycji danych przez aplikację - obecnie nie 
+    udostępniamy funkcji edycji danych przez interfejs aplikacji dlatego dbaj 
+    o ich prawidłowe wprowadzanie. Użytownicy z dużą wiedzą techniczną wprawnie 
+    posługujący się językiem SQL mogą sami połaczyć się z bazą danych aplikacji 
+    i poprawić dane bezpośrednio. Jeśłi jednak poprzednie zdanie niewiele Ci 
+    mówi warto pozostawić próby poprawy danych do momentu aż taka funkcja pojawi
+     się po aktualizacji. 
+\end{itemize}
 
 
 % [REQUIREMENT] 22. Bibliografia - wykaz wszystkich źródeł
